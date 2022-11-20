@@ -1,0 +1,36 @@
+#automata-icon {
+	margin-left: 1em;
+	margin-right: 0.75em;
+	width: 27px;
+}
+
+nav {
+	background-color: var(--blue-emphasis);
+}
+
+#program-container {
+	padding: 2em;
+}
+
+#editor {
+	width: 100%;
+	height: 50vh;
+	font-size: 1rem;
+	border: 1px solid var(--blue-emphasis);
+}
+
+#run {
+	background-color: var(--blue-emphasis);
+	border: var(--blue-emphasis);
+}
+
+#run:hover {
+	background-color: var(--blue-hover);
+	border: var(--blue-hover);
+}
+
+/* .myMarker {
+	position: absolute;
+	background: rgba(100, 200, 100, 0.5);
+	z-index: 20;
+} */

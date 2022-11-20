@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+
+		<title>Two-Way Accepter</title>
+
+		<link href="style/colors.css" rel="stylesheet" />
+		<link href="style/style.css" rel="stylesheet" />
+
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand">
+					<img id="automata-icon" src="assets/automata-icon.png" class="d-inline-block" />
+					AUTOMATA THEORY
+				</a>
+
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="menu">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#">Two-Way Accepter</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Hello</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div id="program-container" class="col-sm-4">
+					<select id="test-cases" class="form-select">
+						<option value="custom">Custom</option>
+						<option value="odd-and-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∧ N₁(ω) ≡ 0 mod 2}</option>
+						<option value="even-and-odd">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∨ N₁(ω) ≡ 0 mod 2}</option>
+						<option value="a-before-b">{ω ∈ (a ∪ b)* | aⁱbʲ, i, j ≥ 0}</option>
+						<option value="a-followed-b">{ω ∈ (a ∪ b)* | Each a is followed by b}</option>
+						<option value="a-preceded-b">{ω ∈ (a ∪ b)* | Each a is preceded by b}</option>
+						<option value="start-a-end-b">{ω ∈ (a ∪ b)* | Starts with a and ends with b}</option>
+						<option value="power-mod3">{ω ∈ (0 ∪ 1)* | 2ᐜ ≡ 2 mod 3}</option>
+						<option value="1-mod3">{ω ∈ (0 ∪ 1)* | ω ≡ 1 mod 3}</option>
+					</select>
+					<br />
+					<div id="editor"></div>
+					<br />
+					<div class="d-grid">
+						<button id="run" type="button" class="btn btn-primary">Run</button>
+					</div>
+				</div>
+
+				<div class="col-sm-8">Hi</div>
+			</div>
+		</div>
+
+		<script src="scripts/code-editor.js"></script>
+		<script src="scripts/twa.js"></script>
+	</body>
+</html>
