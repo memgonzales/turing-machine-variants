@@ -6,6 +6,7 @@
 
 		<title>Two-Way Accepter</title>
 
+		<link rel="icon" type="image/x-icon" href="assets/automata-icon.png" />
 		<link href="style/colors.css" rel="stylesheet" />
 		<link href="style/style.css" rel="stylesheet" />
 
@@ -33,21 +34,45 @@
 							<a class="nav-link active" aria-current="page" href="#">Two-Way Accepter</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Hello</a>
+							<a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Turing Machine (TM) v1</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" tabindex="-1" aria-disabled="true">TM v2</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" tabindex="-1" aria-disabled="true">TM v3</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" tabindex="-1" aria-disabled="true">TM v4</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" tabindex="-1" aria-disabled="true">TM v5</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" tabindex="-1" aria-disabled="true">TM v6</a>
 						</li>
 					</ul>
+				</div>
+
+				<div id="view-github" class="d-flex">
+					<a class="nav-link" target="_blank" href="https://github.com/memgonzales/turing-machine-variants"><img id="github-icon" src="assets/github.png" class="d-inline-block" /></a>
+				</div>
+				<div id="view-github" class="d-flex">
+					<a class="nav-link" target="_blank" href="https://github.com/memgonzales/turing-machine-variants">View on GitHub</a>
 				</div>
 			</div>
 		</nav>
 
 		<div class="container-fluid">
 			<div class="row">
-				<div id="program-container" class="col-sm-4">
+				<div id="program-container" class="col-sm-5">
+					<label for="test-cases" class="form-label">Sample Machines</label>
 					<select id="test-cases" class="form-select">
-						<option value="custom">Custom</option>
+						<option value="instructions">Instructions</option>
+						<option value="custom">Blank Machine</option>
 						<option value="odd-and-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∧ N₁(ω) ≡ 0 mod 2}</option>
 						<option value="even-and-odd">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∨ N₁(ω) ≡ 0 mod 2}</option>
-						<option value="a-before-b">{ω ∈ (a ∪ b)* | aⁱbʲ, i, j ≥ 0}</option>
+						<option value="a-before-b">{ω ∈ (a ∪ b)* | aˣbʸ, x, y ≥ 0}</option>
 						<option value="a-followed-b">{ω ∈ (a ∪ b)* | Each a is followed by b}</option>
 						<option value="a-preceded-b">{ω ∈ (a ∪ b)* | Each a is preceded by b}</option>
 						<option value="start-a-end-b">{ω ∈ (a ∪ b)* | Starts with a and ends with b}</option>
@@ -57,12 +82,14 @@
 					<br />
 					<div id="editor"></div>
 					<br />
+					<div class="d-grid"><input type="text" class="form-control" placeholder="Input String" /></div>
+					<br />
 					<div class="d-grid">
-						<button id="run" type="button" class="btn btn-primary">Run</button>
+						<button id="run" type="button" class="btn btn-primary">Run Machine</button>
 					</div>
 				</div>
 
-				<div class="col-sm-8">Hi</div>
+				<div class="col-sm-7">Hi</div>
 			</div>
 		</div>
 
