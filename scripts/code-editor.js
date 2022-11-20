@@ -19,6 +19,7 @@ function resetEditor() {
 	editor.setValue('');
 	editor.setReadOnly(false);
 	removeMarkers();
+	$('#input-string').prop('readonly', false);
 }
 
 function getCurrentText() {

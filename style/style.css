@@ -72,3 +72,7 @@ nav {
 #simulation-container {
 	padding: 2em;
 }
+
+.head {
+	background-color: var(--blue-emphasis);
+}

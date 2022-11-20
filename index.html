@@ -71,7 +71,7 @@
 						<option value="instructions">Instructions</option>
 						<option value="custom">Blank Machine</option>
 						<option value="odd-and-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∧ N₁(ω) ≡ 0 mod 2}</option>
-						<option value="even-and-odd">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∨ N₁(ω) ≡ 0 mod 2}</option>
+						<option value="odd-or-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∨ N₁(ω) ≡ 0 mod 2}</option>
 						<option value="a-before-b">{ω ∈ (a ∪ b)* | aˣbʸ, x, y ≥ 0}</option>
 						<option value="a-followed-b">{ω ∈ (a ∪ b)* | Each a is followed by b}</option>
 						<option value="a-preceded-b">{ω ∈ (a ∪ b)* | Each a is preceded by b}</option>
@@ -92,9 +92,8 @@
 				<div id="simulation-container" class="col-sm-7">
 					<h3>Two-Way Accepter</h3>
 					<h5>Read-only Turing machine</h5>
-					<br />
-					<br />
 					<div id="simulation" class="table-responsive"></div>
+					<br />
 					<h5>Analysis</h5>
 				</div>
 			</div>
