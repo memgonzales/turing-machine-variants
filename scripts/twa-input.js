@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	let editor = ace.edit('editor');
+	const editor = ace.edit('editor');
 
 	let previous = 'instructions';
 	let previousText = '';
@@ -53,23 +53,27 @@ $(document).ready(function () {
 			'Each transition should be entered on a separate line following this format:',
 			'',
 			'<state> ] <action>(<stimulus>, <next-state>)',
+			'Note: The whitespaces matter.',
 			'',
 			'state, next-state',
-			'  - Can be any character except ] and ;',
+			'  - Can be any string without whitespaces',
+			'  - Should not start with ; (otherwise, the line will be interpreted as a comment)',
 			'action',
 			'  - R: Move the tape head to the right',
 			'  - L: Move the tape head to the left',
 			'stimulus',
-			'  - Can be any character',
+			'  - Can be any character except whitespace',
 			'  - # is used to demarcate input strings',
 			'',
 			'** ACCEPTING & REJECTING STATES **',
 			'Accepting and rejecting states should be indicated following this format:',
 			'',
 			'<state> ] <decision>',
+			'Note: The whitespaces matter.',
 			'',
 			'state, next-state',
-			'  - Can be any character except ] and ;',
+			'  - Can be any string without whitespaces',
+			'  - Should not start with ; (otherwise, the line will be interpreted as a comment)',
 			'decision',
 			'  - "accept" or "reject" (without quotes)',
 			'',
@@ -79,8 +83,8 @@ $(document).ready(function () {
 		];
 		updateEditor(lines);
 
-		let marker1Lines = [0, 14, 24];
-		let marker2Lines = [3, 17];
+		let marker1Lines = [0, 16, 28];
+		let marker2Lines = [3, 19];
 
 		for (const line of marker1Lines) {
 			editor.session.addMarker(new Range(line, 0, line, 1), 'marker1', 'fullLine');

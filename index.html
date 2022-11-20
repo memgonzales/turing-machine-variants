@@ -82,18 +82,33 @@
 					<br />
 					<div id="editor"></div>
 					<br />
-					<div class="d-grid"><input type="text" class="form-control" placeholder="Input String" /></div>
+					<div class="d-grid"><input id="input-string" type="text" class="form-control" placeholder="Input String" /></div>
 					<br />
 					<div class="d-grid">
 						<button id="run" type="button" class="btn btn-primary">Run Machine</button>
 					</div>
 				</div>
 
-				<div class="col-sm-7">Hi</div>
+				<div id="simulation-container" class="col-sm-7">
+					<h3>Two-Way Accepter</h3>
+					<h5>Read-only Turing machine</h5>
+					<br />
+					<br />
+					<div id="simulation" class="table-responsive"></div>
+					<h5>Analysis</h5>
+				</div>
 			</div>
 		</div>
 
+		<footer class="footer">
+			<div class="container">
+				<span>Copyright &copy; 2022. Mark Edward M. Gonzales &nbsp;|&nbsp;</span>
+				<span><a class="link-dark" href="mailto:mark_gonzales@dlsu.edu.ph">mark_gonzales@dlsu.edu.ph</a></span>
+			</div>
+		</footer>
+
 		<script src="scripts/code-editor.js"></script>
-		<script src="scripts/twa.js"></script>
+		<script src="scripts/twa-input.js"></script>
+		<script src="scripts/twa-logic.js"></script>
 	</body>
 </html>

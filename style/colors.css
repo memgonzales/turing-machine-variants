@@ -1,6 +1,7 @@
 :root {
 	--blue-emphasis: rgb(47, 47, 105);
 	--blue-hover: rgb(79, 79, 143);
-	--blue-highlight: rgba(248, 247, 174, 0.966);
+	--blue-light: rgb(200, 200, 214);
+	--yellow-highlight: rgba(248, 247, 174, 0.966);
 	--green-highlight: rgba(129, 219, 129, 0.5);
 }

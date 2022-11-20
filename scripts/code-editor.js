@@ -1,7 +1,7 @@
-let editor = ace.edit('editor');
+const editor = ace.edit('editor');
 editor.getSession().setUseWrapMode(true);
 
-let Range = ace.require('ace/range').Range;
+const Range = ace.require('ace/range').Range;
 // editor.session.addMarker(new Range(1, 0, 1, 1), 'myMarker', 'fullLine');
 
 function removeMarkers() {
@@ -9,7 +9,7 @@ function removeMarkers() {
 
 	if (prevMarkers) {
 		const prevMarkersArr = Object.keys(prevMarkers);
-		for (let item of prevMarkersArr) {
+		for (const item of prevMarkersArr) {
 			editor.session.removeMarker(prevMarkers[item].id);
 		}
 	}
