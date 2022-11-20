@@ -107,7 +107,14 @@ $(document).ready(function () {
 	}
 
 	function parseLine(line, lineNumber) {
-		let tokens = line.split(' ');
+		let tokensOrig = line.split(' ');
+		let tokens = [];
+
+		for (const token of tokensOrig) {
+			if (token.trim().length != 0) {
+				tokens.push(token);
+			}
+		}
 
 		if (tokens.length < 3) {
 			alert(`Line ${lineNumber + 1}: Incomplete information about transition or accepting/rejecting state.`);
@@ -117,7 +124,7 @@ $(document).ready(function () {
 		let state = tokens[0].trim();
 
 		if (tokens[1].trim() !== ']') {
-			alert(`Line ${lineNumber + 1}: Missing ']' after state name.`);
+			alert(`Line ${lineNumber + 1}: Expected ' ]' immediately after state name.`);
 			return false;
 		}
 
@@ -130,12 +137,12 @@ $(document).ready(function () {
 			direction = tokens[2][0].toUpperCase().trim();
 
 			if (direction !== 'R' && direction !== 'L') {
-				alert(`Line ${lineNumber + 1}: Unknown direction (only 'R' and 'L' are recognized).`);
+				alert(`Line ${lineNumber + 1}: Unknown direction (expected 'R' or 'L').`);
 				return false;
 			}
 
 			if (tokens[2][1] !== '(') {
-				alert(`Line ${lineNumber + 1}: Missing '(' after direction.`);
+				alert(`Line ${lineNumber + 1}: Expected '(' immediately after direction.`);
 				return false;
 			}
 
@@ -145,23 +152,18 @@ $(document).ready(function () {
 				nextState = tokens[4].slice(0, tokens[4].length - 1).trim();
 
 				/* Stimulus consists of more than one whitespace. */
-				if (tokens[3].length === 0) {
-					alert(`Line ${lineNumber + 1}: Only single-character stimulus is allowed`);
-					return false;
-				}
-
-				if (tokens[3] !== ',') {
-					alert(`Line ${lineNumber + 1}: Missing ',' after stimulus.`);
+				if (tokens[3].length === 0 || tokens[3] !== ',') {
+					alert(`Line ${lineNumber + 1}: Expected single-character stimulus.`);
 					return false;
 				}
 
 				if (tokens[4][tokens[4].length - 1] !== ')') {
-					alert(`Line ${lineNumber + 1}: Missing ')' after name of next state`);
+					alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state.`);
 					return false;
 				}
 
 				if (nextState.length == 0) {
-					alert(`Line ${lineNumber + 1}: Missing name of next state.`);
+					alert(`Line ${lineNumber + 1}: Expected name of next state.`);
 					return false;
 				}
 			} else {
@@ -169,22 +171,22 @@ $(document).ready(function () {
 				nextState = tokens[3].slice(0, tokens[3].length - 1).trim();
 
 				if (tokens[2].length > 4) {
-					alert(`Line ${lineNumber + 1}: Only single-character stimulus is allowed`);
+					alert(`Line ${lineNumber + 1}: Expected single-character stimulus.`);
 					return false;
 				}
 
 				if (tokens[2][3] !== ',') {
-					alert(`Line ${lineNumber + 1}: Missing ',' after stimulus.`);
+					alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus`);
 					return false;
 				}
 
 				if (tokens[3][tokens[3].length - 1] !== ')') {
-					alert(`Line ${lineNumber + 1}: Missing ')' after name of next state`);
+					alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state`);
 					return false;
 				}
 
 				if (nextState.length == 0) {
-					alert(`Line ${lineNumber + 1}: Missing name of next state.`);
+					alert(`Line ${lineNumber + 1}: Expected name of next state.`);
 					return false;
 				}
 			}
@@ -192,10 +194,12 @@ $(document).ready(function () {
 			decision = tokens[2].toLowerCase().trim();
 
 			if (decision !== 'reject' && decision !== 'accept') {
-				alert(`Line ${lineNumber + 1}: Unknown decision (only 'reject' and 'accept' are recognized). If you meant to enter a transition, check if there is a space between the comma and the name of the next state`);
+				alert(`Line ${lineNumber + 1}: Unknown decision (expected 'reject' or 'accept'). If you meant to enter a transition, check if there is a space between the comma and the name of the next state`);
 				return false;
 			}
 		}
+
+		alert(state + ' | ' + direction + ' | ' + stimulus + ' | ' + nextState + ' | ' + decision);
 
 		return true;
 	}
