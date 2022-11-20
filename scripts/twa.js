@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	let editor = ace.edit('editor');
 
-	let previous;
+	let previous = 'instructions';
 	let previousText = '';
 
 	const START = { row: 0, column: 0 };
@@ -29,9 +29,9 @@ $(document).ready(function () {
 		});
 
 	function switchMachine(e) {
-		const selected = $(e.currentTarget).val();
+		resetEditor();
 
-		switch (selected) {
+		switch ($(e.currentTarget).val()) {
 			case 'instructions':
 				instructions();
 				editor.setReadOnly(true);
@@ -92,7 +92,7 @@ $(document).ready(function () {
 	}
 
 	function aBeforeB() {
-		const lines = ['1 ] R(a, 1)', '1 ] R(b, 2)', '1 ] R(#, 3)', '2 ] R(a, 4)', '2 ] R(b, 2)', '2 ] R(#, 3)', '3 ] accept', '4 ] reject'];
+		const lines = ["; Handle a's", '1 ] R(a, 1)', '1 ] R(b, 2)', '1 ] R(#, 3)', '', "; Handle b's", '2 ] R(a, 4)', '2 ] R(b, 2)', '2 ] R(#, 3)', '', '3 ] accept', '4 ] reject'];
 		updateEditor(lines);
 	}
 });
