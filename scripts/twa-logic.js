@@ -259,6 +259,22 @@ $(document).ready(function () {
 				adjGraphNextState[state][stimulus] = [];
 			}
 		}
+
+		/* Check the input string. */
+		for (let i = 0; i < inputString; i++) {
+			if (!stimulusAlphabet.has(inputString[i])) {
+				alert(`Input string contains symbol '${inputString[i]}', which is not in the stimulus alphabet.`);
+				return false;
+			}
+		}
+
+		/* Check the initial state. */
+		if (!stateSet.has(initialState)) {
+			alert(`Initial state '${initialState}' is not in the state set.`);
+			return false;
+		}
+
+		return true;
 	}
 
 	function getStateSet(stateIdx, nextStateIdx) {
@@ -350,32 +366,34 @@ $(document).ready(function () {
 						break;
 					case 'accept':
 						finishedPaths.push(path);
+						finishedTapeRowIdx.push(tapeRowIdx);
+						finishedTapeColIdx.push(tapeColIdx);
 						break;
 					case 'reject':
 						finishedPaths.push(path);
+						finishedTapeRowIdx.push(tapeRowIdx);
+						finishedTapeColIdx.push(tapeColIdx);
 						break;
 				}
 
-				let stimulus = tape[currentTapeRowIdx][currentTapeColIdx];
-				let nextStates = adjGraphNextState[currentState][stimulus];
+				if (isValid) {
+					let stimulus = tape[currentTapeRowIdx][currentTapeColIdx];
+					let nextStates = adjGraphNextState[currentState][stimulus];
 
-				let nextPaths = [];
-				let nextTapeRowIdx = [];
-				let nextTapeColIdx = [];
+					let nextPaths = [];
+					let nextTapeRowIdx = [];
+					let nextTapeColIdx = [];
 
-				try {
 					for (const state of nextStates) {
 						nextPaths.push(path.concat([state]));
 						nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
 						nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
 					}
-				} catch (err) {
-					alert('Hello');
-				}
 
-				unfinishedPathsTemp = unfinishedPathsTemp.concat(nextPaths);
-				unfinishedTapeRowIdxTemp = unfinishedTapeRowIdxTemp.concat(nextTapeRowIdx);
-				unfinishedTapeColIdxTemp = unfinishedTapeColIdxTemp.concat(nextTapeColIdx);
+					unfinishedPathsTemp = unfinishedPathsTemp.concat(nextPaths);
+					unfinishedTapeRowIdxTemp = unfinishedTapeRowIdxTemp.concat(nextTapeRowIdx);
+					unfinishedTapeColIdxTemp = unfinishedTapeColIdxTemp.concat(nextTapeColIdx);
+				}
 			}
 
 			unfinishedPaths = unfinishedPathsTemp;
@@ -385,9 +403,7 @@ $(document).ready(function () {
 			numIterations++;
 		}
 
-		console.log(finishedPaths);
-
-		return finishedPaths;
+		return [finishedPaths, finishedTapeRowIdx, finishedTapeColIdx];
 	}
 
 	function convertMachineToJS() {
@@ -397,9 +413,18 @@ $(document).ready(function () {
 			return false;
 		}
 
-		constructBlankAdjGraph();
+		if (!constructBlankAdjGraph()) {
+			return false;
+		}
+
 		convertToAdjGraph();
-		generatePaths();
+		let generatedPaths = generatePaths();
+
+		const finishedPaths = generatedPaths[0];
+		const finishedTapeRowIdx = generatedPaths[1];
+		const finishedTapeColIdx = generatedPaths[2];
+
+		console.log(generatedPaths);
 
 		return true;
 	}
