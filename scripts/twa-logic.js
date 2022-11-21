@@ -117,14 +117,14 @@ $(document).ready(function () {
 		}
 
 		if (tokens.length < 3) {
-			alert(`Line ${lineNumber + 1}: Incomplete information about transition or accepting/rejecting state.`);
+			alert(`Line ${lineNumber + 1}: Incomplete information about transition or accepting/rejecting state. Expected at least 3 whitespace-separated tokens, but got only ${tokens.length}`);
 			return false;
 		}
 
 		let state = tokens[0].trim();
 
 		if (tokens[1].trim() !== ']') {
-			alert(`Line ${lineNumber + 1}: Expected ' ]' immediately after state name.`);
+			alert(`Line ${lineNumber + 1}: Expected ']' after state name '${state}', but got '${tokens[1]}'.`);
 			return false;
 		}
 
@@ -137,12 +137,17 @@ $(document).ready(function () {
 			direction = tokens[2][0].toUpperCase().trim();
 
 			if (direction !== 'R' && direction !== 'L') {
-				alert(`Line ${lineNumber + 1}: Unknown direction (expected 'R' or 'L').`);
+				alert(`Line ${lineNumber + 1}: Unknown direction. Expected 'R' or 'L', but got '${tokens[2][0].trim()}'.`);
 				return false;
 			}
 
 			if (tokens[2][1] !== '(') {
-				alert(`Line ${lineNumber + 1}: Expected '(' immediately after direction.`);
+				let got = ' ';
+				if (typeof tokens[2][1] != 'undefined') {
+					got = tokens[2][1];
+				}
+
+				alert(`Line ${lineNumber + 1}: Expected '(' immediately after direction '${tokens[2][0].trim()}', but got '${got}'.`);
 				return false;
 			}
 
@@ -153,12 +158,12 @@ $(document).ready(function () {
 
 				/* Stimulus consists of more than one whitespace. */
 				if (tokens[3].length === 0 || tokens[3] !== ',') {
-					alert(`Line ${lineNumber + 1}: Expected single-character stimulus.`);
+					alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but got stimulus starting with a whitespace followed by another symbol. A whitespace is recognized as a valid stimulus.`);
 					return false;
 				}
 
 				if (tokens[4][tokens[4].length - 1] !== ')') {
-					alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state.`);
+					alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state`);
 					return false;
 				}
 
@@ -166,17 +171,22 @@ $(document).ready(function () {
 					alert(`Line ${lineNumber + 1}: Expected name of next state.`);
 					return false;
 				}
+
+				if (typeof tokens[5] !== 'undefined') {
+					alert(`Line ${lineNumber + 1}: Invalid transition. Expected only 5 whitespace-separated tokens, but got ${tokens.length}.`);
+					return false;
+				}
 			} else {
 				stimulus = tokens[2][2];
 				nextState = tokens[3].slice(0, tokens[3].length - 1).trim();
 
 				if (tokens[2].length > 4) {
-					alert(`Line ${lineNumber + 1}: Expected single-character stimulus.`);
+					alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but got stimulus starting with '${stimulus}${tokens[2][3]}'`);
 					return false;
 				}
 
 				if (tokens[2][3] !== ',') {
-					alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus`);
+					alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus, but got ' '`);
 					return false;
 				}
 
@@ -189,17 +199,24 @@ $(document).ready(function () {
 					alert(`Line ${lineNumber + 1}: Expected name of next state.`);
 					return false;
 				}
+
+				if (typeof tokens[4] !== 'undefined') {
+					alert(`Line ${lineNumber + 1}: Invalid transition. Expected only 4 whitespace-separated tokens, but got ${tokens.length}.`);
+					return false;
+				}
 			}
 		} else {
 			decision = tokens[2].toLowerCase().trim();
 
 			if (decision !== 'reject' && decision !== 'accept') {
-				alert(`Line ${lineNumber + 1}: Unknown decision (expected 'reject' or 'accept'). If you meant to enter a transition, check if there is a space between the comma and the name of the next state`);
+				alert(`Line ${lineNumber + 1}: Unknown decision (expected 'reject' or 'accept'), but got '${decision}'. If you meant to enter a transition, check if there is a space between the comma and the name of the next state`);
 				return false;
 			}
+
+			/* Extra token after decision results in the line being interpreted as a transition */
 		}
 
-		alert(state + ' | ' + direction + ' | ' + stimulus + ' | ' + nextState + ' | ' + decision);
+		alert(nextState);
 
 		return true;
 	}

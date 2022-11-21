@@ -63,7 +63,7 @@ $(document).ready(function () {
 			'  - R: Move the tape head to the right',
 			'  - L: Move the tape head to the left',
 			'stimulus',
-			'  - Can be any character except whitespace',
+			'  - Can be any character',
 			'  - # is used to demarcate input strings',
 			'',
 			'** ACCEPTING & REJECTING STATES **',
