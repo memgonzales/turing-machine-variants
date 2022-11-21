@@ -122,47 +122,53 @@ $(document).ready(function () {
 		}
 
 		let state = tokens[0].trim();
+		let separatorBracket = tokens[1];
 
-		if (tokens[1].trim() !== ']') {
-			alert(`Line ${lineNumber + 1}: Expected ']' after state name '${state}', but got '${tokens[1]}'.`);
+		if (separatorBracket.trim() !== ']') {
+			alert(`Line ${lineNumber + 1}: Expected ']' after state name '${state}', but got '${separatorBracket}'.`);
 			return false;
 		}
 
-		let direction = '';
 		let stimulus = '';
 		let nextState = '';
 		let decision = '';
 
-		if (tokens.length > 3) {
-			direction = tokens[2][0].toUpperCase().trim();
+		let directionStimulus = tokens[2];
+		let directionRaw = directionStimulus[0];
+		let direction = directionRaw.toUpperCase().trim();
 
+		if (tokens.length > 3) {
 			if (direction !== 'R' && direction !== 'L') {
-				alert(`Line ${lineNumber + 1}: Unknown direction. Expected 'R' or 'L', but got '${tokens[2][0].trim()}'.`);
+				alert(`Line ${lineNumber + 1}: Unknown direction. Expected 'R' or 'L', but got '${directionStimulus[0].trim()}'.`);
 				return false;
 			}
 
-			if (tokens[2][1] !== '(') {
+			let separatorParen = directionStimulus[1];
+			if (separatorParen !== '(') {
 				let got = ' ';
-				if (typeof tokens[2][1] != 'undefined') {
-					got = tokens[2][1];
+				if (typeof separatorParen != 'undefined') {
+					got = separatorParen;
 				}
 
-				alert(`Line ${lineNumber + 1}: Expected '(' immediately after direction '${tokens[2][0].trim()}', but got '${got}'.`);
+				alert(`Line ${lineNumber + 1}: Expected '(' immediately after direction '${directionRaw.trim()}', but got '${got}'.`);
 				return false;
 			}
 
 			/* The stimulus is a whitespace. */
-			if (tokens[2].length < 3) {
+			if (directionStimulus.length < 3) {
 				stimulus = ' ';
-				nextState = tokens[4].slice(0, tokens[4].length - 1).trim();
+				let separatorComma1 = tokens[3];
+
+				let nextStateParen = tokens[4];
+				nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
 
 				/* Stimulus consists of more than one whitespace. */
-				if (tokens[3].length === 0 || tokens[3] !== ',') {
+				if (separatorComma1.length === 0 || separatorComma1 !== ',') {
 					alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but got stimulus starting with a whitespace followed by another symbol. A whitespace is recognized as a valid stimulus.`);
 					return false;
 				}
 
-				if (tokens[4][tokens[4].length - 1] !== ')') {
+				if (nextStateParen[nextStateParen.length - 1] !== ')') {
 					alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state`);
 					return false;
 				}
@@ -172,25 +178,29 @@ $(document).ready(function () {
 					return false;
 				}
 
-				if (typeof tokens[5] !== 'undefined') {
+				let extraToken = tokens[5];
+				if (typeof extraToken !== 'undefined') {
 					alert(`Line ${lineNumber + 1}: Invalid transition. Expected only 5 whitespace-separated tokens, but got ${tokens.length}.`);
 					return false;
 				}
 			} else {
-				stimulus = tokens[2][2];
-				nextState = tokens[3].slice(0, tokens[3].length - 1).trim();
+				stimulus = directionStimulus[2];
+				let separatorComma1 = directionStimulus[3];
 
-				if (tokens[2].length > 4) {
+				let nextStateParen = tokens[3];
+				nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
+
+				if (directionStimulus.length > 4) {
 					alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but got stimulus starting with '${stimulus}${tokens[2][3]}'`);
 					return false;
 				}
 
-				if (tokens[2][3] !== ',') {
+				if (separatorComma1 !== ',') {
 					alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus, but got ' '`);
 					return false;
 				}
 
-				if (tokens[3][tokens[3].length - 1] !== ')') {
+				if (nextStateParen[nextStateParen.length - 1] !== ')') {
 					alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state`);
 					return false;
 				}
@@ -200,7 +210,8 @@ $(document).ready(function () {
 					return false;
 				}
 
-				if (typeof tokens[4] !== 'undefined') {
+				let extraToken = tokens[4];
+				if (typeof extraToken !== 'undefined') {
 					alert(`Line ${lineNumber + 1}: Invalid transition. Expected only 4 whitespace-separated tokens, but got ${tokens.length}.`);
 					return false;
 				}
