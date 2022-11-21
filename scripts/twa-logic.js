@@ -2,6 +2,7 @@ $(document).ready(function () {
 	const editor = ace.edit('editor');
 
 	const MAX_ITERATIONS = 10000;
+	const NUM_CELLS = 50;
 
 	let initialState;
 	let machine;
@@ -18,6 +19,8 @@ $(document).ready(function () {
 
 	let numColumns;
 	let numRows;
+
+	let tape = [];
 
 	editor.on('input', function () {
 		if (getCurrentText().trim() == 0) {
@@ -54,6 +57,15 @@ $(document).ready(function () {
 
 		numColumns = 0;
 		numRows = 1;
+
+		for (let i = 0; i < NUM_CELLS; i++) {
+			const tapeRow = [];
+			for (let j = 0; j < NUM_CELLS; j++) {
+				tapeRow.push('#');
+			}
+
+			tape.push(tapeRow);
+		}
 	}
 
 	function getInput() {
@@ -78,36 +90,6 @@ $(document).ready(function () {
 
 		initialState = processedMachine[0].trim();
 		processedMachine.shift();
-	}
-
-	function processInputString() {
-		processedInputString = `#${inputString}#`;
-	}
-
-	function processInput() {
-		processMachine();
-		processInputString();
-	}
-
-	function prepareTape() {
-		/* +2 for the initial and terminal # */
-		numColumns = inputString.length + 2;
-	}
-
-	function createTable() {
-		let table = '';
-		for (let i = 0; i < numRows; i++) {
-			let row = '';
-			for (let j = 0; j < numColumns; j++) {
-				row += `<td id = "${i}-${j}" class = "text-center">${processedInputString[j]}</td>`;
-			}
-			row = `<tr>${row}</tr>`;
-			table += row;
-		}
-
-		table = `<table id = "tape" class = "table table-bordered">${table}</table>`;
-
-		return table;
 	}
 
 	function removeTape() {
@@ -262,7 +244,7 @@ $(document).ready(function () {
 	}
 
 	function isTransitionState(state) {
-		return adjGraphDirection[state] === 'accept' || adjGraphDirection[state] === 'reject';
+		return adjGraphDirection[state] !== 'accept' && adjGraphDirection[state] !== 'reject';
 	}
 
 	function constructBlankAdjGraph() {
@@ -270,11 +252,10 @@ $(document).ready(function () {
 		const stimulusAlphabet = getStimulusAlphabet(1);
 
 		for (const state of stateSet) {
-			adjGraphDirection[state] = {};
+			adjGraphDirection[state] = '';
 			adjGraphNextState[state] = {};
 
 			for (const stimulus of stimulusAlphabet) {
-				adjGraphDirection[state][stimulus] = '';
 				adjGraphNextState[state][stimulus] = [];
 			}
 		}
@@ -315,7 +296,7 @@ $(document).ready(function () {
 			let decision = line[4];
 
 			if (isTransition(line)) {
-				adjGraphDirection[state][stimulus] = direction;
+				adjGraphDirection[state] = direction;
 				adjGraphNextState[state][stimulus].push(nextState);
 			} else {
 				adjGraphDirection[state] = decision;
@@ -324,6 +305,47 @@ $(document).ready(function () {
 
 		console.log(adjGraphDirection);
 		console.log(adjGraphNextState);
+	}
+
+	function storeInputStringToTape() {
+		for (let i = 0; i < inputString.length; i++) {
+			tape[0][i + 1] = inputString[i];
+		}
+	}
+
+	function generatePaths() {
+		let currentState = initialState;
+		let currentTapeRowIdx = 0;
+		let currentTapeColIdx = 0;
+
+		storeInputStringToTape();
+
+		console.log(tape);
+
+		let numIterations = 1;
+		console.log(isTransitionState('6'));
+		while (isTransitionState(currentState) && numIterations <= MAX_ITERATIONS) {
+			switch (adjGraphDirection[currentState]) {
+				case 'R':
+					currentTapeColIdx++;
+					break;
+				case 'L':
+					currentTapeColIdx--;
+					if (currentTapeColIdx == -1) {
+						alert('Cannot move tape head to left of initial #');
+					}
+					break;
+			}
+
+			let stimulus = tape[currentTapeRowIdx][currentTapeColIdx];
+			currentState = adjGraphNextState[currentState][stimulus][0];
+
+			console.log('currentState' + currentState);
+			console.log(adjGraphDirection[currentState]);
+
+			console.log(currentState);
+			numIterations++;
+		}
 	}
 
 	function convertMachineToJS() {
@@ -335,7 +357,38 @@ $(document).ready(function () {
 
 		constructBlankAdjGraph();
 		convertToAdjGraph();
+		generatePaths();
 
 		return true;
+	}
+
+	function processInputString() {
+		processedInputString = `#${inputString}#`;
+	}
+
+	function processInput() {
+		processMachine();
+		processInputString();
+	}
+
+	function prepareTape() {
+		/* +2 for the initial and terminal # */
+		numColumns = inputString.length + 2;
+	}
+
+	function createTable() {
+		let table = '';
+		for (let i = 0; i < numRows; i++) {
+			let row = '';
+			for (let j = 0; j < numColumns; j++) {
+				row += `<td id = "${i}-${j}" class = "text-center">${processedInputString[j]}</td>`;
+			}
+			row = `<tr>${row}</tr>`;
+			table += row;
+		}
+
+		table = `<table id = "tape" class = "table table-bordered">${table}</table>`;
+
+		return table;
 	}
 });
