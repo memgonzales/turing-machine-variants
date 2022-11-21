@@ -47,12 +47,16 @@ nav {
 	border: 1px solid var(--blue-emphasis);
 }
 
-#run {
+#run,
+#prev,
+#next {
 	background-color: var(--blue-emphasis);
 	border: var(--blue-emphasis);
 }
 
-#run:hover {
+#run:hover,
+#prev:hover,
+#next:hover {
 	background-color: var(--blue-hover);
 	border: var(--blue-hover);
 }
@@ -75,4 +79,26 @@ nav {
 
 .head {
 	background-color: var(--blue-emphasis);
+}
+
+#step-number {
+	width: 4em;
+}
+
+#prev,
+#next {
+	margin-left: 0.75em;
+	margin-right: 0.75em;
+}
+
+#simulation-controls {
+	display: none;
+}
+
+.indented-list {
+	margin-left: 0.5em;
+}
+
+.indented-list-item {
+	margin-top: 1.25em;
 }

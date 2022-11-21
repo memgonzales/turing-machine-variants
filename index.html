@@ -14,6 +14,8 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+		<script src="scripts/array.js"></script>
 	</head>
 
 	<body>
@@ -82,7 +84,7 @@
 					<br />
 					<div id="editor"></div>
 					<br />
-					<div class="d-grid"><input id="input-string" type="text" class="form-control" placeholder="Input String" /></div>
+					<div class="d-grid"><input value="101010100" id="input-string" type="text" class="form-control" placeholder="Input String" /></div>
 					<br />
 					<div class="d-grid">
 						<button id="run" type="button" class="btn btn-primary">Run Machine</button>
@@ -93,8 +95,40 @@
 					<h3>Two-Way Accepter</h3>
 					<h5>Read-only Turing machine</h5>
 					<div id="simulation" class="table-responsive"></div>
+
+					<div id="simulation-controls" class="row">
+						<br />
+						<div class="col-sm-12 text-center">
+							<button id="prev" type="button" class="btn btn-primary" disabled="true">< Prev</button>
+							Step&nbsp;&nbsp;
+							<input id="step-number" type="number" value="1" min="1" />
+							&nbsp;&nbsp;of
+							<span id="total-steps"></span>
+							<button id="next" type="button" class="btn btn-primary">Next ></button>
+						</div>
+						<br />
+						<br />
+
+						<div>
+							<h6>
+								Final Decision:
+								<span id="decision"></span>
+							</h6>
+						</div>
+						<br />
+						<br />
+						<hr />
+					</div>
+
 					<br />
-					<h5>Analysis</h5>
+					<div id="remarks" class="row">
+						<div class="col-sm-12">
+							<h5>Remarks</h5>
+							<ul class="indented-list">
+								<li class="indented-list-item">Two-way accepters are equivalent in power to one-way accepters.</li>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

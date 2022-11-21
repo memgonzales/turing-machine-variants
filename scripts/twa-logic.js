@@ -19,8 +19,14 @@ $(document).ready(function () {
 
 	let numColumns;
 	let numRows;
+	let tape;
 
-	let tape = [];
+	let config;
+	let stepNumber;
+
+	let finishedPaths;
+	let finishedTapeRowIdx;
+	let finishedTapeColIdx;
 
 	editor.on('input', function () {
 		if (getCurrentText().trim() == 0) {
@@ -36,11 +42,44 @@ $(document).ready(function () {
 		processInput();
 
 		if (convertMachineToJS()) {
-			prepareTape();
 			appendTape();
+			updateTable();
+			$('#step-number').prop('max', finishedPaths[config - 1].length);
 		} else {
 			removeTape();
 		}
+	});
+
+	$('#next').on('click', function () {
+		stepNumber++;
+		$('#prev').prop('disabled', false);
+
+		if (stepNumber > finishedPaths[config - 1].length) {
+			stepNumber = finishedPaths[config - 1].length;
+		}
+
+		if (stepNumber == finishedPaths[config - 1].length) {
+			$('#next').prop('disabled', true);
+		}
+
+		updateTable();
+		$('#step-number').val(stepNumber);
+	});
+
+	$('#prev').on('click', function () {
+		stepNumber--;
+		$('#next').prop('disabled', false);
+
+		if (stepNumber == 0) {
+			stepNumber = 1;
+		}
+
+		if (stepNumber == 1) {
+			$('#prev').prop('disabled', true);
+		}
+
+		updateTable();
+		$('#step-number').val(stepNumber);
 	});
 
 	function resetInputAttributes() {
@@ -56,7 +95,15 @@ $(document).ready(function () {
 		adjGraphNextState = {};
 
 		numColumns = 0;
-		numRows = 1;
+		numRows = 0;
+		tape = [];
+
+		config = 1;
+		stepNumber = 1;
+
+		finishedPaths = [];
+		finishedTapeRowIdx = [];
+		finishedTapeColIdx = [];
 
 		for (let i = 0; i < NUM_CELLS; i++) {
 			const tapeRow = [];
@@ -100,7 +147,7 @@ $(document).ready(function () {
 	function appendTape() {
 		removeTape();
 		$('#simulation').append('<br id = "break-tape">' + createTable());
-		$('#0-0').attr('style', 'background-color: rgb(47, 47, 105); color: white');
+		positionTapeHead(0, 0);
 	}
 
 	function parseLine(line, lineNumber) {
@@ -261,9 +308,9 @@ $(document).ready(function () {
 		}
 
 		/* Check the input string. */
-		for (let i = 0; i < inputString; i++) {
+		for (let i = 0; i < inputString.length; i++) {
 			if (!stimulusAlphabet.has(inputString[i])) {
-				alert(`Input string contains symbol '${inputString[i]}', which is not in the stimulus alphabet.`);
+				alert(`Input string contains symbol '${inputString[i]}', which is not in the input alphabet.`);
 				return false;
 			}
 		}
@@ -420,13 +467,25 @@ $(document).ready(function () {
 		convertToAdjGraph();
 		let generatedPaths = generatePaths();
 
-		const finishedPaths = generatedPaths[0];
-		const finishedTapeRowIdx = generatedPaths[1];
-		const finishedTapeColIdx = generatedPaths[2];
+		finishedPaths = generatedPaths[0];
+		finishedTapeRowIdx = generatedPaths[1];
+		finishedTapeColIdx = generatedPaths[2];
+
+		setNumRowsColumns(finishedTapeRowIdx, finishedTapeColIdx);
 
 		console.log(generatedPaths);
 
 		return true;
+	}
+
+	function setNumRowsColumns(finishedTapeRowIdx, finishedTapeColIdx) {
+		for (const entry of finishedTapeRowIdx) {
+			numRows = Math.max(entry.max() + 1, numRows);
+		}
+
+		for (const entry of finishedTapeColIdx) {
+			numColumns = Math.max(entry.max() + 1, numColumns);
+		}
 	}
 
 	function processInputString() {
@@ -436,11 +495,6 @@ $(document).ready(function () {
 	function processInput() {
 		processMachine();
 		processInputString();
-	}
-
-	function prepareTape() {
-		/* +2 for the initial and terminal # */
-		numColumns = inputString.length + 2;
 	}
 
 	function createTable() {
@@ -455,7 +509,26 @@ $(document).ready(function () {
 		}
 
 		table = `<table id = "tape" class = "table table-bordered">${table}</table>`;
+		$('#simulation-controls').css('display', 'block');
 
 		return table;
+	}
+
+	function removeTapeHead() {
+		for (let i = 0; i < numRows; i++) {
+			for (let j = 0; j < numColumns; j++) {
+				$(`#${i}-${j}`).attr('style', 'background-color: white; color: #212529');
+			}
+		}
+	}
+
+	function positionTapeHead(i, j) {
+		$(`#${i}-${j}`).attr('style', 'background-color: rgb(160, 69, 84); color: white');
+	}
+
+	function updateTable() {
+		removeTapeHead();
+		positionTapeHead(finishedTapeRowIdx[config - 1][stepNumber - 1], finishedTapeColIdx[config - 1][stepNumber - 1]);
+		$('#total-steps').text(finishedPaths[config - 1].length);
 	}
 });
