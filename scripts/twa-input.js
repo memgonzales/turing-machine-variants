@@ -50,6 +50,9 @@ $(document).ready(function () {
 
 	function instructions() {
 		const lines = [
+			'** INITIAL STATE **',
+			'The first line should be a single string denoting the initial state. It can be any string, provided that it does not contain any whitespace.',
+			'',
 			'** TRANSITIONS **',
 			'Each transition should be entered on a separate line following this format:',
 			'',
@@ -84,8 +87,8 @@ $(document).ready(function () {
 		];
 		updateEditor(lines);
 
-		let marker1Lines = [0, 16, 28];
-		let marker2Lines = [3, 19];
+		let marker1Lines = [0, 3, 19, 31];
+		let marker2Lines = [6, 22];
 
 		for (const line of marker1Lines) {
 			editor.session.addMarker(new Range(line, 0, line, 1), 'marker1', 'fullLine');
@@ -101,12 +104,12 @@ $(document).ready(function () {
 	}
 
 	function aBeforeB() {
-		const lines = ["; Handle a's", '1 ] R(a, 1)', '1 ] R(b, 2)', '1 ] R(#, 3)', '', "; Handle b's", '2 ] R(a, 4)', '2 ] R(b, 2)', '2 ] R(#, 3)', '', '3 ] accept', '4 ] reject'];
+		const lines = ['1', '', "; Handle a's", '1 ] R(a, 1)', '1 ] R(b, 2)', '1 ] R(#, 3)', '', "; Handle b's", '2 ] R(a, 4)', '2 ] R(b, 2)', '2 ] R(#, 3)', '', '3 ] accept', '4 ] reject'];
 		updateEditor(lines);
 	}
 
 	function oddAndEven() {
-		const lines = ['; Even 0s', '1 ] R(1, 1)', '1 ] R(0, 2)', '1 ] R(#, 5)', '', '; Odd 0s', '2 ] R(1, 2)', '2 ] R(0, 1)', '2 ] R(#, 3)', '', '; Even 1s', '3 ] L(0, 3)', '3 ] L(1, 4)', '3 ] L(#, 6)', '', '; Odd 1s', '4 ] L(0, 4)', '4 ] L(1, 3)', '4 ] L(#, 5)', '', '5 ] reject', '6 ] accept'];
+		const lines = ['1', '', '; Even 0s', '1 ] R(1, 1)', '1 ] R(0, 2)', '1 ] R(#, 5)', '', '; Odd 0s', '2 ] R(1, 2)', '2 ] R(0, 1)', '2 ] R(#, 3)', '', '; Even 1s', '3 ] L(0, 3)', '3 ] L(1, 4)', '3 ] L(#, 6)', '', '; Odd 1s', '4 ] L(0, 4)', '4 ] L(1, 3)', '4 ] L(#, 5)', '', '5 ] reject', '6 ] accept'];
 		updateEditor(lines);
 	}
 });
