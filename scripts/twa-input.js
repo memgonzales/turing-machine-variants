@@ -37,6 +37,9 @@ $(document).ready(function () {
 			case 'odd-and-even':
 				oddAndEven();
 				break;
+			case 'odd-or-even':
+				oddOrEven();
+				break;
 			case 'a-before-b':
 				aBeforeB();
 				break;
@@ -78,7 +81,7 @@ $(document).ready(function () {
 			'<state> ] <decision>',
 			'Important: The whitespaces matter.',
 			'',
-			'state, next-state',
+			'state',
 			'  - Can be any string, provided that it does not contain any whitespace',
 			'  - Should not start with ; (otherwise, the line will be interpreted as a comment)',
 			'decision',
@@ -118,6 +121,11 @@ $(document).ready(function () {
 
 	function zeroOneZeroOr11() {
 		const lines = ['A', '', 'A ] R(0, A)', 'A ] R(1, A)', 'A ] R(#, Y)', 'Y ] reject', '', '; Handle 010', 'A ] R(0, B)', 'B ] R(1, C)', 'C ] R(0, D)', '', '; Handle 11', 'A ] R(1, E)', 'E ] R(1, D)', '', 'D ] R(0, D)', 'D ] R(1, D)', 'D ] R(#, X)', '', 'X ] accept'];
+		updateEditor(lines);
+	}
+
+	function oddOrEven() {
+		const lines = ['even-0', '', 'even-0 ] R(0, odd-0)', 'even-0 ] R(1, even-0)', 'odd-0 ] R(0, even-0)', 'odd-0 ] R(1, odd-0)', '', 'odd-0 ] R(#, accept)', 'even-0 ] R(#, even-1)', '', 'even-1 ] L(1, odd-1)', 'even-1 ] L(0, even-1)', 'odd-1 ] L(1, even-1)', 'odd-1 ] L(0, odd-1)', '', 'even-1 ] L(#, accept)', 'odd-1 ] L(#, reject)', '', 'reject ] reject', 'accept ] accept'];
 		updateEditor(lines);
 	}
 });
