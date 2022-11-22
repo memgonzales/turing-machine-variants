@@ -783,10 +783,23 @@ $(document).ready(function () {
 		}
 	}
 
+	function emojiDecision(decision) {
+		switch (decision) {
+			case 'ACCEPTED':
+				return '✔️';
+			case 'REJECTED':
+				return '❌';
+			case 'MISSING_TRANSITION':
+				return '❗';
+			case 'UNDECIDED':
+				return '❓';
+		}
+	}
+
 	function prettifySubDecision(decision) {
 		switch (decision) {
 			case 'MISSING_TRANSITION':
-				return 'This error was caused either by (1) an incomplete set of transition functions or (2) the tape head attempting to access a prohibited cell (the tape extends infinitely in only one direction).';
+				return 'This error was caused by either (1) an incomplete set of transition functions or (2) the tape head attempting to access a prohibited cell (note that the tape extends infinitely in only one direction).';
 			case 'UNDECIDED':
 				return `Exceeded ${MAX_ITERATIONS} steps without reaching accepting/rejecting state`;
 		}
@@ -794,19 +807,26 @@ $(document).ready(function () {
 
 	function updateDisplayDecision() {
 		$('#final-decision').text(prettifyDecision(finalDecision));
+		$('#final-decision-emoji').text(emojiDecision(finalDecision));
 		switch (finalDecision) {
+			case 'ACCEPTED':
+			case 'REJECTED':
+				$('#final-decision-sub').text('');
+				break;
 			case 'MISSING_TRANSITION':
 			case 'UNDECIDED':
-				$('#final-decision-sub').css('display', 'block');
 				$('#final-decision-sub').text(prettifySubDecision(finalDecision));
 		}
 
 		$('#config-decision-header').css('display', 'block');
 		$('#config-decision').text(prettifyDecision(pathDecision));
 		switch (pathDecision) {
+			case 'ACCEPTED':
+			case 'REJECTED':
+				$('#config-decision-sub').text('');
+				break;
 			case 'MISSING_TRANSITION':
 			case 'UNDECIDED':
-				$('#config-decision-sub').css('display', 'block');
 				$('#config-decision-sub').text(prettifySubDecision(pathDecision));
 		}
 	}

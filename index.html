@@ -88,12 +88,14 @@
 				<div id="simulation-container" class="col-sm-7">
 					<h3>Two-Way Accepter</h3>
 					<h5>Read-only Turing machine</h5>
-					<div id="simulation" class="table-responsive">
-						<div id="simulation-config">
-							<br />
+					<div class="row">
+						<div id="simulation" class="table-responsive">
+							<div id="simulation-config">
+								<br />
 
-							<label for="config" class="form-label">Path</label>
-							<select id="config" class="form-select"></select>
+								<label for="config" class="form-label">Path</label>
+								<select id="config" class="form-select"></select>
+							</div>
 						</div>
 					</div>
 
@@ -114,18 +116,19 @@
 
 						<div>
 							<h5>
-								Final Decision of the Machine:
+								<span id="final-decision-emoji"></span>
+								Final Decision:
 								<span id="final-decision"></span>
 							</h5>
 
 							<p id="final-decision-sub"></p>
 
-							<h6 id="config-decision-header">
+							<p id="config-decision-header">
 								Path-local Decision:
 								<span id="config-decision"></span>
-							</h6>
-
-							<p id="config-decision-sub"></p>
+								<br />
+								<span id="config-decision-sub"></span>
+							</p>
 						</div>
 						<br />
 						<br />
