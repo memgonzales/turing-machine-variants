@@ -43,6 +43,14 @@ $(document).ready(function () {
 	$('#step-number').keyup(function (event) {
 		if (event.keyCode === 13) {
 			stepNumber = $('#step-number').val();
+			if (parseInt(stepNumber) < 1) {
+				$('#step-number').val('1');
+				stepNumber = 1;
+			} else if (parseInt(stepNumber) > finishedPaths[config].length) {
+				$('#step-number').val(finishedPaths[config].length);
+				stepNumber = finishedPaths[config].length;
+			}
+
 			updateTable();
 		}
 	});
@@ -52,18 +60,22 @@ $(document).ready(function () {
 		removeTape();
 	});
 
+	$('#config').change(function (e) {
+		config = $(e.currentTarget).val();
+		resetNecessaryOnly();
+		console.log(stepNumber);
+		updateTable();
+	});
+
 	$('#run').on('click', function () {
 		resetInputAttributes();
 		getInput();
 		processInput();
 
-		$('#step-number').val(stepNumber);
-		$('#prev').prop('disabled', true);
-
 		if (convertMachineToJS()) {
 			appendTape();
 			updateTable();
-			$('#step-number').prop('max', finishedPaths[config - 1].length);
+			$('#step-number').prop('max', finishedPaths[config].length);
 		} else {
 			removeTape();
 		}
@@ -73,11 +85,11 @@ $(document).ready(function () {
 		stepNumber++;
 		$('#prev').prop('disabled', false);
 
-		if (stepNumber > finishedPaths[config - 1].length) {
-			stepNumber = finishedPaths[config - 1].length;
+		if (stepNumber > finishedPaths[config].length) {
+			stepNumber = finishedPaths[config].length;
 		}
 
-		if (stepNumber == finishedPaths[config - 1].length) {
+		if (stepNumber == finishedPaths[config].length) {
 			$('#next').prop('disabled', true);
 		}
 
@@ -136,6 +148,20 @@ $(document).ready(function () {
 
 			tape.push(tapeRow);
 		}
+
+		$('#step-number').val(stepNumber);
+		$('#prev').prop('disabled', true);
+		$('#next').prop('disabled', false);
+
+		$('#config').html('');
+	}
+
+	function resetNecessaryOnly() {
+		stepNumber = 1;
+
+		$('#step-number').val(stepNumber);
+		$('#prev').prop('disabled', true);
+		$('#next').prop('disabled', false);
 	}
 
 	function getInput() {
@@ -333,21 +359,21 @@ $(document).ready(function () {
 
 			for (const stimulus of stimulusAlphabet) {
 				adjGraphNextState[state][stimulus] = [];
-				adjGraphLineNumber[state][stimulus] = '';
+				adjGraphLineNumber[state][stimulus] = [];
 			}
 		}
 
 		/* Check the input string. */
 		for (let i = 0; i < inputString.length; i++) {
 			if (!stimulusAlphabet.has(inputString[i])) {
-				alert(`Input string contains symbol '${inputString[i]}' at position ${i + 1}, which is not in the input alphabet.`);
+				alert(`Position ${i + 1}: Input string contains symbol '${inputString[i]}', which is not part of the input alphabet.`);
 				return false;
 			}
 		}
 
 		/* Check the initial state. */
 		if (!stateSet.has(initialState)) {
-			alert(`Initial state '${initialState}' is not in the state set.`);
+			alert(`Initial state '${initialState}' is not part of the state set.`);
 			return false;
 		}
 
@@ -396,7 +422,7 @@ $(document).ready(function () {
 				}
 				adjGraphDirection[state] = direction;
 				adjGraphNextState[state][stimulus].push(nextState);
-				adjGraphLineNumber[state][stimulus] = processedMachineLineNumbers[idx];
+				adjGraphLineNumber[state][stimulus].push(processedMachineLineNumbers[idx]);
 			} else {
 				adjGraphDirection[state] = decision;
 				adjGraphLineNumber[state] = processedMachineLineNumbers[idx];
@@ -404,8 +430,6 @@ $(document).ready(function () {
 
 			idx++;
 		}
-
-		console.log(adjGraphLineNumber);
 
 		return true;
 	}
@@ -451,9 +475,6 @@ $(document).ready(function () {
 				switch (adjGraphDirection[currentState]) {
 					case 'R':
 						currentTapeColIdx++;
-						if (currentTapeColIdx == -1) {
-							isValid = false;
-						}
 						break;
 					case 'L':
 						currentTapeColIdx--;
@@ -470,38 +491,49 @@ $(document).ready(function () {
 				if (isValid && numIterations < MAX_ITERATIONS) {
 					let stimulus = tape[currentTapeRowIdx][currentTapeColIdx];
 					let nextStates = adjGraphNextState[currentState][stimulus];
-					let currentLineNumber = adjGraphLineNumber[currentState][stimulus];
+					let currentLineNumbers = adjGraphLineNumber[currentState][stimulus];
 
 					let nextPaths = [];
 					let nextTapeRowIdx = [];
 					let nextTapeColIdx = [];
-					let nextLineNumber = [];
+					let nextLineNumbers = [];
 
 					if (nextStates.length == 0) {
 						finishedPaths.push(path);
 						finishedTapeRowIdx.push(tapeRowIdx);
 						finishedTapeColIdx.push(tapeColIdx);
-						lineNumber.push(adjGraphLineNumber[path[path.length - 1]]);
+						let lastLineNumber = adjGraphLineNumber[path[path.length - 1]];
+						if (Number.isInteger(lastLineNumber)) {
+							lineNumber.push(lastLineNumber);
+						}
 						finishedLineNumbers.push(lineNumber);
-						console.log(finishedLineNumbers);
 					}
 
 					for (const state of nextStates) {
 						nextPaths.push(path.concat([state]));
 						nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
 						nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
-						nextLineNumber.push(lineNumber.concat([currentLineNumber]));
 					}
+
+					try {
+						for (const line of currentLineNumbers) {
+							nextLineNumbers.push(lineNumber.concat([line]));
+						}
+					} catch (err) {}
 
 					unfinishedPathsTemp = unfinishedPathsTemp.concat(nextPaths);
 					unfinishedTapeRowIdxTemp = unfinishedTapeRowIdxTemp.concat(nextTapeRowIdx);
 					unfinishedTapeColIdxTemp = unfinishedTapeColIdxTemp.concat(nextTapeColIdx);
-					unfinishedLineNumbersTemp = unfinishedLineNumbersTemp.concat(nextLineNumber);
+					unfinishedLineNumbersTemp = unfinishedLineNumbersTemp.concat(nextLineNumbers);
 				} else {
 					finishedPaths.push(path);
 					finishedTapeRowIdx.push(tapeRowIdx);
 					finishedTapeColIdx.push(tapeColIdx);
-					lineNumber.push(adjGraphLineNumber[path[path.length - 1]]);
+					let lastLineNumber = adjGraphLineNumber[path[path.length - 1]];
+					if (Number.isInteger(lastLineNumber)) {
+						lineNumber.push(lastLineNumber);
+					}
+					lineNumber.push(lastLineNumber);
 					finishedLineNumbers.push(lineNumber);
 				}
 			}
@@ -582,12 +614,56 @@ $(document).ready(function () {
 
 		if (accepted.length != 0) {
 			finalDecision = 'ACCEPTED';
+			config = accepted[0];
 		} else if (rejected.length != 0) {
 			finalDecision = 'REJECTED';
+			config = rejected[0];
 		} else if (missingTransition.length != 0) {
 			finalDecision = 'MISSING_TRANSITION';
+			config = missingTransition[0];
 		} else {
 			finalDecision = 'UNDECIDED';
+			config = undecided[0];
+		}
+
+		if (accepted.length != 0) {
+			let acceptedOpt = `<optgroup label = "Accepted">`;
+			for (const i of accepted) {
+				acceptedOpt += `<option value = "${i}">${i + 1}</option>`;
+			}
+			acceptedOpt += `</optgroup>`;
+
+			$('#config').append(acceptedOpt);
+		}
+
+		if (rejected.length != 0) {
+			let rejectedOpt = `<optgroup label = "Rejected">`;
+			for (const i of rejected) {
+				rejectedOpt += `<option value = "${i}">${i + 1}</option>`;
+			}
+			rejectedOpt += `</optgroup>`;
+
+			$('#config').append(rejectedOpt);
+		}
+
+		if (missingTransition.length != 0) {
+			let missingTransitionOpt = `<optgroup label = "Missing Transition">`;
+			for (const i of missingTransition) {
+				missingTransitionOpt += `<option value = "${i}">${i + 1}</option>`;
+			}
+			missingTransitionOpt += `</optgroup>`;
+
+			$('#config').append(missingTransitionOpt);
+		}
+
+		if (undecided.length != 0) {
+			let undecidedOpt = `<optgroup label = "Cannot decide">`;
+			for (const i of undecided) {
+				undecidedOpt += `<option value = "${i}">${i + 1}</option>`;
+			}
+			undecidedOpt += `</optgroup>`;
+
+			$('#config').append(undecidedOpt);
 		}
 	}
 
@@ -651,10 +727,13 @@ $(document).ready(function () {
 	}
 
 	function highlightEditor() {
-		let line = finishedLineNumbers[config - 1][stepNumber - 1];
-		editor.session.addMarker(new Range(line, 0, line, 1), 'marker1', 'fullLine');
-		editor.scrollToLine(line, true, true, function () {});
-		editor.gotoLine(line + 1, 0, true);
+		let line = finishedLineNumbers[config][stepNumber - 1];
+
+		if (typeof line !== 'undefined') {
+			editor.session.addMarker(new Range(line, 0, line, 1), 'marker1', 'fullLine');
+			editor.scrollToLine(line, true, true, function () {});
+			editor.gotoLine(line + 1, 0, true);
+		}
 	}
 
 	function prettifyDecision() {
@@ -691,8 +770,10 @@ $(document).ready(function () {
 
 	function updateTable() {
 		removeTapeHead();
-		positionTapeHead(finishedTapeRowIdx[config - 1][stepNumber - 1], finishedTapeColIdx[config - 1][stepNumber - 1]);
-		$('#total-steps').text(finishedPaths[config - 1].length);
+		console.log(finishedTapeRowIdx[config]);
+		console.log(finishedTapeColIdx[config]);
+		positionTapeHead(finishedTapeRowIdx[config][stepNumber - 1], finishedTapeColIdx[config][stepNumber - 1]);
+		$('#total-steps').text(finishedPaths[config].length);
 
 		removeMarkers();
 		highlightEditor();

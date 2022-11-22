@@ -40,6 +40,9 @@ $(document).ready(function () {
 			case 'a-before-b':
 				aBeforeB();
 				break;
+			case '010-or-11':
+				zeroOneZeroOr11();
+				break;
 		}
 	}
 
@@ -110,6 +113,11 @@ $(document).ready(function () {
 
 	function oddAndEven() {
 		const lines = ['1', '', '; Even 0s', '1 ] R(1, 1)', '1 ] R(0, 2)', '1 ] R(#, 5)', '', '; Odd 0s', '2 ] R(1, 2)', '2 ] R(0, 1)', '2 ] R(#, 3)', '', '; Even 1s', '3 ] L(0, 3)', '3 ] L(1, 4)', '3 ] L(#, 6)', '', '; Odd 1s', '4 ] L(0, 4)', '4 ] L(1, 3)', '4 ] L(#, 5)', '', '5 ] reject', '6 ] accept'];
+		updateEditor(lines);
+	}
+
+	function zeroOneZeroOr11() {
+		const lines = ['A', '', 'A ] R(0, A)', 'A ] R(1, A)', 'A ] R(0, B)', 'A ] R(1, E)', 'A ] R(#, Y)', '', 'B ] R(1, C)', '', 'C ] R(0, D)', '', 'D ] R(0, D)', 'D ] R(1, D)', 'D ] R(#, X)', '', 'E ] R(1, D)', '', 'X ] accept', 'Y ] reject'];
 		updateEditor(lines);
 	}
 });

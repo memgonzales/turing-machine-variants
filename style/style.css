@@ -116,3 +116,8 @@ nav {
 #final-decision-sub {
 	display: none;
 }
+
+button:disabled {
+	cursor: not-allowed;
+	pointer-events: all !important;
+}
