@@ -136,7 +136,10 @@ $(document).ready(function () {
 		}
 
 		initialState = processedMachine[0].trim();
+
+		/* Remove the initial state. */
 		processedMachine.shift();
+		processedMachineLineNumbers.shift();
 	}
 
 	function removeTape() {
@@ -351,6 +354,7 @@ $(document).ready(function () {
 	}
 
 	function convertToAdjGraph() {
+		let idx = 0;
 		for (const line of parsedMachine) {
 			let state = line[0];
 			let stimulus = line[1];
@@ -359,12 +363,20 @@ $(document).ready(function () {
 			let decision = line[4];
 
 			if (isTransition(line)) {
+				if (adjGraphDirection[state].length > 0 && direction != adjGraphDirection[state]) {
+					alert(`Line ${processedMachineLineNumbers[idx] + 1}: A state can be associated with exactly one direction only.`);
+					return false;
+				}
 				adjGraphDirection[state] = direction;
 				adjGraphNextState[state][stimulus].push(nextState);
 			} else {
 				adjGraphDirection[state] = decision;
 			}
+
+			idx++;
 		}
+
+		return true;
 	}
 
 	function storeInputStringToTape() {
@@ -464,12 +476,20 @@ $(document).ready(function () {
 			return false;
 		}
 
-		convertToAdjGraph();
+		if (!convertToAdjGraph()) {
+			return false;
+		}
+
 		let generatedPaths = generatePaths();
 
 		finishedPaths = generatedPaths[0];
 		finishedTapeRowIdx = generatedPaths[1];
 		finishedTapeColIdx = generatedPaths[2];
+
+		if (finishedPaths.length == 0) {
+			alert('Cannot reach accepting/rejecting state. ');
+			return false;
+		}
 
 		setNumRowsColumns(finishedTapeRowIdx, finishedTapeColIdx);
 
