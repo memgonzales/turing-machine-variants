@@ -38,6 +38,11 @@ $(document).ready(function () {
 		}
 	});
 
+	$('#test-cases').change(function (e) {
+		resetInputAttributes();
+		removeTape();
+	});
+
 	$('#run').on('click', function () {
 		resetInputAttributes();
 		getInput();
