@@ -117,7 +117,7 @@ $(document).ready(function () {
 	}
 
 	function zeroOneZeroOr11() {
-		const lines = ['A', '', 'A ] R(0, A)', 'A ] R(1, A)', 'A ] R(0, B)', 'A ] R(1, E)', 'A ] R(#, Y)', '', 'B ] R(1, C)', '', 'C ] R(0, D)', '', 'D ] R(0, D)', 'D ] R(1, D)', 'D ] R(#, X)', '', 'E ] R(1, D)', '', 'X ] accept', 'Y ] reject'];
+		const lines = ['A', '', 'A ] R(0, A)', 'A ] R(1, A)', 'A ] R(#, Y)', 'Y ] reject', '', '; Handle 010', 'A ] R(0, B)', 'B ] R(1, C)', 'C ] R(0, D)', '', '; Handle 11', 'A ] R(1, E)', 'E ] R(1, D)', '', 'D ] R(0, D)', 'D ] R(1, D)', 'D ] R(#, X)', '', 'X ] accept'];
 		updateEditor(lines);
 	}
 });
