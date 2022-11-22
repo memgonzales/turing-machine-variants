@@ -31,6 +31,12 @@ $(document).ready(function () {
 	let finishedLineNumbers;
 
 	let finalDecision;
+	let pathDecision;
+
+	let rejected;
+	let accepted;
+	let missingTransition;
+	let undecided;
 
 	editor.on('input', function () {
 		if (getCurrentText().trim() == 0) {
@@ -63,8 +69,9 @@ $(document).ready(function () {
 	$('#config').change(function (e) {
 		config = $(e.currentTarget).val();
 		resetNecessaryOnly();
-		console.log(stepNumber);
 		updateTable();
+		getPathDecision();
+		updateDisplayDecision();
 	});
 
 	$('#run').on('click', function () {
@@ -75,6 +82,7 @@ $(document).ready(function () {
 		if (convertMachineToJS()) {
 			appendTape();
 			updateTable();
+
 			$('#step-number').prop('max', finishedPaths[config].length);
 		} else {
 			removeTape();
@@ -139,6 +147,12 @@ $(document).ready(function () {
 		finishedLineNumbers = [];
 
 		finalDecision = '';
+		pathDecision = '';
+
+		rejected = [];
+		accepted = [];
+		missingTransition = [];
+		undecided = [];
 
 		for (let i = 0; i < NUM_CELLS; i++) {
 			const tapeRow = [];
@@ -195,6 +209,7 @@ $(document).ready(function () {
 		$('#break-tape').remove();
 		$('#tape').remove();
 		$('#simulation-controls').hide();
+		$('#simulation-config').hide();
 	}
 
 	function appendTape() {
@@ -202,6 +217,8 @@ $(document).ready(function () {
 		$('#simulation').append('<br id = "break-tape">' + createTable());
 		placeInputString();
 		positionTapeHead(0, 0);
+
+		$('#simulation-config').css('display', 'block');
 	}
 
 	function parseLine(line, lineNumber) {
@@ -417,13 +434,18 @@ $(document).ready(function () {
 
 			if (isTransition(line)) {
 				if (adjGraphDirection[state].length > 0 && direction != adjGraphDirection[state]) {
-					alert(`Line ${processedMachineLineNumbers[idx] + 1}: A state can be associated with exactly one direction only.`);
+					alert(`Line ${processedMachineLineNumbers[idx] + 1}: A state can be associated with only one direction.`);
 					return false;
 				}
 				adjGraphDirection[state] = direction;
 				adjGraphNextState[state][stimulus].push(nextState);
 				adjGraphLineNumber[state][stimulus].push(processedMachineLineNumbers[idx]);
 			} else {
+				if (adjGraphDirection[state].length > 0 && decision != adjGraphDirection[state]) {
+					alert(`Line ${processedMachineLineNumbers[idx] + 1}: A state can be associated with only one decision.`);
+					return false;
+				}
+
 				adjGraphDirection[state] = decision;
 				adjGraphLineNumber[state] = processedMachineLineNumbers[idx];
 			}
@@ -581,6 +603,7 @@ $(document).ready(function () {
 		finishedLineNumbers = generatedPaths[3];
 
 		getFinalDecision();
+		getPathDecision();
 		setNumRowsColumns(finishedTapeRowIdx, finishedTapeColIdx);
 
 		console.log(generatedPaths);
@@ -589,10 +612,10 @@ $(document).ready(function () {
 	}
 
 	function getFinalDecision() {
-		let rejected = [];
-		let accepted = [];
-		let missingTransition = [];
-		let undecided = [];
+		rejected = [];
+		accepted = [];
+		missingTransition = [];
+		undecided = [];
 
 		for (let i = 0; i < finishedPaths.length; i++) {
 			const path = finishedPaths[i];
@@ -647,7 +670,7 @@ $(document).ready(function () {
 		}
 
 		if (missingTransition.length != 0) {
-			let missingTransitionOpt = `<optgroup label = "Missing Transition">`;
+			let missingTransitionOpt = `<optgroup label = "Invalid Machine">`;
 			for (const i of missingTransition) {
 				missingTransitionOpt += `<option value = "${i}">${i + 1}</option>`;
 			}
@@ -736,11 +759,23 @@ $(document).ready(function () {
 		}
 	}
 
-	function prettifyDecision() {
-		switch (finalDecision) {
+	function getPathDecision() {
+		if (typeof accepted.find((x) => x == config) !== 'undefined') {
+			pathDecision = 'ACCEPTED';
+		} else if (typeof rejected.find((x) => x == config) !== 'undefined') {
+			pathDecision = 'REJECTED';
+		} else if (typeof missingTransition.find((x) => x == config) !== 'undefined') {
+			pathDecision = 'MISSING_TRANSITION';
+		} else {
+			pathDecision = 'UNDECIDED';
+		}
+	}
+
+	function prettifyDecision(decision) {
+		switch (decision) {
 			case 'ACCEPTED':
 			case 'REJECTED':
-				return finalDecision;
+				return decision;
 			case 'MISSING_TRANSITION':
 				return 'INVALID MACHINE';
 			case 'UNDECIDED':
@@ -748,8 +783,8 @@ $(document).ready(function () {
 		}
 	}
 
-	function prettifySubDecision() {
-		switch (finalDecision) {
+	function prettifySubDecision(decision) {
+		switch (decision) {
 			case 'MISSING_TRANSITION':
 				return 'This error was caused either by (1) an incomplete set of transition functions or (2) the tape head attempting to access a prohibited cell (the tape extends infinitely in only one direction).';
 			case 'UNDECIDED':
@@ -758,20 +793,26 @@ $(document).ready(function () {
 	}
 
 	function updateDisplayDecision() {
-		$('#final-decision').text(prettifyDecision());
-
+		$('#final-decision').text(prettifyDecision(finalDecision));
 		switch (finalDecision) {
 			case 'MISSING_TRANSITION':
 			case 'UNDECIDED':
 				$('#final-decision-sub').css('display', 'block');
-				$('#final-decision-sub').text(prettifySubDecision());
+				$('#final-decision-sub').text(prettifySubDecision(finalDecision));
+		}
+
+		$('#config-decision-header').css('display', 'block');
+		$('#config-decision').text(prettifyDecision(pathDecision));
+		switch (pathDecision) {
+			case 'MISSING_TRANSITION':
+			case 'UNDECIDED':
+				$('#config-decision-sub').css('display', 'block');
+				$('#config-decision-sub').text(prettifySubDecision(pathDecision));
 		}
 	}
 
 	function updateTable() {
 		removeTapeHead();
-		console.log(finishedTapeRowIdx[config]);
-		console.log(finishedTapeColIdx[config]);
 		positionTapeHead(finishedTapeRowIdx[config][stepNumber - 1], finishedTapeColIdx[config][stepNumber - 1]);
 		$('#total-steps').text(finishedPaths[config].length);
 
