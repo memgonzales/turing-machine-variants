@@ -67,10 +67,10 @@
 							<option value="instructions">Instructions</option>
 							<option value="custom">Blank Machine</option>
 						</optgroup>
-						<optgroup label="Deterministic, ">
+						<optgroup label="Deterministic, Two-Way, Counter">
 							<option value="odd-and-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∧ N₁(ω) ≡ 0 mod 2}</option>
 						</optgroup>
-						<optgroup label="Nondeterministic">
+						<optgroup label="Nondeterministic, Two-Way, Counter">
 							<option value="010-or-11">{ω ∈ (0 ∪ 1)* | Contains at least one instance of 010 or 11}</option>
 						</optgroup>
 					</select>
@@ -155,7 +155,7 @@
 		</footer>
 
 		<script src="scripts/code-editor.js"></script>
-		<script src="scripts/twa-input.js"></script>
-		<script src="scripts/twa-logic.js"></script>
+		<script src="scripts/turing-2d-input.js"></script>
+		<script src="scripts/turing-2d-logic.js"></script>
 	</body>
 </html>
