@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	const editor = ace.edit('editor');
 
-	const MAX_ITERATIONS = 100;
+	const MAX_ITERATIONS = 1000;
 	const NUM_CELLS = MAX_ITERATIONS;
 
 	let initialState;
@@ -37,6 +37,13 @@ $(document).ready(function () {
 			$('#run').prop('disabled', true);
 		} else if ($('#test-cases').val() !== 'instructions') {
 			$('#run').prop('disabled', false);
+		}
+	});
+
+	$('#step-number').keyup(function (event) {
+		if (event.keyCode === 13) {
+			stepNumber = $('#step-number').val();
+			updateTable();
 		}
 	});
 
@@ -643,9 +650,52 @@ $(document).ready(function () {
 		$(`#${i}-${j}`).attr('style', 'background-color: rgb(160, 69, 84); color: white');
 	}
 
+	function highlightEditor() {
+		let line = finishedLineNumbers[config - 1][stepNumber - 1];
+		editor.session.addMarker(new Range(line, 0, line, 1), 'marker1', 'fullLine');
+		editor.scrollToLine(line, true, true, function () {});
+		editor.gotoLine(line + 1, 0, true);
+	}
+
+	function prettifyDecision() {
+		switch (finalDecision) {
+			case 'ACCEPTED':
+			case 'REJECTED':
+				return finalDecision;
+			case 'MISSING_TRANSITION':
+				return 'INVALID MACHINE';
+			case 'UNDECIDED':
+				return 'CANNOT DECIDE';
+		}
+	}
+
+	function prettifySubDecision() {
+		switch (finalDecision) {
+			case 'MISSING_TRANSITION':
+				return 'This error was caused either by (1) an incomplete set of transition functions or (2) the tape head attempting to access a prohibited cell (the tape extends infinitely in only one direction).';
+			case 'UNDECIDED':
+				return `Exceeded ${MAX_ITERATIONS} steps without reaching accepting/rejecting state`;
+		}
+	}
+
+	function updateDisplayDecision() {
+		$('#final-decision').text(prettifyDecision());
+
+		switch (finalDecision) {
+			case 'MISSING_TRANSITION':
+			case 'UNDECIDED':
+				$('#final-decision-sub').css('display', 'block');
+				$('#final-decision-sub').text(prettifySubDecision());
+		}
+	}
+
 	function updateTable() {
 		removeTapeHead();
 		positionTapeHead(finishedTapeRowIdx[config - 1][stepNumber - 1], finishedTapeColIdx[config - 1][stepNumber - 1]);
 		$('#total-steps').text(finishedPaths[config - 1].length);
+
+		removeMarkers();
+		highlightEditor();
+		updateDisplayDecision();
 	}
 });
