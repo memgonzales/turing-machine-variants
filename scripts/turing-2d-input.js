@@ -69,7 +69,7 @@ $(document).ready(function () {
 			'direction',
 			'  - R: Move the tape head to the right',
 			'  - L: Move the tape head to the left',
-			'input-symbo, next-symbol',
+			'input-symbol, next-symbol',
 			'  - Can be any character except whitespace',
 			'  - # is used to demarcate input strings',
 			'',
