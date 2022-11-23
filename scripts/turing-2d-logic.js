@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	const editor = ace.edit('editor');
 
-	const MAX_ITERATIONS = 1000;
+	const MAX_ITERATIONS = 100;
 	const NUM_CELLS = MAX_ITERATIONS;
 
 	let initialState;
@@ -16,6 +16,7 @@ $(document).ready(function () {
 	   [state, direction, stimulus, next state, decision] */
 	let parsedMachine;
 	let adjGraphDirection;
+	let adjGraphNewSymbol;
 	let adjGraphNextState;
 	let adjGraphLineNumber;
 
@@ -27,6 +28,7 @@ $(document).ready(function () {
 	let stepNumber;
 
 	let finishedPaths;
+	let finishedNewSymbols;
 	let finishedTapeRowIdx;
 	let finishedTapeColIdx;
 	let finishedLineNumbers;
@@ -134,6 +136,7 @@ $(document).ready(function () {
 
 		parsedMachine = [];
 		adjGraphDirection = {};
+		adjGraphNewSymbol = {};
 		adjGraphNextState = {};
 		adjGraphLineNumber = {};
 
@@ -145,6 +148,7 @@ $(document).ready(function () {
 		stepNumber = 1;
 
 		finishedPaths = [];
+		finishedNewSymbols = [];
 		finishedTapeRowIdx = [];
 		finishedTapeColIdx = [];
 		finishedLineNumbers = [];
@@ -270,8 +274,8 @@ $(document).ready(function () {
 
 		/* Transition */
 		if (tokens.length == MAX_NUM_TOKENS) {
-			if (direction !== 'R' && direction !== 'L') {
-				alert(`Line ${lineNumber + 1}: Unknown direction. Expected 'R' or 'L', but found '${directionStimulus[0].trim()}'.`);
+			if (direction !== 'R' && direction !== 'L' && direction !== 'D' && direction !== 'U') {
+				alert(`Line ${lineNumber + 1}: Unknown direction. Expected 'R', 'L', 'U', or 'D', but found '${directionStimulus[0].trim()}'.`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
@@ -366,7 +370,7 @@ $(document).ready(function () {
 			/* Extra token after decision results in the line being interpreted as a transition */
 		}
 
-		parsedMachine.push([String(state), String(stimulus), String(direction), String(nextState), String(decision)]);
+		parsedMachine.push([String(state), String(stimulus), String(direction), String(nextState), String(decision), String(newSymbol)]);
 
 		return true;
 	}
@@ -382,7 +386,7 @@ $(document).ready(function () {
 	}
 
 	function isTransition(line) {
-		return line[line.length - 1].length == 0;
+		return line[line.length - 2].length == 0;
 	}
 
 	function isTransitionState(state) {
@@ -391,14 +395,16 @@ $(document).ready(function () {
 
 	function constructBlankAdjGraph() {
 		const stateSet = getStateSet(0, 3);
-		const stimulusAlphabet = getStimulusAlphabet(1);
+		const stimulusAlphabet = getStimulusAlphabet(1, 5);
 
 		for (const state of stateSet) {
 			adjGraphDirection[state] = '';
+			adjGraphNewSymbol[state] = {};
 			adjGraphNextState[state] = {};
 			adjGraphLineNumber[state] = {};
 
 			for (const stimulus of stimulusAlphabet) {
+				adjGraphNewSymbol[state][stimulus] = [];
 				adjGraphNextState[state][stimulus] = [];
 				adjGraphLineNumber[state][stimulus] = [];
 			}
@@ -440,11 +446,15 @@ $(document).ready(function () {
 		return stateSet;
 	}
 
-	function getStimulusAlphabet(stimulusIdx) {
+	function getStimulusAlphabet(stimulusIdx, nextSymbolIdx) {
 		const stimulusAlphabet = new Set();
 		for (const line of parsedMachine) {
 			if (line[stimulusIdx].length > 0) {
 				stimulusAlphabet.add(line[stimulusIdx]);
+			}
+
+			if (line[nextSymbolIdx].length > 0) {
+				stimulusAlphabet.add(line[nextSymbolIdx]);
 			}
 		}
 
@@ -459,6 +469,7 @@ $(document).ready(function () {
 			let direction = line[2];
 			let nextState = line[3];
 			let decision = line[4];
+			let newSymbol = line[5];
 
 			if (isTransition(line)) {
 				if (adjGraphDirection[state].length > 0 && direction != adjGraphDirection[state]) {
@@ -466,8 +477,10 @@ $(document).ready(function () {
 					highlightEditor(processedMachineLineNumbers[idx], 'marker3');
 					return false;
 				}
+
 				adjGraphDirection[state] = direction;
 				adjGraphNextState[state][stimulus].push(nextState);
+				adjGraphNewSymbol[state][stimulus].push(newSymbol);
 				adjGraphLineNumber[state][stimulus].push(processedMachineLineNumbers[idx]);
 			} else {
 				if (adjGraphDirection[state].length > 0 && decision != adjGraphDirection[state]) {
@@ -492,34 +505,54 @@ $(document).ready(function () {
 		}
 	}
 
+	function copyArray(currentArray) {
+		var newArray = [];
+
+		for (var i = 0; i < currentArray.length; i++) {
+			newArray[i] = currentArray[i].slice();
+		}
+
+		return newArray;
+	}
+
 	function generatePaths() {
 		storeInputStringToTape();
 
 		let finishedPaths = [];
+		let finishedNewSymbols = [];
 		let finishedTapeRowIdx = [];
 		let finishedTapeColIdx = [];
 		let finishedLineNumbers = [];
 
 		let unfinishedPaths = [[initialState]];
+		let unfinishedNewSymbols = [['#']];
 		let unfinishedTapeRowIdx = [[0]];
 		let unfinishedTapeColIdx = [[0]];
 		let unfinishedLineNumbers = [[]];
+		let unfinishedTapes = [[copyArray(tape)]];
 
 		let numIterations = 1;
 		while (unfinishedPaths.length != 0 && numIterations <= MAX_ITERATIONS) {
 			/* Go through every unfinished path */
+			let unfinishedTapesTemp = [];
+
 			let unfinishedPathsTemp = [];
+			let unfinishedNewSymbolsTemp = [];
 			let unfinishedTapeRowIdxTemp = [];
 			let unfinishedTapeColIdxTemp = [];
 			let unfinishedLineNumbersTemp = [];
 
 			for (let i = 0; i < unfinishedPaths.length; i++) {
 				let isValid = true;
+
+				let tape = unfinishedTapes[i];
 				let path = unfinishedPaths[i];
+				let newSymbols = unfinishedNewSymbols[i];
 				let tapeRowIdx = unfinishedTapeRowIdx[i];
 				let tapeColIdx = unfinishedTapeColIdx[i];
 				let lineNumber = unfinishedLineNumbers[i];
 
+				let currentTape = tape[tape.length - 1];
 				let currentState = path[path.length - 1];
 				let currentTapeRowIdx = tapeRowIdx[tapeRowIdx.length - 1];
 				let currentTapeColIdx = tapeColIdx[tapeColIdx.length - 1];
@@ -534,6 +567,15 @@ $(document).ready(function () {
 							isValid = false;
 						}
 						break;
+					case 'D':
+						currentTapeRowIdx++;
+						break;
+					case 'U':
+						currentTapeRowIdx--;
+						if (currentTapeRowIdx == -1) {
+							isValid = false;
+						}
+						break;
 					case 'accept':
 						break;
 					case 'reject':
@@ -541,17 +583,23 @@ $(document).ready(function () {
 				}
 
 				if (isValid && numIterations < MAX_ITERATIONS) {
-					let stimulus = tape[currentTapeRowIdx][currentTapeColIdx];
+					console.log(currentTape);
+					let stimulus = currentTape[currentTapeRowIdx][currentTapeColIdx];
 					let nextStates = adjGraphNextState[currentState][stimulus];
+					let nextNewSymbols = adjGraphNewSymbol[currentState][stimulus];
 					let currentLineNumbers = adjGraphLineNumber[currentState][stimulus];
 
+					let nextTapes = [];
+
 					let nextPaths = [];
+					let nextPathsNewSymbols = [];
 					let nextTapeRowIdx = [];
 					let nextTapeColIdx = [];
 					let nextLineNumbers = [];
 
 					if (nextStates.length == 0) {
 						finishedPaths.push(path);
+						finishedNewSymbols.push(newSymbols);
 						finishedTapeRowIdx.push(tapeRowIdx);
 						finishedTapeColIdx.push(tapeColIdx);
 						let lastLineNumber = adjGraphLineNumber[path[path.length - 1]];
@@ -561,11 +609,23 @@ $(document).ready(function () {
 						finishedLineNumbers.push(lineNumber);
 					}
 
+					let idx = 0;
 					for (const state of nextStates) {
 						nextPaths.push(path.concat([state]));
+						nextPathsNewSymbols.push(newSymbols.concat([nextNewSymbols[idx]]));
 						nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
 						nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
+
+						currentTape[currentTapeRowIdx][currentTapeColIdx] = nextNewSymbols[idx];
+
+						nextTapes.push(tape.concat([currentTape]));
+
+						idx++;
 					}
+
+					console.log(nextTapes);
+					console.log(nextPaths);
+					console.log(nextPathsNewSymbols);
 
 					try {
 						for (const line of currentLineNumbers) {
@@ -573,12 +633,16 @@ $(document).ready(function () {
 						}
 					} catch (err) {}
 
+					unfinishedTapesTemp = unfinishedTapesTemp.concat(nextTapes);
+
 					unfinishedPathsTemp = unfinishedPathsTemp.concat(nextPaths);
+					unfinishedNewSymbolsTemp = unfinishedNewSymbolsTemp.concat(nextPathsNewSymbols);
 					unfinishedTapeRowIdxTemp = unfinishedTapeRowIdxTemp.concat(nextTapeRowIdx);
 					unfinishedTapeColIdxTemp = unfinishedTapeColIdxTemp.concat(nextTapeColIdx);
 					unfinishedLineNumbersTemp = unfinishedLineNumbersTemp.concat(nextLineNumbers);
 				} else {
 					finishedPaths.push(path);
+					finishedNewSymbols.push(newSymbols);
 					finishedTapeRowIdx.push(tapeRowIdx);
 					finishedTapeColIdx.push(tapeColIdx);
 					let lastLineNumber = adjGraphLineNumber[path[path.length - 1]];
@@ -591,7 +655,10 @@ $(document).ready(function () {
 			}
 
 			if (numIterations < MAX_ITERATIONS) {
+				unfinishedTapes = unfinishedTapesTemp;
+
 				unfinishedPaths = unfinishedPathsTemp;
+				unfinishedNewSymbols = unfinishedNewSymbolsTemp;
 				unfinishedTapeRowIdx = unfinishedTapeRowIdxTemp;
 				unfinishedTapeColIdx = unfinishedTapeColIdxTemp;
 				unfinishedLineNumbers = unfinishedLineNumbersTemp;
@@ -602,12 +669,13 @@ $(document).ready(function () {
 
 		if (unfinishedPaths.length != 0) {
 			finishedPaths = unfinishedPaths;
+			finishedNewSymbols = unfinishedNewSymbols;
 			finishedTapeRowIdx = unfinishedTapeRowIdx;
 			finishedTapeColIdx = unfinishedTapeColIdx;
 			finishedLineNumbers = unfinishedLineNumbers;
 		}
 
-		return [finishedPaths, finishedTapeRowIdx, finishedTapeColIdx, finishedLineNumbers];
+		return [finishedPaths, finishedTapeRowIdx, finishedTapeColIdx, finishedLineNumbers, finishedNewSymbols];
 	}
 
 	function convertMachineToJS() {
@@ -631,6 +699,7 @@ $(document).ready(function () {
 		finishedTapeRowIdx = generatedPaths[1];
 		finishedTapeColIdx = generatedPaths[2];
 		finishedLineNumbers = generatedPaths[3];
+		finishedNewSymbols = generatedPaths[4];
 
 		getFinalDecision();
 		getPathDecision();
@@ -730,7 +799,7 @@ $(document).ready(function () {
 		}
 
 		if (finalDecision === 'MISSING_TRANSITION' || finalDecision === 'UNDECIDED') {
-			numRows = 1;
+			numRows = NUM_CELLS;
 			numColumns = NUM_CELLS;
 		}
 	}
@@ -859,5 +928,20 @@ $(document).ready(function () {
 		removeMarkers();
 		highlightEditor(finishedLineNumbers[config][stepNumber - 1], 'marker1');
 		updateDisplayDecision();
+		updateTapeContents();
+	}
+
+	function updateTapeContents() {
+		let newSymbol = finishedNewSymbols[config][stepNumber - 1];
+		let row = finishedTapeRowIdx[config][stepNumber - 1];
+		let col = finishedTapeColIdx[config][stepNumber - 1];
+
+		tape[row][col] = 'X';
+		$(`#${row}-${col}`).text(newSymbol);
+		// console.log(tape);
+
+		// console.log(row);
+		// console.log(col);
+		// console.log('===');
 	}
 });
