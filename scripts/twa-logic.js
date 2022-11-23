@@ -388,7 +388,7 @@ $(document).ready(function () {
 		/* Check the input string. */
 		for (let i = 0; i < inputString.length; i++) {
 			if (!stimulusAlphabet.has(inputString[i])) {
-				alert(`Position ${i + 1}: Input string contains symbol '${inputString[i]}', which is not part of the input alphabet.`);
+				alert(`No specified transition from any state for stimulus '${inputString[i]}'.`);
 				const input = document.getElementById('input-string');
 				input.focus();
 				input.setSelectionRange(i, i + 1);
@@ -398,7 +398,7 @@ $(document).ready(function () {
 
 		/* Check the initial state. */
 		if (!stateSet.has(initialState)) {
-			alert(`Initial state '${initialState}' is not part of the state set.`);
+			alert(`No specified transition from initial state '${initialState}'. The machine will not accept any string.`);
 			highlightEditor(initialStateLineNumber, 'marker3');
 			return false;
 		}

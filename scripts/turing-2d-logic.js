@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	const editor = ace.edit('editor');
 
-	const MAX_ITERATIONS = 13;
+	const MAX_ITERATIONS = 1000;
 	const NUM_CELLS = MAX_ITERATIONS;
 
 	let initialState;
@@ -92,10 +92,12 @@ $(document).ready(function () {
 			removeTape();
 		}
 
-		if (finishedPaths[config].length == 1) {
-			$('#prev').prop('disabled', true);
-			$('#next').prop('disabled', true);
-		}
+		try {
+			if (finishedPaths[config].length == 1) {
+				$('#prev').prop('disabled', true);
+				$('#next').prop('disabled', true);
+			}
+		} catch (err) {}
 	});
 
 	$('#next').on('click', function () {
@@ -418,7 +420,7 @@ $(document).ready(function () {
 		/* Check the input string. */
 		for (let i = 0; i < inputString.length; i++) {
 			if (!stimulusAlphabet.has(inputString[i])) {
-				alert(`Position ${i + 1}: Input string contains symbol '${inputString[i]}', which is not part of the input alphabet.`);
+				alert(`No specified transition from any state for stimulus '${inputString[i]}'.`);
 				const input = document.getElementById('input-string');
 				input.focus();
 				input.setSelectionRange(i, i + 1);
@@ -428,7 +430,7 @@ $(document).ready(function () {
 
 		/* Check the initial state. */
 		if (!stateSet.has(initialState)) {
-			alert(`Initial state '${initialState}' is not part of the state set.`);
+			alert(`No specified transition from initial state '${initialState}'. The machine will not accept any string.`);
 			highlightEditor(initialStateLineNumber, 'marker3');
 			return false;
 		}
@@ -649,7 +651,7 @@ $(document).ready(function () {
 					if (Number.isInteger(lastLineNumber)) {
 						lineNumber.push(lastLineNumber);
 					}
-					lineNumber.push(lastLineNumber);
+
 					finishedLineNumbers.push(lineNumber);
 				}
 			}

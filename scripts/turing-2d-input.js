@@ -109,7 +109,35 @@ $(document).ready(function () {
 
 	function displayTestCase(value) {
 		const lines = {
-			'axbxcx-det': ['R1', '', 'R1 ] R(a, X, R2)', 'R2 ] R(a, a, R2)', 'R2 ] R(1, 1, D1-R2Y1)', 'D1-R2Y1 ] D(1, 1, D2-R2Y1)', 'D2-R2Y1 ] D(#, #, U1-R2Y1)', 'U1-R2Y1 ] U(1, 1, U2-R2Y1)', '', 'R2 ] R(b, 1, D1-R2Y2)', 'D1-R2Y2 ] D(#, 1, U1-R2Y2)', 'U1-R2Y2 ] U(1, 1, R3)', '']
+			'axbxcx-det': [
+				'R1',
+				'',
+				'R1 ] R(a, X, R2)',
+				'R2 ] R(a, a, R2)',
+				'R2 ] R(1, 1, D1-R2Y1)',
+				'D1-R2Y1 ] D(1, 1, D2-R2Y1)',
+				'D2-R2Y1 ] D(#, #, U1-R2Y1)',
+				'U1-R2Y1 ] U(1, 1, U2-R2Y1)',
+				'',
+				'R2 ] R(b, 1, D1-R2Y2)',
+				'D1-R2Y2 ] D(#, 1, U1-R2Y2)',
+				'U1-R2Y2 ] U(1, 1, R3)',
+				'',
+				'R3 ] R(b, b, R3)',
+				'R3 ] R(1, 1, D1-R3Z1)',
+				'D1-R3Z1 ] D(1, 1, D2-R3Z1)',
+				'D2-R3Z1 ] D(1, 1, D3-R3Z1)',
+				'D3-R3Z1 ] D(#, #, U1-R3Z1)',
+				'U1-R3Z1 ] U(1, 1, U2-R3Z1)',
+				'U2-R3Z1 ] U(1, 1, U3-R3Z1)',
+				'U3-R3Z1 ] U(1, 1, R3)',
+				'',
+				'R3 ] R(c, 1, D1-R3Z2)',
+				'D1-R3Z2 ] D(#, 1, D2-R3Z2)',
+				'D2-R3Z2 ] D(#, 1, U1-R3Z2)',
+				'U1-R3Z2 ] U(1, 1, U2-R3Z2)',
+				'U2-R3Z2 ] U(1, 1, L1)'
+			]
 		};
 
 		return lines[value];
