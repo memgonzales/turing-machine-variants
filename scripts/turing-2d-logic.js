@@ -230,7 +230,7 @@ $(document).ready(function () {
 		let tokensRaw = line.split(' ');
 		let tokens = [];
 		const MIN_NUM_TOKENS = 3;
-		const MAX_NUM_TOKENS = 4;
+		const MAX_NUM_TOKENS = 5;
 
 		for (const token of tokensRaw) {
 			if (token.trim().length != 0) {
@@ -238,8 +238,8 @@ $(document).ready(function () {
 			}
 		}
 
-		if (tokens.length < MIN_NUM_TOKENS) {
-			alert(`Line ${lineNumber + 1}: Incomplete information about transition or accepting/rejecting state. Expected at least ${MIN_NUM_TOKENS} whitespace-separated tokens, but found only ${tokens.length}.`);
+		if (tokens.length < MIN_NUM_TOKENS || (MIN_NUM_TOKENS < tokens.length && tokens.length < MAX_NUM_TOKENS)) {
+			alert(`Line ${lineNumber + 1}: Incomplete information about transition or halting state. Expected number of whitespace-separated tokens is ${MIN_NUM_TOKENS} (for halting) or ${MAX_NUM_TOKENS} (for transition), but found ${tokens.length}.`);
 			highlightEditor(lineNumber, 'marker3');
 			return false;
 		}
@@ -260,6 +260,7 @@ $(document).ready(function () {
 		}
 
 		let stimulus = '';
+		let newSymbol = '';
 		let nextState = '';
 		let decision = '';
 
@@ -293,19 +294,19 @@ $(document).ready(function () {
 			let separatorComma1 = directionStimulus[3];
 
 			if (directionStimulus.length > LEN_DIRECTION_STIMULUS) {
-				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${directionStimulus[3]}'`);
+				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${separatorComma1}'`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
 
-			if (directionStimulus.length >= LEN_DIRECTION_STIMULUS && separatorComma1 !== ',') {
-				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${directionStimulus[3]}'`);
+			if (directionStimulus.length == LEN_DIRECTION_STIMULUS && separatorComma1 !== ',') {
+				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${separatorComma1}'`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
 
 			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 1) {
-				alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus ${stimulus}, but found ' '`);
+				alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus '${stimulus}', but found ' '`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
@@ -316,7 +317,30 @@ $(document).ready(function () {
 				return false;
 			}
 
-			let nextStateParen = tokens[3];
+			let newSymbolComma = tokens[3];
+			newSymbol = newSymbolComma[0];
+			const LEN_NEW_SYMBOL_COMMA = 2;
+			let separatorComma2 = newSymbolComma[1];
+
+			if (newSymbolComma.length > LEN_NEW_SYMBOL_COMMA) {
+				alert(`Line ${lineNumber + 1}: Expected new symbol to have only one character, but found new symbol starting with '${newSymbol}${separatorComma2}'`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
+
+			if (newSymbolComma.length == LEN_NEW_SYMBOL_COMMA && separatorComma2 !== ',') {
+				alert(`Line ${lineNumber + 1}: Expected new symbol to have only one character, but found new symbol starting with '${newSymbol}${separatorComma2}'`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
+
+			if (newSymbolComma.length == LEN_NEW_SYMBOL_COMMA - 1) {
+				alert(`Line ${lineNumber + 1}: Expected ',' immediately after new symbol '${newSymbol}', but found ' '`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
+
+			let nextStateParen = tokens[4];
 			nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
 
 			if (nextStateParen[nextStateParen.length - 1] !== ')') {
@@ -334,7 +358,7 @@ $(document).ready(function () {
 			decision = directionStimulus.toLowerCase().trim();
 
 			if (decision !== 'reject' && decision !== 'accept') {
-				alert(`Line ${lineNumber + 1}: Unknown decision. Expected 'reject' or 'accept', but found '${decision}'. If you meant to enter a transition, check if there is a space between the comma and the name of the next state`);
+				alert(`Line ${lineNumber + 1}: Unknown decision. Expected 'reject' or 'accept', but found '${decision}'.`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}

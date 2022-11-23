@@ -239,7 +239,7 @@ $(document).ready(function () {
 		}
 
 		if (tokens.length < MIN_NUM_TOKENS) {
-			alert(`Line ${lineNumber + 1}: Incomplete information about transition or accepting/rejecting state. Expected at least ${MIN_NUM_TOKENS} whitespace-separated tokens, but found only ${tokens.length}.`);
+			alert(`Line ${lineNumber + 1}: Incomplete information about transition or decision state. Expected number of whitespace-separated tokens is ${MIN_NUM_TOKENS} (for decision) or ${MAX_NUM_TOKENS} (for transition), but found ${tokens.length}.`);
 			highlightEditor(lineNumber, 'marker3');
 			return false;
 		}
@@ -334,7 +334,7 @@ $(document).ready(function () {
 			decision = directionStimulus.toLowerCase().trim();
 
 			if (decision !== 'reject' && decision !== 'accept') {
-				alert(`Line ${lineNumber + 1}: Unknown decision. Expected 'reject' or 'accept', but found '${decision}'. If you meant to enter a transition, check if there is a space between the comma and the name of the next state`);
+				alert(`Line ${lineNumber + 1}: Unknown decision. Expected 'reject' or 'accept', but found '${decision}'.`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
