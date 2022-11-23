@@ -298,25 +298,25 @@ $(document).ready(function () {
 			let separatorComma1 = directionStimulus[3];
 
 			if (directionStimulus.length > LEN_DIRECTION_STIMULUS) {
-				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${directionStimulus[3]}'`);
+				alert(`Line ${lineNumber + 1}: Expected input symbol to have only one character, but found input symbol starting with '${stimulus}${directionStimulus[3]}'`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
 
 			if (directionStimulus.length >= LEN_DIRECTION_STIMULUS && separatorComma1 !== ',') {
-				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${directionStimulus[3]}'`);
+				alert(`Line ${lineNumber + 1}: Expected input symbol to have only one character, but found input symbol starting with '${stimulus}${directionStimulus[3]}'`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
 
 			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 1) {
-				alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus ${stimulus}, but found ' '`);
+				alert(`Line ${lineNumber + 1}: Expected ',' immediately after input symbol '${stimulus}', but found ' '`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
 
 			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 2) {
-				alert(`Line ${lineNumber + 1}: No stimulus found.`);
+				alert(`Line ${lineNumber + 1}: No input symbol found.`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
@@ -388,7 +388,7 @@ $(document).ready(function () {
 		/* Check the input string. */
 		for (let i = 0; i < inputString.length; i++) {
 			if (!stimulusAlphabet.has(inputString[i])) {
-				alert(`No specified transition from any state for stimulus '${inputString[i]}'.`);
+				alert(`No specified transition from any state for input symbol '${inputString[i]}'.`);
 				const input = document.getElementById('input-string');
 				input.focus();
 				input.setSelectionRange(i, i + 1);
