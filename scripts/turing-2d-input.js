@@ -10,7 +10,7 @@ $(document).ready(function () {
 
 	window.onbeforeunload = function () {
 		if (hasEditorChanges(previousText)) {
-			return 'Data will be lost if you leave the page, are you sure?';
+			return '';
 		}
 	};
 
@@ -35,10 +35,14 @@ $(document).ready(function () {
 
 	function switchMachine(e) {
 		resetEditor();
+		let value = $(e.currentTarget).val();
 
-		switch ($(e.currentTarget).val()) {
+		switch (value) {
 			case 'instructions':
 				instructions();
+				break;
+			default:
+				updateEditor(displayTestCase(value));
 				break;
 		}
 	}
@@ -56,26 +60,26 @@ $(document).ready(function () {
 			'** TRANSITIONS **',
 			'Each transition should be entered on a separate line following this format:',
 			'',
-			'<state> ] <direction>(<stimulus>/<new-symbol>, <next-state>)',
+			'<state> ] <direction>(<stimulus>, <next-state>)',
 			'Important: The whitespaces matter.',
 			'',
 			'state, next-state',
 			'  - Can be any string, provided that it does not contain any whitespace',
 			'  - Should not start with ; (otherwise, the line will be interpreted as a comment)',
-			'direction, new-symbol',
+			'direction',
 			'  - R: Move the tape head to the right',
 			'  - L: Move the tape head to the left',
 			'stimulus',
 			'  - Can be any character',
 			'  - # is used to demarcate input strings',
 			'',
-			'** HALTING STATES **',
-			'Halting states should be indicated following this format:',
+			'** ACCEPTING & REJECTING STATES **',
+			'Accepting and rejecting states should be indicated following this format:',
 			'',
 			'<state> ] <decision>',
 			'Important: The whitespaces matter.',
 			'',
-			'state, next-state',
+			'state',
 			'  - Can be any string, provided that it does not contain any whitespace',
 			'  - Should not start with ; (otherwise, the line will be interpreted as a comment)',
 			'decision',
@@ -101,5 +105,13 @@ $(document).ready(function () {
 		editor.setReadOnly(true);
 		$('#run').prop('disabled', true);
 		$('#input-string').prop('readonly', true);
+	}
+
+	function displayTestCase(value) {
+		const lines = {
+			'axbxcx-det': ['R1', '', 'R1 ] R(a, X, R2)', 'R2 ] R(a, a, R2)', 'R2 ] R(1, 1, D1-R2Y)', 'D1-R2Y ] D(1, 1, D2-R2Y)', 'D2-R2Y ] D(#, #, U1-R2Y)', 'U1-R2Y ] U(1, 1, U2-R2Y)', '']
+		};
+
+		return lines[value];
 	}
 });

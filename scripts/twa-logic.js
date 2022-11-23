@@ -319,7 +319,7 @@ $(document).ready(function () {
 				nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
 
 				if (directionStimulus.length > 4) {
-					alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${tokens[2][3]}'`);
+					alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${directionStimulus[3]}'`);
 					highlightEditor(lineNumber, 'marker3');
 					return false;
 				}

@@ -72,6 +72,7 @@
 							<option value="odd-or-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∨ N₁(ω) ≡ 0 mod 2}</option>
 							<option value="sad-and-smiley">{ω ∈ (0 ∪ 1)* | N₀(ω) = 3k ∧ N₁(ω) = 2i, where k, i > 0}</option>
 							<option value="a-preceded-b">{ω ∈ (@ ∪ !)* | Each @ is preceded by !}</option>
+							<option value="codon-det">{ω ∈ (A ∪ T ∪ C ∪ G)* | Starts with AUG and ends with UAA, UAG, or UGA}</option>
 						</optgroup>
 						<optgroup label="Deterministic, One-Way">
 							<option value="a-before-b">{ω ∈ (a ∪ b)* | aˣbʸ, where x, y ≥ 0}</option>
@@ -80,9 +81,11 @@
 						</optgroup>
 						<optgroup label="Nondeterministic, One-Way">
 							<option value="010-or-11">{ω ∈ (0 ∪ 1)* | Contains at least one instance of 010 or 11}</option>
+							<option value="codon-non1">{ω ∈ (A ∪ T ∪ C ∪ G)* | Starts with AUG and ends with UAA, UAG, or UGA}</option>
 						</optgroup>
 						<optgroup label="Nondeterministic, Two-Way">
 							<option value="at-exclaim">{ω ∈ (0 ∪ 1)* | Each @ is preceded by ! or followed by !}</option>
+							<option value="codon-non2">{ω ∈ (A ∪ T ∪ C ∪ G)* | Starts with AUG and ends with UAA, UAG, or UGA}</option>
 						</optgroup>
 						<optgroup label="Error Handling">
 							<option value="error-syntax">Syntax Error</option>

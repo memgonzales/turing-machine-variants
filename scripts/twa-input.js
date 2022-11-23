@@ -169,11 +169,14 @@ $(document).ready(function () {
 				'accept ] accept'
 			],
 			'a-preceded-b': [],
+			'codon-det': [],
 			'a-before-b': ['1', '', "; Handle a's", '1 ] R(a, 1)', '1 ] R(b, 2)', '1 ] R(#, 3)', '', "; Handle b's", '2 ] R(a, 4)', '2 ] R(b, 2)', '2 ] R(#, 3)', '', '3 ] accept', '4 ] reject'],
 			'power-mod3': [],
 			'1-mod3': [],
 			'010-or-11': ['A', '', 'A ] R(0, A)', 'A ] R(1, A)', 'A ] R(#, Y)', 'Y ] reject', '', '; Handle 010', 'A ] R(0, B)', 'B ] R(1, C)', 'C ] R(0, D)', '', '; Handle 11', 'A ] R(1, E)', 'E ] R(1, D)', '', 'D ] R(0, D)', 'D ] R(1, D)', 'D ] R(#, X)', '', 'X ] accept'],
+			'codon-non1': [],
 			'at-exclaim': [],
+			'codon-non2': [],
 			'error-syntax': [
 				'even-0',
 				'',
