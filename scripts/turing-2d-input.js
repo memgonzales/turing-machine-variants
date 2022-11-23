@@ -8,6 +8,12 @@ $(document).ready(function () {
 
 	instructions();
 
+	window.onbeforeunload = function () {
+		if (hasEditorChanges(previousText)) {
+			return 'Data will be lost if you leave the page, are you sure?';
+		}
+	};
+
 	$('#test-cases')
 		.on('focus', function () {
 			previous = this.value;

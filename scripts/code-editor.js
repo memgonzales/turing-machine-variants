@@ -36,3 +36,11 @@ function hasEditorChanges(previousText) {
 	const currentText = getCurrentText();
 	return currentText.trim().length > 0 && currentText.trim() != previousText.trim();
 }
+
+function highlightEditor(line, marker) {
+	if (typeof line !== 'undefined') {
+		editor.session.addMarker(new Range(line, 0, line, 1), marker, 'fullLine');
+		editor.scrollToLine(line, true, true, function () {});
+		editor.gotoLine(line + 1, 0, true);
+	}
+}

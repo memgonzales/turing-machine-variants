@@ -73,6 +73,12 @@ nav {
 	z-index: 20;
 }
 
+.marker3 {
+	position: absolute;
+	background: var(--red-highlight);
+	z-index: 20;
+}
+
 #simulation-container {
 	padding: 2em;
 }
