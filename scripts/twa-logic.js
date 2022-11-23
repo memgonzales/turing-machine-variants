@@ -89,6 +89,11 @@ $(document).ready(function () {
 		} else {
 			removeTape();
 		}
+
+		if (finishedPaths[config].length == 1) {
+			$('#prev').prop('disabled', true);
+			$('#next').prop('disabled', true);
+		}
 	});
 
 	$('#next').on('click', function () {
@@ -704,8 +709,7 @@ $(document).ready(function () {
 		}
 
 		if (finalDecision === 'MISSING_TRANSITION' || finalDecision === 'UNDECIDED') {
-			numRows = 1;
-			numColumns = NUM_CELLS;
+			numColumns = Math.max(numColumns, inputString.length + 2);
 		}
 	}
 

@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	const editor = ace.edit('editor');
 
-	const MAX_ITERATIONS = 100;
+	const MAX_ITERATIONS = 13;
 	const NUM_CELLS = MAX_ITERATIONS;
 
 	let initialState;
@@ -90,6 +90,11 @@ $(document).ready(function () {
 			$('#step-number').prop('max', finishedPaths[config].length);
 		} else {
 			removeTape();
+		}
+
+		if (finishedPaths[config].length == 1) {
+			$('#prev').prop('disabled', true);
+			$('#next').prop('disabled', true);
 		}
 	});
 
@@ -583,7 +588,6 @@ $(document).ready(function () {
 				}
 
 				if (isValid && numIterations < MAX_ITERATIONS) {
-					console.log(currentTape);
 					let stimulus = currentTape[currentTapeRowIdx][currentTapeColIdx];
 					let nextStates = adjGraphNextState[currentState][stimulus];
 					let nextNewSymbols = adjGraphNewSymbol[currentState][stimulus];
@@ -622,10 +626,6 @@ $(document).ready(function () {
 
 						idx++;
 					}
-
-					console.log(nextTapes);
-					console.log(nextPaths);
-					console.log(nextPathsNewSymbols);
 
 					try {
 						for (const line of currentLineNumbers) {
@@ -799,8 +799,7 @@ $(document).ready(function () {
 		}
 
 		if (finalDecision === 'MISSING_TRANSITION' || finalDecision === 'UNDECIDED') {
-			numRows = NUM_CELLS;
-			numColumns = NUM_CELLS;
+			numColumns = Math.max(numColumns, inputString.length + 2);
 		}
 	}
 
@@ -932,16 +931,37 @@ $(document).ready(function () {
 	}
 
 	function updateTapeContents() {
-		let newSymbol = finishedNewSymbols[config][stepNumber - 1];
-		let row = finishedTapeRowIdx[config][stepNumber - 1];
-		let col = finishedTapeColIdx[config][stepNumber - 1];
+		for (let i = 0; i < NUM_CELLS; i++) {
+			for (let j = 0; j < NUM_CELLS; j++) {
+				tape[i][j] = '#';
+			}
+		}
 
-		tape[row][col] = 'X';
+		storeInputStringToTape();
+
+		const origStepNumber = stepNumber;
+		stepNumber = 1;
+
+		for (let i = 0; i < numRows; i++) {
+			for (let j = 0; j < numColumns; j++) {
+				$(`#${i}-${j}`).text('#');
+			}
+		}
+		placeInputString();
+
+		while (stepNumber < origStepNumber) {
+			stepNumber++;
+
+			updateTapeContentsStep();
+		}
+	}
+
+	function updateTapeContentsStep() {
+		const newSymbol = finishedNewSymbols[config][stepNumber - 1];
+		const row = finishedTapeRowIdx[config][stepNumber - 1];
+		const col = finishedTapeColIdx[config][stepNumber - 1];
+
+		tape[row][col] = newSymbol;
 		$(`#${row}-${col}`).text(newSymbol);
-		// console.log(tape);
-
-		// console.log(row);
-		// console.log(col);
-		// console.log('===');
 	}
 });
