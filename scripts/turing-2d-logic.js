@@ -229,6 +229,8 @@ $(document).ready(function () {
 	function parseLine(line, lineNumber) {
 		let tokensRaw = line.split(' ');
 		let tokens = [];
+		const MIN_NUM_TOKENS = 3;
+		const MAX_NUM_TOKENS = 4;
 
 		for (const token of tokensRaw) {
 			if (token.trim().length != 0) {
@@ -236,11 +238,17 @@ $(document).ready(function () {
 			}
 		}
 
-		// if (tokens.length < 3) {
-		// 	alert(`Line ${lineNumber + 1}: Incomplete information about transition or accepting/rejecting state. Expected at least 3 whitespace-separated tokens, but found only ${tokens.length}`);
-		// 	highlightEditor(lineNumber, 'marker3');
-		// 	return false;
-		// }
+		if (tokens.length < MIN_NUM_TOKENS) {
+			alert(`Line ${lineNumber + 1}: Incomplete information about transition or accepting/rejecting state. Expected at least ${MIN_NUM_TOKENS} whitespace-separated tokens, but found only ${tokens.length}.`);
+			highlightEditor(lineNumber, 'marker3');
+			return false;
+		}
+
+		if (tokens.length > MAX_NUM_TOKENS) {
+			alert(`Line ${lineNumber + 1}: Invalid transition. Expected at most ${MAX_NUM_TOKENS} whitespace-separated tokens, but found ${tokens.length}.`);
+			highlightEditor(lineNumber, 'marker3');
+			return false;
+		}
 
 		let state = tokens[0].trim();
 		let separatorBracket = tokens[1];
@@ -252,7 +260,6 @@ $(document).ready(function () {
 		}
 
 		let stimulus = '';
-		let newSymbol = '';
 		let nextState = '';
 		let decision = '';
 
@@ -260,7 +267,8 @@ $(document).ready(function () {
 		let directionRaw = directionStimulus[0];
 		let direction = directionRaw.toUpperCase().trim();
 
-		if (tokens.length > 3) {
+		/* Transition */
+		if (tokens.length == MAX_NUM_TOKENS) {
 			if (direction !== 'R' && direction !== 'L') {
 				alert(`Line ${lineNumber + 1}: Unknown direction. Expected 'R' or 'L', but found '${directionStimulus[0].trim()}'.`);
 				highlightEditor(lineNumber, 'marker3');
@@ -269,6 +277,7 @@ $(document).ready(function () {
 
 			let separatorParen = directionStimulus[1];
 			if (separatorParen !== '(') {
+				/* Account for R followed by space. */
 				let found = ' ';
 				if (typeof separatorParen != 'undefined') {
 					found = separatorParen;
@@ -279,84 +288,50 @@ $(document).ready(function () {
 				return false;
 			}
 
-			/* The stimulus is a whitespace. */
-			if (directionStimulus.length < 3) {
-				// stimulus = ' ';
-				// let separatorComma1 = tokens[3];
-				// let nextStateParen = tokens[4];
-				// nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
-				// /* Stimulus consists of more than one whitespace. */
-				// if (separatorComma1.length === 0 || separatorComma1 !== ',') {
-				// 	alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with a whitespace followed by another symbol. A whitespace is recognized as a valid stimulus.`);
-				// 	highlightEditor(lineNumber, 'marker3');
-				// 	return false;
-				// }
-				// if (nextStateParen[nextStateParen.length - 1] !== ')') {
-				// 	alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state`);
-				// 	highlightEditor(lineNumber, 'marker3');
-				// 	return false;
-				// }
-				// if (nextState.length == 0) {
-				// 	alert(`Line ${lineNumber + 1}: Expected name of next state.`);
-				// 	highlightEditor(lineNumber, 'marker3');
-				// 	return false;
-				// }
-				// let extraToken = tokens[5];
-				// if (typeof extraToken !== 'undefined') {
-				// 	alert(`Line ${lineNumber + 1}: Invalid transition. Expected only 5 whitespace-separated tokens, but found ${tokens.length}.`);
-				// 	highlightEditor(lineNumber, 'marker3');
-				// 	return false;
-				// }
-			} else {
-				stimulus = directionStimulus[2];
-				let separatorComma1 = directionStimulus[3];
+			stimulus = directionStimulus[2];
+			const LEN_DIRECTION_STIMULUS = 4;
+			let separatorComma1 = directionStimulus[3];
 
-				let newSymbolComma = tokens[3];
-				newSymbol = tokens[3][0];
-				let separatorComma2 = newSymbolComma[1];
+			if (directionStimulus.length > LEN_DIRECTION_STIMULUS) {
+				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${directionStimulus[3]}'`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
 
-				// let nextStateParen = tokens[3];
-				// nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
+			if (directionStimulus.length >= LEN_DIRECTION_STIMULUS && separatorComma1 !== ',') {
+				alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${directionStimulus[3]}'`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
 
-				if (directionStimulus.length > 4) {
-					alert(`Line ${lineNumber + 1}: Expected single-symbol stimulus, but found stimulus starting with '${stimulus}${tokens[2][3]}'`);
-					highlightEditor(lineNumber, 'marker3');
-					return false;
-				}
+			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 1) {
+				alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus ${stimulus}, but found ' '`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
 
-				if (separatorComma1 !== ',') {
-					alert(`Line ${lineNumber + 1}: Expected ',' immediately after stimulus, but found ' '`);
-					highlightEditor(lineNumber, 'marker3');
-					return false;
-				}
+			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 2) {
+				alert(`Line ${lineNumber + 1}: No stimulus found.`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
 
-				if (newSymbolComma.length > 2) {
-					alert(`Line ${lineNumber + 1}: Expected new symbol to have exactly one character, but found symbol starting with '${newSymbol}${newSymbolComma[1]}'`);
-					highlightEditor(lineNumber, 'marker3');
-					return false;
-				}
+			let nextStateParen = tokens[3];
+			nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
 
-				// if (nextStateParen[nextStateParen.length - 1] !== ')') {
-				// 	alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state`);
-				// 	highlightEditor(lineNumber, 'marker3');
-				// 	return false;
-				// }
+			if (nextStateParen[nextStateParen.length - 1] !== ')') {
+				alert(`Line ${lineNumber + 1}: Expected ')' immediately after name of next state`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
 
-				// if (nextState.length == 0) {
-				// 	alert(`Line ${lineNumber + 1}: Expected name of next state.`);
-				// 	highlightEditor(lineNumber, 'marker3');
-				// 	return false;
-				// }
-
-				// let extraToken = tokens[4];
-				// if (typeof extraToken !== 'undefined') {
-				// 	alert(`Line ${lineNumber + 1}: Invalid transition. Expected only 4 whitespace-separated tokens, but found ${tokens.length}.`);
-				// 	highlightEditor(lineNumber, 'marker3');
-				// 	return false;
-				// }
+			if (nextState.length == 0) {
+				alert(`Line ${lineNumber + 1}: Expected name of next state.`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
 			}
 		} else {
-			decision = tokens[2].toLowerCase().trim();
+			decision = directionStimulus.toLowerCase().trim();
 
 			if (decision !== 'reject' && decision !== 'accept') {
 				alert(`Line ${lineNumber + 1}: Unknown decision. Expected 'reject' or 'accept', but found '${decision}'. If you meant to enter a transition, check if there is a space between the comma and the name of the next state`);
@@ -367,8 +342,7 @@ $(document).ready(function () {
 			/* Extra token after decision results in the line being interpreted as a transition */
 		}
 
-		parsedMachine.push([String(state), String(stimulus), String(direction), String(nextState), String(decision), String(newSymbol)]);
-		console.log(parsedMachine);
+		parsedMachine.push([String(state), String(stimulus), String(direction), String(nextState), String(decision)]);
 
 		return true;
 	}
