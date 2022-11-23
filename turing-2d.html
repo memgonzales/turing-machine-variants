@@ -14,6 +14,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" />
 
 		<script src="scripts/array.js"></script>
 	</head>
@@ -62,18 +63,23 @@
 			<div class="row">
 				<div id="program-container" class="col-sm-5">
 					<label for="test-cases" class="form-label">Sample Machines</label>
-					<select id="test-cases" class="form-select">
-						<optgroup label="Custom">
-							<option value="instructions">Instructions</option>
-							<option value="custom">Blank Machine</option>
-						</optgroup>
-						<optgroup label="Deterministic, Two-Way, Counter">
-							<option value="axbxcx-det">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
-						</optgroup>
-						<optgroup label="Nondeterministic, Two-Way, Counter">
-							<option value="axbxcx-non">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
-						</optgroup>
-					</select>
+
+					<div class="input-group">
+						<select id="test-cases" class="form-select">
+							<optgroup label="Custom">
+								<option value="instructions">Instructions</option>
+								<option value="custom">Blank Machine</option>
+							</optgroup>
+							<optgroup label="Deterministic, Two-Way, Counter">
+								<option value="axbxcx-det">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
+							</optgroup>
+							<optgroup label="Nondeterministic, Two-Way, Counter">
+								<option value="axbxcx-non">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
+							</optgroup>
+						</select>
+
+						<button id="save" type="button" class="btn btn-outline-primary"><i class="bi bi-download"></i></button>
+					</div>
 					<br />
 					<div id="editor"></div>
 					<br />
@@ -157,5 +163,6 @@
 		<script src="scripts/code-editor.js"></script>
 		<script src="scripts/turing-2d-input.js"></script>
 		<script src="scripts/turing-2d-logic.js"></script>
+		<script src="scripts/save.js"></script>
 	</body>
 </html>

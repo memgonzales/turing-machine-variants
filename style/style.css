@@ -127,3 +127,13 @@ button:disabled {
 	cursor: not-allowed;
 	pointer-events: all !important;
 }
+
+#save:hover {
+	background-color: var(--blue-hover);
+	color: white;
+}
+
+#save {
+	border: 1px solid #ced4da;
+	color: var(--bs-body-color);
+}
