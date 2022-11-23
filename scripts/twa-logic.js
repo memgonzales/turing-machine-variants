@@ -612,8 +612,6 @@ $(document).ready(function () {
 		getPathDecision();
 		setNumRowsColumns(finishedTapeRowIdx, finishedTapeColIdx);
 
-		console.log(generatedPaths);
-
 		return true;
 	}
 
