@@ -771,7 +771,7 @@ $(document).ready(function () {
 		}
 
 		if (missingTransition.length != 0) {
-			let missingTransitionOpt = `<optgroup label = "Invalid Machine">`;
+			let missingTransitionOpt = `<optgroup label = "Invalid">`;
 			for (const i of missingTransition) {
 				missingTransitionOpt += `<option value = "${i}">${i + 1}</option>`;
 			}
@@ -797,7 +797,7 @@ $(document).ready(function () {
 		}
 
 		for (const entry of finishedTapeColIdx) {
-			numColumns = Math.max(entry.max() + 1, numColumns);
+			numColumns = Math.max(Math.max(entry.max() + 1, numColumns), inputString.length + 2);
 		}
 
 		if (finalDecision === 'MISSING_TRANSITION' || finalDecision === 'UNDECIDED') {
