@@ -201,7 +201,7 @@
 										</button>
 									</h2>
 
-									<div id="remarks-1-proof1" class="accordion-collapse collapse" aria-labelledby="remarks-1-proof1">
+									<div id="remarks-1-proof1" class="accordion-collapse collapse show" aria-labelledby="remarks-1-proof1">
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
@@ -217,11 +217,11 @@
 												</li>
 
 												<li class="indented-list-item">
-													Our key idea is to represent each symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> \ <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
-													using a unary encoding terminated by #. <br /> <br />
+													Our key idea is to map each symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
+													to a unary encoding terminated by #. <br /> <br />
 
-													Suppose 𝜏 = 1, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = {a, b, c}, and <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
-													= <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∪ {X, Y, Z}. <br /> <br />
+													Suppose 𝜏 = 1, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = {a, b}, and <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+													= <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∪ {X, Y}. <br /> <br />
 
 													Suppose the initial snapshot of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
 													is <br />
@@ -233,8 +233,6 @@
 															<td class="text-center">a</td>
 															<td class="text-center">b</td>
 															<td class="text-center">b</td>
-															<td class="text-center">c</td>
-															<td class="text-center">c</td>
 															<td class="text-center">#</td>
 														</tr>
 													</table>
@@ -247,9 +245,7 @@
 															<td class="text-center">X</td>
 															<td class="text-center">a</td>
 															<td class="text-center">Y</td>
-															<td class="text-center">b</td>
-															<td class="text-center">Z</td>
-															<td class="text-center head-color">c</td>
+															<td class="text-center head-color">b</td>
 															<td class="text-center">#</td>
 														</tr>
 													</table>
@@ -260,28 +256,22 @@
 														<tr>
 															<td class="text-center">#</td>
 															<td class="text-center">1</td>
-															<td class="text-center">a</td>
 															<td class="text-center">1</td>
-															<td class="text-center">b</td>
 															<td class="text-center">1</td>
-															<td class="text-center head-color">c</td>
+															<td class="text-center head-color">1</td>
 															<td class="text-center">#</td>
 														</tr>
 														<tr>
 															<td class="text-center">#</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
 															<td class="text-center">1</td>
 															<td class="text-center">#</td>
 															<td class="text-center">1</td>
-															<td class="text-center">#</td>
+															<td class="text-center">1</td>
 															<td class="text-center">#</td>
 														</tr>
 														<tr>
 															<td class="text-center">#</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
+															<td class="text-center">1</td>
 															<td class="text-center">#</td>
 															<td class="text-center">1</td>
 															<td class="text-center">#</td>
@@ -289,7 +279,13 @@
 														</tr>
 														<tr>
 															<td class="text-center">#</td>
+															<td class="text-center">1</td>
 															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+														</tr>
+														<tr>
 															<td class="text-center">#</td>
 															<td class="text-center">#</td>
 															<td class="text-center">#</td>
@@ -308,34 +304,122 @@
 															Given: 
 															<ul class="indented-list">
 																<li class="indented-list-item">
-																	𝜓<sub><i>i</i></sub> is the <i>i</i><sup>th</sup> symbol in 
-																	<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> \ <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>				
-																</li>
-																<li class="indented-list-item">
-																	<i>q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, 
-																	<i>q'</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∈ 
+																	<i>q</i>, 
+																	<i>q'</i> ∈ 
 																	<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>		
 																</li>
 																<li class="indented-list-item">
 																	X ∈ {R, L}	
 																</li>
 																<li class="indented-list-item">
-																	<i>t</i> ∈ <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
-																</li>
-																<li class="indented-list-item">
-																	For <i>k</i> ∈ ℤ<sup>+</sup>, <i>q</i><sup>(<i>k</i>)</sup><sub><span class="small">2DTM-2D-Counter</span></sub>
-																	∈ <i>Q</i><sub><span class="small">2DTM-2D-Counter</span></sub>
+																	<i>t<sub>i</sub></i> is the <i>i</i><sup>th</sup> symbol in
+																	<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
 																</li>
 															</ul>
 														</li>
+
 														<li class="indented-list-item">
-															The instruction <i>q</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ] 
-															X(<i>t</i>/𝜓<sub><i>i</i></sub>, <i>q'</i><sub><span class="small">Ordinary&#8209;TM</span></sub>) 
-															in can be converted to the following sequence of instructions:
+															First, convert every symbol in the input string to its corresponding unary encoding. 
+															Then, rewind the tape head to the initial #. 
+														</li>
+
+														<li class="indented-list-item">
+															The instruction <i>q</i> ] 
+															X(<i>t<sub>j</sub></i>/<i>t<sub>k</sub></i>, <i>q'</i>) 
+															can now be converted to the following sequence of instructions:
+
 															<ul class="indented-list">
 																<li class="indented-list-item">
+																	Read the unary encoding of <i>t<sub>j</sub></i>.
+																	<ul class="indented-list">
+																		<li class="indented-list-item">
+																			<i>q</i> ] 
+																			X(𝜏/𝜏, <i>q</i><sub>1</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>1</sub> ] 
+																			D(𝜏/𝜏, <i>q</i><sub>2</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2</sub> ] 
+																			D(𝜏/𝜏, <i>q</i><sub>3</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			... 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub><i>j</i> - 1</sub> ] 
+																			D(𝜏/𝜏, <i>q</i><sub><i>j</i></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub><i>j</i></sub> ] 
+																			D(#/#, <i>q</i><sub><i>j</i> + 1</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub><i>j</i> + 1</sub> ] 
+																			U(𝜏/𝜏, <i>q</i><sub><i>j</i> + 2</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub><i>j</i> + 2</sub> ] 
+																			U(𝜏/𝜏, <i>q</i><sub><i>j</i> + 3</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			... 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i></sub> ] 
+																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 1</sub>) 
+																		</li>
+																	</ul>
+																</li>
+																<li class="indented-list-item">
+																	Write the unary encoding of <i>t<sub>k</sub></i>.
+																	<ul class="indented-list">
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + 1</sub> ] 
+																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 2</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + 2</sub> ] 
+																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 3</sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + 3</sub>)
+																		</li>
+																		<li class="indented-list-item">
+																			... 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + <i>k</i></sub> ] 
+																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub> ] 
+																			D(𝜏/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub>)(#/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub>)
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub> ] 
+																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 3</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 3</sub> ] 
+																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 4</sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			... 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + 2<i>k</i> + 1</sub> ] 
+																			U(𝜏/𝜏, <i>q'</i>) 
+																		</li>
+																	</ul>
 																</li>
 															</ul>													
+														</li>
+
+														<li class="indented-list-item">
+															The instructions <i>q</i> ] 
+															X(#/<i>t<sub>k</sub></i>, <i>q'</i>), <i>q</i> ] 
+															X(<i>t<sub>j</sub></i>/#, <i>q'</i>), and <i>q</i> ] 
+															X(#/#, <i>q'</i>)
+															can be converted analogously.
 														</li>
 													</ul>									
 												</li>
