@@ -172,13 +172,13 @@
 													<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = (<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
 													<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, 
 													<i>P</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
-													<i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>)
+													<i>q</i><sub><i>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>)
 												</li>
 												<li class="indented-list-item">
 													<i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = (<i>Q</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
 													<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, 
 													<i>P</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
-													<i>q<sub>I</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub></sub>)
+													<i>q</i><sub><i>I</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub></sub>)
 												</li>
 												<li class="indented-list-item">
 													Counter = 𝜏
@@ -201,7 +201,7 @@
 										</button>
 									</h2>
 
-									<div id="remarks-1-proof1" class="accordion-collapse collapse" aria-labelledby="remarks-1-proof1">
+									<div id="remarks-1-proof1" class="accordion-collapse collapse show" aria-labelledby="remarks-1-proof1">
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
@@ -318,6 +318,69 @@
 															Place the input string on the top row of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
 															then convert every symbol in this input string to its corresponding unary encoding. 
 															Afterwards, rewind the tape head to the initial # (i.e., the # at the top row, leftmost column). 
+
+															<ul class="indented-list">
+																<li class="indented-list-item">
+																	Let <i>q</i><sub><i>I</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub></sub> be <i>q</i><sub>0<sub>0</sub></sub>.
+																</li>
+
+																<li class="indented-list-item">
+																	Converting a symbol <i>t<sub>h</sub></i> in the input string can be done via this sequence of 
+																	<span class="small">2DTM&#8209;2D&#8209;Counter</span> instructions:
+
+																	<ul class="indented-list">
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub>0</sub></sub> ] 
+																			R(<i>t<sub>h</sub></i>/𝜏, <i>q</i><sub>0<sub>1</sub></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub>1</sub></sub> ] 
+																			D(#</i>/𝜏, <i>q</i><sub>0<sub>2</sub></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub>2</sub></sub> ] 
+																			D(#</i>/𝜏, <i>q</i><sub>0<sub>3</sub></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			... 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub><i>h</i> - 1</sub></sub> ] 
+																			D(#</i>/𝜏, <i>q</i><sub>0<sub><i>h</i></sub></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub><i>h</i></sub></sub> ] 
+																			U(𝜏</i>/𝜏, <i>q</i><sub>0<sub><i>h</i> + 1</sub></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub><i>h</i> + 1</sub></sub> ] 
+																			U(𝜏</i>/𝜏, <i>q</i><sub>0<sub><i>h</i> + 2</sub></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			... 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub>2<i>h</i> - 2</sub></sub> ] 
+																			U(𝜏</i>/𝜏, <i>q</i><sub>0<sub>0</sub></sub>) 
+																		</li>
+																	</ul>
+																</li>
+
+																<li class="indented-list-item">
+																	Rewinding the tape head to the initial # can be done as follows:
+																
+																	<ul class="indented-list">
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub>0</sub></sub> ] 
+																			R(#/#, <i>q</i><sub>0<sub>rewind</sub></sub>) 
+																		</li>
+																		<li class="indented-list-item">
+																			<i>q</i><sub>0<sub>rewind</sub></sub> ] 
+																			L(𝜏/𝜏, <i>q</i><sub>0<sub>rewind</sub></sub>)(#/#, <i>q</i><sub><i>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>)
+																		</li>
+																	</ul>
+																</li>																
+															</ul>
 														</li>
 
 														<li class="indented-list-item">
