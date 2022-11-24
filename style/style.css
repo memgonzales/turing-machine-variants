@@ -141,3 +141,18 @@ button:disabled {
 .small {
 	font-variant: small-caps;
 }
+
+.tab {
+	color: var(--bs-body-color) !important;
+}
+
+.head-color {
+	background-color: var(--blue-emphasis) !important;
+	color: white;
+}
+
+.accordion-button:not(.collapsed) {
+	color: var(--bs-body-color) !important;
+	background-color: white !important;
+	box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color) !important;
+}

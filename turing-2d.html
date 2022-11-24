@@ -140,58 +140,215 @@
 					</div>
 
 					<br />
-					<div id="remarks" class="row">
-						<div class="col-sm-12">
-							<h5>Remarks</h5>
-							<ul class="indented-list">
-								<li class="indented-list-item">
-									A two-way deterministic counter Turing machine with a two-dimensional tape (<span class="small">2DTM&#8209;2D&#8209;Counter</span>) 
-									is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape 
-									(<span class="small">Ordinary&#8209;TM</span>).
-								</li>
-								<ul class="indented-list">
-									<li class="indented-list-item">
-										Given: 
-										<ul class = "indented-list">
-											<li class="indented-list-item">
-												<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = (<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
-												<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, 
-												<i>P</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
-												<i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>)
-											</li>
-											<li class="indented-list-item">
-												<i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = (<i>Q</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter/span></sub>,
-												<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, 
-												<i>P</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
-												<i>q<sub>I</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub></sub>, 𝜏)
-											</li>
-											<li class="indented-list-item">
-												The convention follows Denning et al. (1978), but adds an input alphabet <i>S</i> ⊆ <i>T</i> to the definition.
-												For <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, 𝜏 is added to restrict the tape alphabet such that
-												<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ∪ {𝜏}.
-											</li>
-										</ul>
-									</li>
+					<ul class="nav nav-tabs" id="remarks-tab" role="tablist">
+						<li class="nav-item" role="presentation">
+						  	<button class="nav-link active tab" id="tab-1" data-bs-toggle="tab" data-bs-target="#remarks-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">
+								2DTM&#8209;2D&#8209;Counter
+							</button>
+						</li>
+						<li class="nav-item" role="presentation">
+						  	<button class="nav-link tab" id="tab-2" data-bs-toggle="tab" data-bs-target="#remarks-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">
+								2NDTM&#8209;2D&#8209;Counter
+							</button>
+						</li>
+					</ul>
 
-									<li class="indented-list-item">
-										Proof Sketch for <span class="small">Ordinary-TM</span> ⊆ <span class="small">2DTM-2D-Counter</span>:
-										<ul class="indented-list">
-											<li class="indented-list-item">
-												Both <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> and <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
-												should share
-												the same input alphabet: <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
-											</li>
-										</ul>
-									</li>
-									<li class="indented-list-item">
-										Proof Sketch for <span class="small">2DTM-2D-Counter</span> ⊆ <span class="small">Ordinary-TM</span>:
-									</li>
-								</ul>
-								<li class="indented-list-item">
-									A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NDTM-2D-Counter</span>) is equivalent in power 
-									to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary TM</span>).
-								</li>
-							</ul>
+					<div id="remarks" class="tab-content">
+						<div id="remarks-1" class="tab-pane fade show active"> <br />
+							A two-way deterministic counter Turing machine with a two-dimensional tape (<span class="small">2DTM&#8209;2D&#8209;Counter</span>) 
+							is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape 
+							(<span class="small">Ordinary&#8209;TM</span>). <br /> <br />
+
+							<div class="accordion" id="remarks-1-head">
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-1-given" aria-expanded="false" aria-controls="remarks-1-given">Given</button>
+									</h2>
+
+									<div id="remarks-1-given" class="accordion-collapse collapse" aria-labelledby="remarks-1-given">
+										<div class="accordion-body">
+											<ul class = "indented-list">
+												<li class="indented-list-item">
+													<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = (<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
+													<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, 
+													<i>P</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
+													<i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>)
+												</li>
+												<li class="indented-list-item">
+													<i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = (<i>Q</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
+													<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, 
+													<i>P</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
+													<i>q<sub>I</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub></sub>)
+												</li>
+												<li class="indented-list-item">
+													Counter = 𝜏
+												</li>
+												<li class="indented-list-item">
+													The convention follows Denning et al. (1978) but adds the input alphabet <i>S</i> ⊆ <i>T</i> to the definition.
+													We also impose the restriction that
+													<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ∪ {𝜏}.
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-1-proof1" aria-expanded="false" aria-controls="remarks-1-proof1">
+											Proof Sketch for&nbsp;<i>M</i><sub><span class="small">Ordinary-TM</span></sub>&nbsp;⊆&nbsp;
+											<i>M</i><sub><span class="small">2DTM-2D-Counter</span></sub>&nbsp;:
+										</button>
+									</h2>
+
+									<div id="remarks-1-proof1" class="accordion-collapse collapse" aria-labelledby="remarks-1-proof1">
+										<div class="accordion-body">
+											<ul class="indented-list">
+												<li class="indented-list-item">
+													<i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+												</li>
+
+												<li class="indented-list-item">
+													<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∪ {𝜏}
+												</li>
+
+												<li class="indented-list-item">
+													<i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub> = <i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>
+												</li>
+
+												<li class="indented-list-item">
+													Our key idea is to represent each symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> \ <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
+													using a unary encoding terminated by #. <br /> <br />
+
+													Suppose 𝜏 = 1, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = {a, b, c}, and <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+													= <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∪ {X, Y, Z}. <br /> <br />
+
+													Suppose the initial snapshot of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
+													is <br />
+
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center head-color">#</td>
+															<td class="text-center">a</td>
+															<td class="text-center">a</td>
+															<td class="text-center">b</td>
+															<td class="text-center">b</td>
+															<td class="text-center">c</td>
+															<td class="text-center">c</td>
+															<td class="text-center">#</td>
+														</tr>
+													</table>
+
+													After a series of transitions, suppose the snapshot of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> is
+
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">X</td>
+															<td class="text-center">a</td>
+															<td class="text-center">Y</td>
+															<td class="text-center">b</td>
+															<td class="text-center">Z</td>
+															<td class="text-center head-color">c</td>
+															<td class="text-center">#</td>
+														</tr>
+													</table>
+
+													The equivalent snapshot of the tape of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> is
+
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">a</td>
+															<td class="text-center">1</td>
+															<td class="text-center">b</td>
+															<td class="text-center">1</td>
+															<td class="text-center head-color">c</td>
+															<td class="text-center">#</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+														</tr>
+													</table>
+												</li>
+
+												<li class="indented-list-item">
+													We attempt to formalize this idea: <br />
+
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															Given: 
+															<ul class="indented-list">
+																<li class="indented-list-item">
+																	𝜓<sub><i>i</i></sub> is the <i>i</i><sup>th</sup> symbol in 
+																	<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> \ <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>				
+																</li>
+																<li class="indented-list-item">
+																	<i>q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, 
+																	<i>q'</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∈ 
+																	<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>		
+																</li>
+																<li class="indented-list-item">
+																	X ∈ {R, L}	
+																</li>
+																<li class="indented-list-item">
+																	<i>t</i> ∈ <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+																</li>
+																<li class="indented-list-item">
+																	For <i>k</i> ∈ ℤ<sup>+</sup>, <i>q</i><sup>(<i>k</i>)</sup><sub><span class="small">2DTM-2D-Counter</span></sub>
+																	∈ <i>Q</i><sub><span class="small">2DTM-2D-Counter</span></sub>
+																</li>
+															</ul>
+														</li>
+														<li class="indented-list-item">
+															The instruction <i>q</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ] 
+															X(<i>t</i>/𝜓<sub><i>i</i></sub>, <i>q'</i><sub><span class="small">Ordinary&#8209;TM</span></sub>) 
+															in can be converted to the following sequence of instructions:
+															<ul class="indented-list">
+																<li class="indented-list-item">
+																</li>
+															</ul>													
+														</li>
+													</ul>									
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div id="remarks-2" class="tab-pane fade"> <br />
+							A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NDTM-2D-Counter</span>) is equivalent in power 
+							to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary TM</span>).
 						</div>
 					</div>
 				</div>
