@@ -201,7 +201,7 @@
 										</button>
 									</h2>
 
-									<div id="remarks-1-proof1" class="accordion-collapse collapse show" aria-labelledby="remarks-1-proof1">
+									<div id="remarks-1-proof1" class="accordion-collapse collapse" aria-labelledby="remarks-1-proof1">
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
@@ -213,12 +213,8 @@
 												</li>
 
 												<li class="indented-list-item">
-													<i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub> = <i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>
-												</li>
-
-												<li class="indented-list-item">
 													Our key idea is to map each symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
-													to a unary encoding terminated by #. <br /> <br />
+													to a unique "vertical" unary encoding terminated by #. <br /> <br />
 
 													Suppose 𝜏 = 1, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = {a, b}, and <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
 													= <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∪ {X, Y}. <br /> <br />
@@ -279,9 +275,9 @@
 														</tr>
 														<tr>
 															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
 															<td class="text-center">1</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
 															<td class="text-center">#</td>
 															<td class="text-center">#</td>
 														</tr>
@@ -309,7 +305,7 @@
 																	<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>		
 																</li>
 																<li class="indented-list-item">
-																	X ∈ {R, L}	
+																	𝛘 ∈ {R, L}	
 																</li>
 																<li class="indented-list-item">
 																	<i>t<sub>i</sub></i> is the <i>i</i><sup>th</sup> symbol in
@@ -319,14 +315,17 @@
 														</li>
 
 														<li class="indented-list-item">
-															First, convert every symbol in the input string to its corresponding unary encoding. 
-															Then, rewind the tape head to the initial #. 
+															Place the input string on the top row of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
+															then convert every symbol in this input string to its corresponding unary encoding. 
+															Afterwards, rewind the tape head to the initial # (i.e., the # at the top row, leftmost column). 
 														</li>
 
 														<li class="indented-list-item">
-															The instruction <i>q</i> ] 
-															X(<i>t<sub>j</sub></i>/<i>t<sub>k</sub></i>, <i>q'</i>) 
-															can now be converted to the following sequence of instructions:
+															An <span class="small">Ordinary&#8209;TM</span> instruction <i>q</i> ] 
+															𝛘(<i>t<sub>j</sub></i>/<i>t<sub>k</sub></i>, <i>q'</i>)
+															can now be converted to the following sequence of 
+															<span class="small">2DTM&#8209;2D&#8209;Counter</span>
+															instructions:
 
 															<ul class="indented-list">
 																<li class="indented-list-item">
@@ -334,7 +333,7 @@
 																	<ul class="indented-list">
 																		<li class="indented-list-item">
 																			<i>q</i> ] 
-																			X(𝜏/𝜏, <i>q</i><sub>1</sub>) 
+																			𝛘(𝜏/𝜏, <i>q</i><sub>1</sub>) 
 																		</li>
 																		<li class="indented-list-item">
 																			<i>q</i><sub>1</sub> ] 
@@ -415,7 +414,7 @@
 														</li>
 
 														<li class="indented-list-item">
-															The instructions <i>q</i> ] 
+															Instructions <i>q</i> ] 
 															X(#/<i>t<sub>k</sub></i>, <i>q'</i>), <i>q</i> ] 
 															X(<i>t<sub>j</sub></i>/#, <i>q'</i>), and <i>q</i> ] 
 															X(#/#, <i>q'</i>)
