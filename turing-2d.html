@@ -197,7 +197,7 @@
 									<h2 class="accordion-header">
 										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-1-proof1" aria-expanded="false" aria-controls="remarks-1-proof1">
 											Proof Sketch for&nbsp;<i>M</i><sub><span class="small">Ordinary-TM</span></sub>&nbsp;⊆&nbsp;
-											<i>M</i><sub><span class="small">2DTM-2D-Counter</span></sub>&nbsp;:
+											<i>M</i><sub><span class="small">2DTM-2D-Counter</span></sub>
 										</button>
 									</h2>
 
@@ -432,8 +432,8 @@
 																			... 
 																		</li>
 																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i></sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 1</sub>) 
+																			<i>q</i><sub>2<i>j</i> - 1</sub> ] 
+																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i></sub>) 
 																		</li>
 																	</ul>
 																</li>
@@ -441,8 +441,12 @@
 																	Write the unary encoding of <i>t<sub>k</sub></i>.
 																	<ul class="indented-list">
 																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i></sub> ] 
+																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 1</sub>) 
+																		</li>
+																		<li class="indented-list-item">
 																			<i>q</i><sub>2<i>j</i> + 1</sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 2</sub>) 
+																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 2</sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + 2</sub>)
 																		</li>
 																		<li class="indented-list-item">
 																			<i>q</i><sub>2<i>j</i> + 2</sub> ] 
@@ -452,26 +456,26 @@
 																			... 
 																		</li>
 																		<li class="indented-list-item">
+																			<i>q</i><sub>2<i>j</i> + <i>k</i> - 1</sub> ] 
+																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i></sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i></sub>)
+																		</li>
+																		<li class="indented-list-item">
 																			<i>q</i><sub>2<i>j</i> + <i>k</i></sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)
+																			D(𝜏/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)(#/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)
 																		</li>
 																		<li class="indented-list-item">
 																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub> ] 
-																			D(𝜏/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub>)(#/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub>)
+																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub>) 
 																		</li>
 																		<li class="indented-list-item">
 																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub> ] 
 																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 3</sub>) 
 																		</li>
 																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 3</sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 4</sub>) 
-																		</li>
-																		<li class="indented-list-item">
 																			... 
 																		</li>
 																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + 2<i>k</i> + 1</sub> ] 
+																			<i>q</i><sub>2<i>j</i> + 2<i>k</i></sub> ] 
 																			U(𝜏/𝜏, <i>q'</i>) 
 																		</li>
 																	</ul>
@@ -497,7 +501,7 @@
 						
 						<div id="remarks-2" class="tab-pane fade"> <br />
 							A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NDTM-2D-Counter</span>) is equivalent in power 
-							to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary TM</span>).
+							to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary-TM</span>).
 						</div>
 					</div>
 				</div>
