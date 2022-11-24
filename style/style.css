@@ -137,3 +137,7 @@ button:disabled {
 	border: 1px solid #ced4da;
 	color: var(--bs-body-color);
 }
+
+.small {
+	font-variant: small-caps;
+}

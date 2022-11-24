@@ -42,8 +42,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="k-queue.html" tabindex="-1" aria-disabled="true">
 								<span>
-									<i>k</i>
-									-Queue Automaton
+									<i>k</i>-Queue Automaton
 								</span>
 							</a>
 						</li>
@@ -145,7 +144,53 @@
 						<div class="col-sm-12">
 							<h5>Remarks</h5>
 							<ul class="indented-list">
-								<li class="indented-list-item">Two-way accepters are equivalent in power to one-way accepters.</li>
+								<li class="indented-list-item">
+									A two-way deterministic counter Turing machine with a two-dimensional tape (<span class="small">2DTM&#8209;2D&#8209;Counter</span>) 
+									is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape 
+									(<span class="small">Ordinary&#8209;TM</span>).
+								</li>
+								<ul class="indented-list">
+									<li class="indented-list-item">
+										Given: 
+										<ul class = "indented-list">
+											<li class="indented-list-item">
+												<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = (<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
+												<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, 
+												<i>P</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
+												<i>q<sub>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>)
+											</li>
+											<li class="indented-list-item">
+												<i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = (<i>Q</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter/span></sub>,
+												<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, 
+												<i>P</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
+												<i>q<sub>I</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub></sub>, 𝜏)
+											</li>
+											<li class="indented-list-item">
+												The convention follows Denning et al. (1978), but adds an input alphabet <i>S</i> ⊆ <i>T</i> to the definition.
+												For <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>, 𝜏 is added to restrict the tape alphabet such that
+												<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ∪ {𝜏}.
+											</li>
+										</ul>
+									</li>
+
+									<li class="indented-list-item">
+										Proof Sketch for <span class="small">Ordinary-TM</span> ⊆ <span class="small">2DTM-2D-Counter</span>:
+										<ul class="indented-list">
+											<li class="indented-list-item">
+												Both <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> and <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
+												should share
+												the same input alphabet: <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
+											</li>
+										</ul>
+									</li>
+									<li class="indented-list-item">
+										Proof Sketch for <span class="small">2DTM-2D-Counter</span> ⊆ <span class="small">Ordinary-TM</span>:
+									</li>
+								</ul>
+								<li class="indented-list-item">
+									A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NDTM-2D-Counter</span>) is equivalent in power 
+									to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary TM</span>).
+								</li>
 							</ul>
 						</div>
 					</div>

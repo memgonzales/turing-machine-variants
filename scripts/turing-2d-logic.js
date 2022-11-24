@@ -889,7 +889,7 @@ $(document).ready(function () {
 	function prettifySubDecision(decision) {
 		switch (decision) {
 			case 'MISSING_TRANSITION':
-				return 'This error was caused by either (1) an incomplete set of transition functions or (2) the tape head attempting to access a prohibited cell (note that the tape extends infinitely in only one direction).';
+				return 'This error was caused by either (1) an incomplete set of transition functions or (2) the tape head attempting to access a prohibited cell (note that the tape extends infinitely in only one direction horizontally and in only one direction vertically).';
 			case 'UNDECIDED':
 				return `Exceeded ${MAX_ITERATIONS} steps without reaching accepting/rejecting state`;
 		}
