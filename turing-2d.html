@@ -143,12 +143,12 @@
 					<ul class="nav nav-tabs" id="remarks-tab" role="tablist">
 						<li class="nav-item" role="presentation">
 						  	<button class="nav-link active tab" id="tab-1" data-bs-toggle="tab" data-bs-target="#remarks-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">
-								2DTM&#8209;2D&#8209;Counter
+								<span class="small">2DTM&#8209;2D&#8209;Counter</span>
 							</button>
 						</li>
 						<li class="nav-item" role="presentation">
 						  	<button class="nav-link tab" id="tab-2" data-bs-toggle="tab" data-bs-target="#remarks-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">
-								2NDTM&#8209;2D&#8209;Counter
+								<span class="small">2NTM&#8209;2D&#8209;Counter</span>
 							</button>
 						</li>
 					</ul>
@@ -185,8 +185,25 @@
 												</li>
 												<li class="indented-list-item">
 													The convention follows Denning et al. (1978) but adds the input alphabet <i>S</i> ⊆ <i>T</i> to the definition.
-													We also impose the restriction that
+												</li>
+												<li class="indented-list-item">
+													We impose the restriction that
 													<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ∪ {𝜏}.
+												</li>
+												<li class="indented-list-item">
+													We define <i>P</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> such that it includes four (4) forms: 
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															<i>q</i> ] L(<i>t</i>/<i>t'</i>, <i>q'</i>), <i>q</i> ] R(<i>t</i>/<i>t'</i>, <i>q'</i>), <i>q</i> ] U(<i>t</i>/<i>t'</i>, <i>q'</i>),
+															and <i>q</i> ] D(<i>t</i>/<i>t'</i>, <i>q'</i>)
+														</li>
+														<li class="indented-list-item">
+															<i>t</i> ∈ <i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ∪ {#}
+														</li>
+														<li class="indented-list-item">
+															However, we impose the restriction that <i>t'</i> ∈ {<i>t</i>, 𝜏}.
+														</li>
+													</ul>
 												</li>
 											</ul>
 										</div>
@@ -201,53 +218,407 @@
 										</button>
 									</h2>
 
-									<div id="remarks-1-proof1" class="accordion-collapse collapse show" aria-labelledby="remarks-1-proof1">
+									<div id="remarks-1-proof1" class="accordion-collapse collapse" aria-labelledby="remarks-1-proof1">
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
-													<i>S</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
-												</li>
-
-												<li class="indented-list-item">
-													<i>T</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∪ {𝜏}
-												</li>
-
-												<li class="indented-list-item">
 													Our key idea is to map each symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
-													to a unique "vertical" unary encoding terminated by #. <br /> <br />
+													to a unique "vertical" unary encoding terminated by #. 
+												</li>
 
-													Suppose 𝜏 = 1, <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = {a, b}, and <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
-													= <i>S</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ∪ {X, Y}. <br /> <br />
+												<li class="indented-list-item">
+													Albeit appealing, it is incorrect to simply map the <i>i</i><sup>th</sup>
+													symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> (which we denote as <i>t</i><sub><i>i</i></sub>) 
+													to a vertical string of <i>i</i> 𝜏's.
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															Reason: This does not allow us to convert the instruction <i>q</i> ] 𝛘(<i>t</i><sub><i>k</i></sub>/<i>t</i><sub><i>j</i></sub>,
+															<i>q'</i>) if <i>j</i> &lt; <i>k</i>. 
+														</li>
+														<li class="indented-list-item">
+															The unary encoding of the replacement is shorter than that of the
+															existing symbol, but <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>
+															is not capable of changing 𝜏's to #'s. 
+														</li>
+													</ul>
+												</li>
 
-													Suppose the initial snapshot of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> 
-													is <br />
+												<li class="indented-list-item">
+													To account for this, we perform a fixed-length "vertical" unary mapping for each symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, 
+													as well as for #, <span class="small">Boundary</span> and <span class="small">Void</span>. 
+												</li>
+
+												<li class="indented-list-item">
+													More formally:
+													
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															We set the length of each unary mapping to <i>N</i> = |<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>| + 3.
+														</li>
+
+														<li class="indented-list-item">
+															We map the <i>i</i><sup>th</sup> symbol in <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to
+															<i>i</i> 𝜏's followed by (<i>N</i> - <i>i</i>) #'s.
+														</li>
+
+														<li class="indented-list-item">
+															We map # to (<i>N</i> - 2) 𝜏's 
+															followed by two #'s. This accounts for instructions where the replacement symbol is #. 
+														</li>
+
+														<li class="indented-list-item">
+															We map <span class="small">Void</span> to (<i>N</i> - 1) 𝜏's followed by one #.
+														</li>
+
+														<li class="indented-list-item">
+															We map <span class="small">Boundary</span> to <i>N</i> 𝜏's. 
+														</li>
+													</ul>
+													
+												</li>
+												
+												<li class="indented-list-item">
+													We can, thus, convert the instruction 
+													<i>q</i> ] 𝛘(<i>t</i><sub><i>k</i></sub>/<i>t</i><sub><i>j</i></sub>) by changing the unary encoding of <i>t</i><sub><i>k</i></sub> 
+													to that of <span class="small">Void</span>, then writing the unary encoding of <i>t</i><sub><i>j</i></sub>.
+												</li>
+
+												<li class="indented-list-item">
+													Note that the machine can encounter several <span class="small">Void</span>'s before the unary encoding of 
+													the symbol of interest. As a result, rewinding back to the top row of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s tape
+													is not straightforward. To address this, we pad the top row of the tape with <span class="small">Boundary</span>.
+												</li>
+
+												<li class="indented-list-item">
+													Consequently, the first step in converting <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to 
+													to <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> is to translate each symbol in the
+													input string to the unary encoding of <span class="small">Boundary</span> followed by the unary encoding of the symbol.
+												</li>
+
+												<li class="indented-list-item">
+													To illustrate, suppose 𝜏 = 1 and <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> = {a, b}. <br /> <br />
+
+													Suppose the initial snapshot of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>'s tape 
+													is as follows: <br /> <br />
 
 													<table class="table table-bordered">
 														<tr>
 															<td class="text-center head-color">#</td>
 															<td class="text-center">a</td>
-															<td class="text-center">a</td>
-															<td class="text-center">b</td>
 															<td class="text-center">b</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 
-													After a series of transitions, suppose the snapshot of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> is
+													The equivalent snapshot of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s tape is
+													shown below. The unary encodings
+													of <span class="small">Boundary</span> are highlighted in light blue,
+													while the unary encodings of the symbols in the input string are highlighted in yellow. <br /> <br />
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center head-color">#</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">1</td>
+															<td class="text-center yellow-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center yellow-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+													</table>
+
+													Suppose we want to perform the instruction <i>q</i> ] R(a/b, <i>q'</i>). 
+													The equivalent snapshot of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s tape is
+													shown below.
+													The unary encoding of the newly written b is highlighted in yellow. <br /> <br />
 
 													<table class="table table-bordered">
 														<tr>
 															<td class="text-center">#</td>
-															<td class="text-center">X</td>
-															<td class="text-center">a</td>
-															<td class="text-center">Y</td>
-															<td class="text-center head-color">b</td>
+															<td class="text-center head-color">1</td>
+															<td class="text-center">1</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 
-													The equivalent snapshot of the tape of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> is
+													Suppose we want to perform the instruction <i>q'</i> ] R(b/a, <i>q''</i>). 
+													The equivalent snapshot of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s tape 
+													is shown below. The unary encoding of <span class="small">Void</span> is highlighted in light blue,
+													while the unary encoding of the newly written a is highlighted in yellow. <br /> <br />
 
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center head-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">1</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center blue-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center blue-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">1</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center yellow-color">#</td>
+															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+														</tr>
+														<tr>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+														</tr>
+													</table>
+												</li>								
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-1-proof2" aria-expanded="false" aria-controls="remarks-1-proof2">
+											Proof Sketch for&nbsp;<i>M</i><sub><span class="small">2DTM-2D-Counter</span></sub>&nbsp;⊆&nbsp;
+											<i>M</i><sub><span class="small">Ordinary-TM</span></sub>
+										</button>
+									</h2>
+
+									<div id="remarks-1-proof2" class="accordion-collapse collapse show" aria-labelledby="remarks-1-proof2">
+										<div class="accordion-body">
+											<ul class="indented-list">
+												<li class="indented-list-item">
+													Our key idea is to establish a bijection between the one-dimensional tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+													and the two-dimensional tape of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>. 											
+													This can be done by placing the rows of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> next to each other
+													and using a marker ⬤ ∉ <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to separate them.
+												</li>
+												<li class="indented-list-item">
+													To illustrate, suppose we have the following snapshot of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s tape:
+													<br /> <br />
 													<table class="table table-bordered">
 														<tr>
 															<td class="text-center">#</td>
@@ -282,215 +653,51 @@
 															<td class="text-center">#</td>
 														</tr>
 														<tr>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
-															<td class="text-center">#</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 												</li>
-
 												<li class="indented-list-item">
-													We attempt to formalize this idea: <br />
+													The equivalent snapshot of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> is
+													as follows:
+													<br /> <br />
+													<div class="table-responsive">
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center">#</td>
+																<td class="text-center">1</td>
+																<td class="text-center">1</td>
+																<td class="text-center">1</td>
+																<td class="text-center head-color">1</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">1</td>
+																<td class="text-center">#</td>
+																<td class="text-center">1</td>
+																<td class="text-center">1</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">1</td>
+																<td class="text-center">#</td>
+																<td class="text-center">1</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">#</td>
+																<td class="text-center">#</td>
+																<td class="text-center">1</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">...</td>
+															</tr>
+														</table>
 
-													<ul class="indented-list">
-														<li class="indented-list-item">
-															Given: 
-															<ul class="indented-list">
-																<li class="indented-list-item">
-																	<i>q</i>, 
-																	<i>q'</i> ∈ 
-																	<i>Q</i><sub><span class="small">Ordinary&#8209;TM</span></sub>		
-																</li>
-																<li class="indented-list-item">
-																	𝛘 ∈ {R, L}	
-																</li>
-																<li class="indented-list-item">
-																	<i>t<sub>i</sub></i> is the <i>i</i><sup>th</sup> symbol in
-																	<i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
-																</li>
-															</ul>
-														</li>
-
-														<li class="indented-list-item">
-															Place the input string on the top row of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>,
-															then convert every symbol in this input string to its corresponding unary encoding. 
-															Afterwards, rewind the tape head of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>
-															to the initial # (i.e., the # at the top row, leftmost column). 
-
-															<ul class="indented-list">
-																<li class="indented-list-item">
-																	Let <i>q</i><sub><i>I</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub></sub> be <i>q</i><sub>0<sub>0</sub></sub>.
-																</li>
-
-																<li class="indented-list-item">
-																	Converting a symbol <i>t<sub>h</sub></i> in the input string can be done via this sequence of 
-																	<span class="small">2DTM&#8209;2D&#8209;Counter</span> instructions:
-
-																	<ul class="indented-list">
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub>0</sub></sub> ] 
-																			R(<i>t<sub>h</sub></i>/𝜏, <i>q</i><sub>0<sub>1</sub></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub>1</sub></sub> ] 
-																			D(#</i>/𝜏, <i>q</i><sub>0<sub>2</sub></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub>2</sub></sub> ] 
-																			D(#</i>/𝜏, <i>q</i><sub>0<sub>3</sub></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			... 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub><i>h</i> - 1</sub></sub> ] 
-																			D(#</i>/𝜏, <i>q</i><sub>0<sub><i>h</i></sub></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub><i>h</i></sub></sub> ] 
-																			U(𝜏</i>/𝜏, <i>q</i><sub>0<sub><i>h</i> + 1</sub></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub><i>h</i> + 1</sub></sub> ] 
-																			U(𝜏</i>/𝜏, <i>q</i><sub>0<sub><i>h</i> + 2</sub></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			... 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub>2<i>h</i> - 2</sub></sub> ] 
-																			U(𝜏</i>/𝜏, <i>q</i><sub>0<sub>0</sub></sub>) 
-																		</li>
-																	</ul>
-																</li>
-
-																<li class="indented-list-item">
-																	Rewinding the tape head of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> 
-																	to the initial # can be done via this sequence of 
-																	<span class="small">2DTM&#8209;2D&#8209;Counter</span> instructions:
-																
-																	<ul class="indented-list">
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub>0</sub></sub> ] 
-																			R(#/#, <i>q</i><sub>0<sub>rewind</sub></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>0<sub>rewind</sub></sub> ] 
-																			L(𝜏/𝜏, <i>q</i><sub>0<sub>rewind</sub></sub>)(#/#, <i>q</i><sub><i>I</i><sub><span class="small">Ordinary&#8209;TM</span></sub></sub>)
-																		</li>
-																	</ul>
-																</li>																
-															</ul>
-														</li>
-
-														<li class="indented-list-item">
-															An <span class="small">Ordinary&#8209;TM</span> instruction <i>q</i> ] 
-															𝛘(<i>t<sub>j</sub></i>/<i>t<sub>k</sub></i>, <i>q'</i>)
-															can now be converted to the following sequence of 
-															<span class="small">2DTM&#8209;2D&#8209;Counter</span>
-															instructions:
-
-															<ul class="indented-list">
-																<li class="indented-list-item">
-																	Read the unary encoding of <i>t<sub>j</sub></i>.
-																	<ul class="indented-list">
-																		<li class="indented-list-item">
-																			<i>q</i> ] 
-																			𝛘(𝜏/𝜏, <i>q</i><sub>1</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>1</sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub>2</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2</sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub>3</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			... 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub><i>j</i> - 1</sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub><i>j</i></sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub><i>j</i></sub> ] 
-																			D(#/#, <i>q</i><sub><i>j</i> + 1</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub><i>j</i> + 1</sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub><i>j</i> + 2</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub><i>j</i> + 2</sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub><i>j</i> + 3</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			... 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> - 1</sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i></sub>) 
-																		</li>
-																	</ul>
-																</li>
-																<li class="indented-list-item">
-																	Write the unary encoding of <i>t<sub>k</sub></i>.
-																	<ul class="indented-list">
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i></sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 1</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + 1</sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 2</sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + 2</sub>)
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + 2</sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + 3</sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + 3</sub>)
-																		</li>
-																		<li class="indented-list-item">
-																			... 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + <i>k</i> - 1</sub> ] 
-																			D(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i></sub>)(#/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i></sub>)
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + <i>k</i></sub> ] 
-																			D(𝜏/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)(#/#, <i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub>)
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 1</sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + <i>k</i> + 2</sub> ] 
-																			U(𝜏/𝜏, <i>q</i><sub>2<i>j</i> + <i>k</i> + 3</sub>) 
-																		</li>
-																		<li class="indented-list-item">
-																			... 
-																		</li>
-																		<li class="indented-list-item">
-																			<i>q</i><sub>2<i>j</i> + 2<i>k</i></sub> ] 
-																			U(𝜏/𝜏, <i>q'</i>) 
-																		</li>
-																	</ul>
-																</li>
-															</ul>													
-														</li>
-
-														<li class="indented-list-item">
-															Instructions <i>q</i> ] 
-															X(#/<i>t<sub>k</sub></i>, <i>q'</i>), <i>q</i> ] 
-															X(<i>t<sub>j</sub></i>/#, <i>q'</i>), and <i>q</i> ] 
-															X(#/#, <i>q'</i>)
-															can be converted analogously.
-														</li>
-													</ul>									
+													</div>
 												</li>
 											</ul>
 										</div>
@@ -500,7 +707,7 @@
 						</div>
 						
 						<div id="remarks-2" class="tab-pane fade"> <br />
-							A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NDTM-2D-Counter</span>) is equivalent in power 
+							A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NTM-2D-Counter</span>) is equivalent in power 
 							to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary-TM</span>).
 						</div>
 					</div>

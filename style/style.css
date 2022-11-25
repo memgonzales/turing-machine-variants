@@ -151,6 +151,14 @@ button:disabled {
 	color: white;
 }
 
+.yellow-color {
+	background-color: var(--yellow-highlight) !important;
+}
+
+.blue-color {
+	background-color: var(--blue-light2) !important;
+}
+
 .accordion-button:not(.collapsed) {
 	color: var(--bs-body-color) !important;
 	background-color: white !important;
