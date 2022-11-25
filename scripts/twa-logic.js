@@ -310,7 +310,7 @@ $(document).ready(function () {
 			}
 
 			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 1) {
-				alert(`Line ${lineNumber + 1}: Expected ',' immediately after input symbol '${stimulus}', but found ' '`);
+				alert(`Line ${lineNumber + 1}: Expected ',' immediately after input symbol '${stimulus}', but found ' '.`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}

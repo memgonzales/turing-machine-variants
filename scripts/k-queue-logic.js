@@ -5,6 +5,7 @@ $(document).ready(function () {
 	const NUM_CELLS = MAX_ITERATIONS;
 
 	let initialState;
+	let numQueues;
 	let machine;
 	let inputString;
 	let processedMachine;
@@ -22,6 +23,7 @@ $(document).ready(function () {
 	let numColumns;
 	let numRows;
 	let tape;
+	let queues;
 
 	let config;
 	let stepNumber;
@@ -130,6 +132,7 @@ $(document).ready(function () {
 
 	function resetInputAttributes() {
 		initialState = '';
+		numQueues = 0;
 		machine = '';
 		inputString = '';
 		processedMachine = [];
@@ -145,6 +148,7 @@ $(document).ready(function () {
 		numColumns = 0;
 		numRows = 0;
 		tape = [];
+		queues = [];
 
 		config = 1;
 		stepNumber = 1;
@@ -162,13 +166,17 @@ $(document).ready(function () {
 		missingTransition = [];
 		undecided = [];
 
-		for (let i = 0; i < NUM_CELLS; i++) {
+		for (let i = 0; i < 1; i++) {
 			const tapeRow = [];
 			for (let j = 0; j < NUM_CELLS; j++) {
 				tapeRow.push('#');
 			}
 
 			tape.push(tapeRow);
+		}
+
+		for (let i = 0; i < NUM_CELLS; i++) {
+			queues.push([]);
 		}
 
 		$('#step-number').val(stepNumber);
@@ -206,7 +214,9 @@ $(document).ready(function () {
 			lineNumber++;
 		}
 
-		initialState = processedMachine[0].trim();
+		let firstLine = processedMachine[0].trim().split(' ');
+		initialState = firstLine[0];
+		numQueues = firstLine[1];
 
 		/* Remove the initial state. */
 		processedMachine.shift();
@@ -244,7 +254,7 @@ $(document).ready(function () {
 		}
 
 		if (tokens.length < MIN_NUM_TOKENS) {
-			alert(`Line ${lineNumber + 1}: Incomplete information about transition or decision state. Expected number of whitespace-separated tokens is ${MIN_NUM_TOKENS} (for decision) or ${MAX_NUM_TOKENS} (for transition), but found ${tokens.length}.`);
+			alert(`Line ${lineNumber + 1}: Incomplete information about transition or final state. Expected number of whitespace-separated tokens is ${MIN_NUM_TOKENS} (for decision) or ${MAX_NUM_TOKENS} (for transition), but found ${tokens.length}.`);
 			highlightEditor(lineNumber, 'marker3');
 			return false;
 		}
@@ -271,55 +281,55 @@ $(document).ready(function () {
 		let directionStimulus = tokens[2];
 		let directionRaw = directionStimulus[0];
 		let direction = directionRaw.toUpperCase().trim();
+		let directionTrue = '';
 
 		/* Transition */
 		if (tokens.length == MAX_NUM_TOKENS) {
-			if (direction !== 'R' && direction !== 'L') {
-				alert(`Line ${lineNumber + 1}: Unknown direction. Expected 'R' or 'L', but found '${directionStimulus[0].trim()}'.`);
+			if (direction !== 'S' && direction !== 'W' && direction !== 'R') {
+				alert(`Line ${lineNumber + 1}: Unknown action. Expected action to start with 'S', 'W', or 'R', but found '${directionStimulus[0].trim()}'.`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
 
-			let separatorParen = directionStimulus[1];
+			let separatorComma = directionStimulus[directionStimulus.length - 1];
+			if (separatorComma !== ',') {
+				alert(`Line ${lineNumber + 1}: Expected ',' immediately after symbol '${stimulus}', but found ' '.`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
+
+			let separatorParen = directionStimulus[directionStimulus.length - 3];
 			if (separatorParen !== '(') {
-				/* Account for R followed by space. */
-				let found = ' ';
-				if (typeof separatorParen != 'undefined') {
-					found = separatorParen;
+				alert(`Line ${lineNumber + 1}: Expected ')' to separate action and symbol, but found ${separatorParen}.`);
+				highlightEditor(lineNumber, 'marker3');
+				return false;
+			}
+
+			let stimulus = directionStimulus[directionStimulus.length - 2];
+
+			directionTrue = directionStimulus.substring(0, directionStimulus.length - 3);
+
+			if (direction === 'S') {
+				let leftRight = '';
+				leftRight = directionTrue.substring(1, directionTrue.length);
+				if (leftRight !== 'L' && leftRight !== 'R') {
+					alert(`Line ${lineNumber + 1}: Expected 'SL' or 'SR' as action, but found '${directionTrue}'.`);
+					highlightEditor(lineNumber, 'marker3');
+					return false;
 				}
-
-				alert(`Line ${lineNumber + 1}: Expected '(' immediately after direction '${directionRaw.trim()}', but found '${found}'.`);
-				highlightEditor(lineNumber, 'marker3');
-				return false;
 			}
 
-			stimulus = directionStimulus[2];
-			const LEN_DIRECTION_STIMULUS = 4;
-			let separatorComma1 = directionStimulus[3];
-
-			if (directionStimulus.length > LEN_DIRECTION_STIMULUS) {
-				alert(`Line ${lineNumber + 1}: Expected input symbol to have only one character, but found input symbol starting with '${stimulus}${directionStimulus[3]}'`);
-				highlightEditor(lineNumber, 'marker3');
-				return false;
+			if (direction === 'R' || direction === 'W') {
+				let queueNumber = '';
+				queueNumber = parseInt(directionTrue.substring(1, directionTrue.length));
+				if (isNaN(queueNumber)) {
+					alert(`Line ${lineNumber + 1}: Expected queue number after ${direction}, but found '${queueNumber}'.`);
+					highlightEditor(lineNumber, 'marker3');
+					return false;
+				}
 			}
 
-			if (directionStimulus.length >= LEN_DIRECTION_STIMULUS && separatorComma1 !== ',') {
-				alert(`Line ${lineNumber + 1}: Expected input symbol to have only one character, but found input symbol starting with '${stimulus}${directionStimulus[3]}'`);
-				highlightEditor(lineNumber, 'marker3');
-				return false;
-			}
-
-			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 1) {
-				alert(`Line ${lineNumber + 1}: Expected ',' immediately after input symbol '${stimulus}', but found ' '`);
-				highlightEditor(lineNumber, 'marker3');
-				return false;
-			}
-
-			if (directionStimulus.length == LEN_DIRECTION_STIMULUS - 2) {
-				alert(`Line ${lineNumber + 1}: No input symbol found.`);
-				highlightEditor(lineNumber, 'marker3');
-				return false;
-			}
+			direction = directionTrue;
 
 			let nextStateParen = tokens[3];
 			nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
@@ -338,8 +348,8 @@ $(document).ready(function () {
 		} else {
 			decision = directionStimulus.toLowerCase().trim();
 
-			if (decision !== 'reject' && decision !== 'accept') {
-				alert(`Line ${lineNumber + 1}: Unknown decision. Expected 'reject' or 'accept', but found '${decision}'.`);
+			if (decision !== 'final') {
+				alert(`Line ${lineNumber + 1}: Unknown token. Expected 'final', but found '${decision}'.`);
 				highlightEditor(lineNumber, 'marker3');
 				return false;
 			}
@@ -367,7 +377,7 @@ $(document).ready(function () {
 	}
 
 	function isTransitionState(state) {
-		return adjGraphDirection[state] !== 'accept' && adjGraphDirection[state] !== 'reject';
+		return adjGraphDirection[state] !== 'final';
 	}
 
 	function constructBlankAdjGraph() {
