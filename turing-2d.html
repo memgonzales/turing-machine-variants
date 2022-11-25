@@ -232,7 +232,7 @@
 													to a vertical string of <i>i</i> 𝜏's.
 													<ul class="indented-list">
 														<li class="indented-list-item">
-															Reason: This does not allow us to convert the instruction <i>q</i> ] 𝛘(<i>t</i><sub><i>k</i></sub>/<i>t</i><sub><i>j</i></sub>,
+															Reason: This does not allow us to simulate the instruction <i>q</i> ] 𝛘(<i>t</i><sub><i>k</i></sub>/<i>t</i><sub><i>j</i></sub>,
 															<i>q'</i>) if <i>j</i> &lt; <i>k</i>. 
 														</li>
 														<li class="indented-list-item">
@@ -278,7 +278,7 @@
 												</li>
 												
 												<li class="indented-list-item">
-													We can, thus, convert the instruction 
+													We can, thus, simulate the instruction 
 													<i>q</i> ] 𝛘(<i>t</i><sub><i>k</i></sub>/<i>t</i><sub><i>j</i></sub>) by changing the unary encoding of <i>t</i><sub><i>k</i></sub> 
 													to that of <span class="small">Void</span>, then writing the unary encoding of <i>t</i><sub><i>j</i></sub>.
 												</li>
@@ -607,14 +607,14 @@
 										</button>
 									</h2>
 
-									<div id="remarks-1-proof2" class="accordion-collapse collapse show" aria-labelledby="remarks-1-proof2">
+									<div id="remarks-1-proof2" class="accordion-collapse collapse" aria-labelledby="remarks-1-proof2">
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
 													Our key idea is to establish a bijection between the one-dimensional tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
 													and the two-dimensional tape of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>. 											
 													This can be done by placing the rows of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> next to each other
-													and using a marker ⬤ ∉ <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to separate them.
+													and using a marker ⬤ ∉ <i>T</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to demarcate them.
 												</li>
 												<li class="indented-list-item">
 													To illustrate, suppose we have the following snapshot of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s tape:
@@ -663,7 +663,7 @@
 													</table>
 												</li>
 												<li class="indented-list-item">
-													The equivalent snapshot of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> is
+													The equivalent snapshot of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>'s tape is
 													as follows:
 													<br /> <br />
 													<div class="table-responsive">
@@ -696,11 +696,62 @@
 																<td class="text-center">...</td>
 															</tr>
 														</table>
-
 													</div>
+												</li>
+												<li class="indented-list-item">
+													Simulating the left and right movements of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> is
+													straightforward, except for two cases:
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															The tape head attempts to move past the rightmost square in a row. 
+															This would require <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to vacate a cell by shifting 
+															the contents of the other cells to the right. 
+														</li>
+
+														<li class="indented-list-item">
+															The tape head attempts to move past the leftmost square in a row. This is illegal.
+														</li>
+													</ul>
+												</li>
+												<li class="indented-list-item">
+													Simulating the up and down movements of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> requires
+													moving the tape head of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to the left (for up) or to the right
+													(for down) until the demarcator ⬤ is reached, signaling that the tape head is already "entering" the target row. 
+													From there, we continue moving the tape head in the same direction 
+													until the target column is reached. 
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															This simulation entails keeping track of how many times the tape head has already moved. This information can be 
+															written on a separate
+															tape. A two-tape (or, in general, a multi-tape) Turing machine is equivalent in power to a single-tape Turing machine
+															(a sketch of the conversion is provided as an addendum).
+														</li>
+
+														<li class="indented-list-item">
+															If the target cell is not yet in the mapping of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s 
+															tape to <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>'s tape, the latter machine has to vacate a 
+															cell by shifting the contents of the other cells to the right.
+														</li>
+
+														<li class="indented-list-item">
+															Attempting to move past the topmost row is illegal.
+														</li>
+													</ul>
 												</li>
 											</ul>
 										</div>
+									</div>
+								</div>
+
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-1-proof3" aria-expanded="false" aria-controls="remarks-1-proof3">
+											Addendum: Simulating a Multi-Tape Using a Single-Tape Turing Machine
+										</button>
+									</h2>
+
+									<div id="remarks-1-proof3" class="accordion-collapse collapse show" aria-labelledby="remarks-1-proof3">
+										Hello
 									</div>
 								</div>
 							</div>
