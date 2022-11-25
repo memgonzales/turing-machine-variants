@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8" />
 
-		<title>Finite Automaton</title>
+		<title>k-Queue Automaton</title>
 
 		<link rel="icon" type="image/x-icon" href="assets/automata-icon.png" />
 		<link href="style/colors.css" rel="stylesheet" />
@@ -34,25 +34,26 @@
 				<div class="collapse navbar-collapse" id="menu">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="#">Finite Automaton</a>
+							<a class="nav-link" aria-disabled="true" href="index.html" tabindex="-1">Finite Automaton</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="turing-2d.html" tabindex="-1" aria-disabled="true">Turing Machine with 2D Tape</a>
+							<a class="nav-link" tabaria-current="page" tabindex="-1" href="turing-2d.html">Turing Machine with 2D Tape</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="k-queue.html" tabindex="-1" aria-disabled="true">
+							<a class="nav-link active" href="#" aria-disabled="true">
 								<span>
-									<i>k</i>-Queue Automaton
+									<i>k</i>
+									-Queue Automaton
 								</span>
 							</a>
 						</li>
 					</ul>
 				</div>
 
-				<div id="view-github" class="d-flex align-right">
+				<div id="view-github" class="d-flex">
 					<a class="nav-link" target="_blank" href="https://github.com/memgonzales/turing-machine-variants"><img id="github-icon" src="assets/github.png" class="d-inline-block" /></a>
 				</div>
-				<div id="view-github" class="d-flex align-left">
+				<div id="view-github" class="d-flex">
 					<a class="nav-link" target="_blank" href="https://github.com/memgonzales/turing-machine-variants">View on GitHub</a>
 				</div>
 			</div>
@@ -69,41 +70,16 @@
 								<option value="instructions">Instructions</option>
 								<option value="custom">Blank Machine</option>
 							</optgroup>
-							<optgroup label="Deterministic, Two-Way">
-								<option value="odd-and-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∧ N₁(ω) ≡ 0 mod 2}</option>
-								<option value="odd-or-even">{ω ∈ (0 ∪ 1)* | N₀(ω) ≡ 1 mod 2 ∨ N₁(ω) ≡ 0 mod 2}</option>
-								<option value="sad-and-smiley">{ω ∈ (0 ∪ 1)* | N₀(ω) = 3k ∧ N₁(ω) = 2i, where k, i > 0}</option>
-								<option value="a-preceded-b">{ω ∈ (@ ∪ !)* | Each @ is preceded by !}</option>
-								<option value="codon-det">{ω ∈ (A ∪ T ∪ C ∪ G)* | Starts with AUG and ends with UAA, UAG, or UGA}</option>
+							<optgroup label="Deterministic, Two-Way, Counter">
+								<option value="axbxcx-det">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
 							</optgroup>
-							<optgroup label="Deterministic, One-Way">
-								<option value="a-before-b">{ω ∈ (a ∪ b)* | aˣbʸ, where x, y ≥ 0}</option>
-								<option value="power-mod3">{ω ∈ (0 ∪ 1)* | 2ˣ ≡ 2 mod 3, where x = decimal(ω)}</option>
-								<option value="1-mod3">{ω ∈ (0 ∪ 1)* | x ≡ 1 mod 3, where x = decimal(ω)}</option>
-							</optgroup>
-							<optgroup label="Nondeterministic, One-Way">
-								<option value="010-or-11">{ω ∈ (0 ∪ 1)* | Contains at least one instance of 010 or 11}</option>
-								<option value="codon-non1">{ω ∈ (A ∪ T ∪ C ∪ G)* | Starts with AUG and ends with UAA, UAG, or UGA}</option>
-							</optgroup>
-							<optgroup label="Nondeterministic, Two-Way">
-								<option value="at-exclaim">{ω ∈ (0 ∪ 1)* | Each @ is preceded by ! or followed by !}</option>
-								<option value="codon-non2">{ω ∈ (A ∪ T ∪ C ∪ G)* | Starts with AUG and ends with UAA, UAG, or UGA}</option>
-							</optgroup>
-							<optgroup label="Error Handling">
-								<option value="error-syntax">Syntax Error</option>
-								<option value="error-direction">Unknown Direction</option>
-								<option value="error-decision">Unknown Decision</option>
-								<option value="error-no-stimulus">No Input Symbol</option>
-								<option value="error-multiple">Multiple-Character Input Symbol</option>
-								<option value="error-invalid">Invalid Transition</option>
-								<option value="error-tokens">Incorrect Number of Tokens</option>
-								<option value="error-unique">State with Non-Unique Direction/Decision</option>
+							<optgroup label="Nondeterministic, Two-Way, Counter">
+								<option value="axbxcx-non">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
 							</optgroup>
 						</select>
 
 						<button id="save" type="button" class="btn btn-outline-primary"><i class="bi bi-download"></i></button>
 					</div>
-
 					<br />
 					<div id="editor"></div>
 					<br />
@@ -115,7 +91,10 @@
 				</div>
 
 				<div id="simulation-container" class="col-sm-7">
-					<h3>Finite Automaton</h3>
+					<h3>
+						<i>k</i>
+						-Queue Automaton
+					</h3>
 					<div class="row">
 						<div id="simulation" class="table-responsive">
 							<div id="simulation-config">
@@ -165,12 +144,40 @@
 					</div>
 
 					<br />
-					<div id="remarks" class="row">
-						<div class="col-sm-12">
-							<h5>Remarks</h5>
-							<ul class="indented-list">
-								<li class="indented-list-item">Two-way accepters are equivalent in power to one-way accepters.</li>
-							</ul>
+					<ul class="nav nav-tabs" id="remarks-tab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active tab" id="tab-1" data-bs-toggle="tab" data-bs-target="#remarks-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">
+								<span class="small">2DTM&#8209;2D&#8209;Counter</span>
+							</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link tab" id="tab-2" data-bs-toggle="tab" data-bs-target="#remarks-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">
+								<span class="small">2NTM&#8209;2D&#8209;Counter</span>
+							</button>
+						</li>
+					</ul>
+
+					<div id="remarks" class="tab-content">
+						<div id="remarks-1" class="tab-pane fade show active">
+							<br />
+							A two-way deterministic counter Turing machine with a two-dimensional tape (
+							<span class="small">2DTM&#8209;2D&#8209;Counter</span>
+							) is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape (
+							<span class="small">Ordinary&#8209;TM</span>
+							).
+							<br />
+							<br />
+
+							<div class="accordion" id="remarks-1-head"></div>
+						</div>
+
+						<div id="remarks-2" class="tab-pane fade">
+							<br />
+							A two-way nondeterministic counter Turing machine with a two-dimensional tape (
+							<span class="small">2NTM-2D-Counter</span>
+							) is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape (
+							<span class="small">Ordinary-TM</span>
+							).
 						</div>
 					</div>
 				</div>
@@ -185,8 +192,8 @@
 		</footer>
 
 		<script src="scripts/code-editor.js"></script>
-		<script src="scripts/twa-input.js"></script>
-		<script src="scripts/twa-logic.js"></script>
+		<script src="scripts/k-queue-input.js"></script>
+		<script src="scripts/k-queue-logic.js"></script>
 		<script src="scripts/save.js"></script>
 	</body>
 </html>
