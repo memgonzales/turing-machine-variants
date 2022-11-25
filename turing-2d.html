@@ -703,13 +703,13 @@
 													straightforward, except for two cases:
 													<ul class="indented-list">
 														<li class="indented-list-item">
-															The tape head attempts to move past the rightmost square in a row. 
-															This would require <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to vacate a cell by shifting 
-															the contents of the other cells to the right. 
+															If the tape head attempts to move (right) to a cell that has not yet been previously visited,
+															<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> has to make room for it by shifting 
+															all the contents starting from the nearest ⬤ up to the rightmost ⬤, one unit to the right. 
 														</li>
 
 														<li class="indented-list-item">
-															The tape head attempts to move past the leftmost square in a row. This is illegal.
+															The tape head attempts to move past the leftmost cell in a row. This is illegal.
 														</li>
 													</ul>
 												</li>
@@ -728,9 +728,9 @@
 														</li>
 
 														<li class="indented-list-item">
-															If the target cell is not yet in the mapping of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>'s 
-															tape to <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>'s tape, the latter machine has to vacate a 
-															cell by shifting the contents of the other cells to the right.
+															If the target cell has not yet been previously visited, <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+															has to make room for it by shifting all the contents starting from the right of the newly vacated cell up to the rightmost ⬤, 
+															one unit to the right.
 														</li>
 
 														<li class="indented-list-item">
