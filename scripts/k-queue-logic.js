@@ -1,8 +1,8 @@
 $(document).ready(function () {
 	const editor = ace.edit('editor');
 
-	const MAX_ITERATIONS = 1000;
-	const NUM_CELLS = 10;
+	const MAX_ITERATIONS = 30;
+	const NUM_CELLS = 30;
 
 	let initialState;
 	let numQueues;
@@ -181,8 +181,6 @@ $(document).ready(function () {
 			const queueRow = [];
 			queues.push(queueRow);
 		}
-
-		console.log(queues);
 
 		$('#step-number').val(stepNumber);
 		$('#prev').prop('disabled', true);
@@ -381,8 +379,8 @@ $(document).ready(function () {
 		return line[line.length - 1].length == 0;
 	}
 
-	function isTransitionState(state) {
-		return adjGraphDirection[state] !== 'final';
+	function isFinalState(state) {
+		return typeof finalStates.find((x) => x == state) !== 'undefined';
 	}
 
 	function constructBlankAdjGraph() {
@@ -494,6 +492,20 @@ $(document).ready(function () {
 		return parseInt(action.substring(1, action.length));
 	}
 
+	function isTransitionState(state) {
+		return true;
+	}
+
+	function areAllQueuesEmpty(queues) {
+		for (const queue of queues) {
+			if (queue.length != 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	function generatePaths() {
 		storeInputStringToTape();
 
@@ -501,6 +513,7 @@ $(document).ready(function () {
 		let finishedTapeRowIdx = [];
 		let finishedTapeColIdx = [];
 		let finishedLineNumbers = [];
+		let finishedDecision = [];
 
 		let unfinishedPaths = [[initialState]];
 		let unfinishedTapeRowIdx = [[0]];
@@ -544,21 +557,13 @@ $(document).ready(function () {
 						break;
 				}
 
-				console.table(currentQueue);
-				console.log(currentState);
-
 				if (isValid && numIterations < MAX_ITERATIONS) {
 					let stimulus = tape[currentTapeRowIdx][currentTapeColIdx];
 					let queueNumber = extractQueueNumber(adjGraphDirection[currentState]) - 1;
 
-					console.log('^^^^');
-					console.log(queueNumber);
-
 					if (adjGraphDirection[currentState][0] === 'R') {
 						stimulus = currentQueue[queueNumber][0];
 					}
-
-					console.log(stimulus);
 
 					let nextStates = adjGraphNextState[currentState][stimulus];
 					let currentLineNumbers = adjGraphLineNumber[currentState][stimulus];
@@ -573,8 +578,6 @@ $(document).ready(function () {
 					if (adjGraphDirection[currentState][0] === 'W') {
 						const stimuli = getStimulusAlphabet(1);
 
-						console.log('write');
-
 						nextStates = [];
 						currentLineNumbers = [];
 
@@ -583,61 +586,72 @@ $(document).ready(function () {
 							currentLineNumbers = currentLineNumbers.concat(adjGraphLineNumber[currentState][stimulus]);
 
 							let newNextStates = adjGraphNextState[currentState][stimulus];
-							console.table(newNextStates);
 							for (const state of newNextStates) {
 								nextPaths.push(path.concat([state]));
 								nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
 								nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
 
 								/* Enqueue */
-								console.table('enqueue');
-								currentQueue[queueNumber].push(stimulus);
-								console.table(currentQueue);
+								let thisQueue = copyArray(currentQueue);
+								thisQueue[queueNumber].push(stimulus);
+
+								nextQueues.push(queue.concat([thisQueue]));
+							}
+						}
+					}
+
+					try {
+						if (nextStates.length == 0) {
+							finishedPaths.push(path);
+							finishedTapeRowIdx.push(tapeRowIdx);
+							finishedTapeColIdx.push(tapeColIdx);
+							let lastLineNumber = adjGraphLineNumber[path[path.length - 1]];
+							if (Number.isInteger(lastLineNumber)) {
+								lineNumber.push(lastLineNumber);
+							}
+							finishedLineNumbers.push(lineNumber);
+
+							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
+								finishedDecision.push('Accepted');
+							} else {
+								console.log('yo');
+								finishedDecision.push('Rejected');
+							}
+						}
+					} catch (err) {}
+
+					if (adjGraphDirection[currentState][0] !== 'W') {
+						try {
+							for (const state of nextStates) {
+								nextPaths.push(path.concat([state]));
+								nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
+								nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
+
+								/* Dequeue */
+								if (adjGraphDirection[currentState][0] === 'R') {
+									currentQueue[queueNumber].shift();
+								}
 
 								nextQueues.push(queue.concat([currentQueue]));
 							}
-						}
-					}
-
-					console.log(currentState);
-					console.log(adjGraphNextState[currentState]);
-					console.log(nextStates);
-
-					if (nextStates.length == 0) {
-						finishedPaths.push(path);
-						finishedTapeRowIdx.push(tapeRowIdx);
-						finishedTapeColIdx.push(tapeColIdx);
-						let lastLineNumber = adjGraphLineNumber[path[path.length - 1]];
-						if (Number.isInteger(lastLineNumber)) {
-							lineNumber.push(lastLineNumber);
-						}
-						finishedLineNumbers.push(lineNumber);
-					}
-
-					if (adjGraphDirection[currentState][0] !== 'W') {
-						console.log('not write');
-						console.log('current line numbers');
-						console.log(currentLineNumbers);
-
-						for (const state of nextStates) {
-							nextPaths.push(path.concat([state]));
-							nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
-							nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
-
-							console.log('CCC');
-							console.log(currentState);
-							console.log(queueNumber);
-
-							/* Dequeue */
-							if (adjGraphDirection[currentState][0] === 'R') {
-								console.log('---');
-								console.log('Dequeue');
-								currentQueue[queueNumber].shift();
+						} catch (err) {
+							finishedPaths.push(path);
+							finishedTapeRowIdx.push(tapeRowIdx);
+							finishedTapeColIdx.push(tapeColIdx);
+							let lastLineNumber = adjGraphLineNumber[path[path.length - 1]];
+							if (Number.isInteger(lastLineNumber)) {
+								lineNumber.push(lastLineNumber);
 							}
+							finishedLineNumbers.push(lineNumber);
 
-							console.table(currentQueue);
-
-							nextQueues.push(queue.concat([currentQueue]));
+							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(currentQueue)) {
+								finishedDecision.push('Accepted');
+							} else {
+								console.log(isFinalState(path[path.length - 1]));
+								console.table(currentQueue[currentQueue.length - 1]);
+								console.log('yoo');
+								finishedDecision.push('Rejected');
+							}
 						}
 					}
 
@@ -646,15 +660,6 @@ $(document).ready(function () {
 							nextLineNumbers.push(lineNumber.concat([line]));
 						}
 					} catch (err) {}
-
-					console.table(lineNumber);
-					console.table(nextLineNumbers);
-
-					console.log('$$$');
-					console.table(nextQueues);
-					console.table(nextPaths);
-
-					console.table(nextLineNumbers);
 
 					unfinishedQueuesTemp = unfinishedQueuesTemp.concat(nextQueues);
 
@@ -672,6 +677,13 @@ $(document).ready(function () {
 					}
 					lineNumber.push(lastLineNumber);
 					finishedLineNumbers.push(lineNumber);
+
+					if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
+						finishedDecision.push('Accepted');
+					} else {
+						console.log('yooo');
+						finishedDecision.push('Rejected');
+					}
 				}
 			}
 
@@ -684,6 +696,8 @@ $(document).ready(function () {
 				unfinishedLineNumbers = unfinishedLineNumbersTemp;
 			}
 
+			console.table(unfinishedQueues);
+
 			numIterations++;
 		}
 
@@ -692,9 +706,11 @@ $(document).ready(function () {
 			finishedTapeRowIdx = unfinishedTapeRowIdx;
 			finishedTapeColIdx = unfinishedTapeColIdx;
 			finishedLineNumbers = unfinishedLineNumbers;
+
+			finishedDecision.push('Cannot Decide');
 		}
 
-		return [finishedPaths, finishedTapeRowIdx, finishedTapeColIdx, finishedLineNumbers];
+		return [finishedPaths, finishedTapeRowIdx, finishedTapeColIdx, finishedLineNumbers, finishedDecision];
 	}
 
 	function convertMachineToJS() {
@@ -714,7 +730,7 @@ $(document).ready(function () {
 
 		let generatedPaths = generatePaths();
 
-		console.log(generatedPaths);
+		console.table(generatedPaths);
 
 		finishedPaths = generatedPaths[0];
 		finishedTapeRowIdx = generatedPaths[1];
