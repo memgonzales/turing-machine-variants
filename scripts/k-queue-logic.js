@@ -617,13 +617,6 @@ $(document).ready(function () {
 							}
 
 							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
-								alert(finalStatesLineNumbers[path[path.length - 1]]);
-								lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
-							}
-
-							finishedLineNumbers.push(lineNumber);
-
-							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
 								lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
 								finishedDecision.push('Accepted');
 							} else {

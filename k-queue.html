@@ -70,11 +70,17 @@
 								<option value="instructions">Instructions</option>
 								<option value="custom">Blank Machine</option>
 							</optgroup>
-							<optgroup label="Deterministic, Two-Way, Counter">
+							<optgroup label="Deterministic, One-Way, Counter, Multi-Queue">
 								<option value="axbxcx-det">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
 							</optgroup>
-							<optgroup label="Nondeterministic, Two-Way, Counter">
-								<option value="axbxcx-non">{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}</option>
+							<optgroup label="Nondeterministic, One-Way, Counter, Multi-Queue">
+								<option value="ax-axbxcx-non">{ω ∈ (a ∪ b ∪ c)* | aˣ ∨ aˣbˣcˣ, x ≥ 0}</option>
+							</optgroup>
+							<optgroup label="Deterministic, Two-Way, Free Stack/Tape, One-Queue">
+								<option value="repeat-word">{ω ∈ (H ∪ A)* | ωωᴿ}</option>
+							</optgroup>
+							<optgroup label="Nondeterministic, Two-Way, Free Stack/Tape, One-Queue">
+								<option value="axbxcx-one-queue">{ω ∈ (H ∪ A)* | ωω}</option>
 							</optgroup>
 						</select>
 
