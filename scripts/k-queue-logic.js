@@ -335,6 +335,11 @@ $(document).ready(function () {
 					highlightEditor(lineNumber, 'marker3');
 					return false;
 				}
+
+				if (queueNumber > numQueues) {
+					alert(`Line ${lineNumber + 1}: Machine only has ${numQueues} queues, but found attempt to perform action on queue ${queueNumber}.`);
+					return false;
+				}
 			}
 
 			direction = directionTrue;
