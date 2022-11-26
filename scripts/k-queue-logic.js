@@ -33,6 +33,7 @@ $(document).ready(function () {
 	let finishedTapeRowIdx;
 	let finishedTapeColIdx;
 	let finishedLineNumbers;
+	let finishedDecision;
 
 	let finalDecision;
 	let pathDecision;
@@ -614,8 +615,11 @@ $(document).ready(function () {
 							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
 								finishedDecision.push('Accepted');
 							} else {
-								console.log('yo');
-								finishedDecision.push('Rejected');
+								if (numIterations == MAX_ITERATIONS) {
+									finishedDecision.push('Cannot Decide');
+								} else {
+									finishedDecision.push('Rejected');
+								}
 							}
 						}
 					} catch (err) {}
@@ -647,10 +651,11 @@ $(document).ready(function () {
 							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(currentQueue)) {
 								finishedDecision.push('Accepted');
 							} else {
-								console.log(isFinalState(path[path.length - 1]));
-								console.table(currentQueue[currentQueue.length - 1]);
-								console.log('yoo');
-								finishedDecision.push('Rejected');
+								if (numIterations == MAX_ITERATIONS) {
+									finishedDecision.push('Cannot Decide');
+								} else {
+									finishedDecision.push('Rejected');
+								}
 							}
 						}
 					}
@@ -681,8 +686,11 @@ $(document).ready(function () {
 					if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
 						finishedDecision.push('Accepted');
 					} else {
-						console.log('yooo');
-						finishedDecision.push('Rejected');
+						if (numIterations == MAX_ITERATIONS) {
+							finishedDecision.push('Cannot Decide');
+						} else {
+							finishedDecision.push('Rejected');
+						}
 					}
 				}
 			}
@@ -736,6 +744,7 @@ $(document).ready(function () {
 		finishedTapeRowIdx = generatedPaths[1];
 		finishedTapeColIdx = generatedPaths[2];
 		finishedLineNumbers = generatedPaths[3];
+		finishedDecision = generatedPaths[4];
 
 		getFinalDecision();
 		getPathDecision();
@@ -752,19 +761,19 @@ $(document).ready(function () {
 
 		for (let i = 0; i < finishedPaths.length; i++) {
 			const path = finishedPaths[i];
+			const decision = finishedDecision[i];
 			const lastState = path[path.length - 1];
-			if (isTransitionState(lastState)) {
-				if (path.length == MAX_ITERATIONS) {
-					undecided.push(i);
-				} else {
-					missingTransition.push(i);
-				}
-			} else {
-				if (adjGraphDirection[lastState] == 'accept') {
+
+			switch (decision) {
+				case 'Accepted':
 					accepted.push(i);
-				} else {
+					break;
+				case 'Rejected':
 					rejected.push(i);
-				}
+					break;
+				case 'Cannot Decide':
+					undecided.push(i);
+					break;
 			}
 		}
 
@@ -923,7 +932,7 @@ $(document).ready(function () {
 			case 'MISSING_TRANSITION':
 				return 'This error was caused by either (1) an incomplete set of transition functions or (2) the tape head attempting to access a prohibited cell (note that the tape extends infinitely in only one direction).';
 			case 'UNDECIDED':
-				return `Exceeded ${MAX_ITERATIONS} steps without reaching accepting/rejecting state`;
+				return `Reached ${MAX_ITERATIONS} steps without reaching accepting/rejecting state`;
 		}
 	}
 
