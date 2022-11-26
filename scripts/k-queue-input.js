@@ -54,11 +54,10 @@ $(document).ready(function () {
 
 	function instructions() {
 		const lines = [
-			'** INITIAL STATE **',
-			'The first line should be a single string denoting the initial state. It can be any string, provided that it does not contain any whitespace.',
+			'** INITIAL STATE & NUMBER OF QUEUES **',
+			'The first line should be a string containing the name of the initial state and the number of queues, separated by a whitespace.',
 			'',
-			'** NUMBER OF QUEUES **',
-			'The second line should be the number of queues. It should be a positive integer.',
+			'The initial state can be any string, provided that it does not contain any whitespace. The number of queues should be a positive integer.',
 			'',
 			'** TRANSITIONS **',
 			'Each transition should be entered on a separate line following this format:',
@@ -70,8 +69,8 @@ $(document).ready(function () {
 			'  - Can be any string not containing whitespace',
 			'  - Should not start with ; (otherwise, the line will be interpreted as a comment)',
 			'action',
-			'  - R<k>: Dequeue the specified symbol from queue k (k should be a positive integer)',
-			'  - W<k>: Enqueue the specified symbol to queue k (k should be a positive integer)',
+			'  - R<k>: Dequeue the specified symbol from the kth queue (k should be a positive integer)',
+			'  - W<k>: Enqueue the specified symbol to the kth queue (k should be a positive integer)',
 			'  - SL: Move the input tape head to the left',
 			'  - SR: Move the input tape head to the right',
 			'symbol',
@@ -94,8 +93,8 @@ $(document).ready(function () {
 		];
 		updateEditor(lines);
 
-		let marker1Lines = [0, 3, 6, 24, 34];
-		let marker2Lines = [9, 27];
+		let marker1Lines = [0, 5, 23, 33];
+		let marker2Lines = [8, 26];
 
 		for (const line of marker1Lines) {
 			editor.session.addMarker(new Range(line, 0, line, 1), 'marker1', 'fullLine');

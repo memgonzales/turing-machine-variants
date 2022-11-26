@@ -35,6 +35,8 @@ $(document).ready(function () {
 	let finishedLineNumbers;
 	let finishedDecision;
 
+	let finalStatesLineNumbers;
+
 	let finalDecision;
 	let pathDecision;
 
@@ -160,6 +162,8 @@ $(document).ready(function () {
 		finishedTapeRowIdx = [];
 		finishedTapeColIdx = [];
 		finishedLineNumbers = [];
+
+		finalStatesLineNumbers = {};
 
 		finalDecision = '';
 		pathDecision = '';
@@ -327,7 +331,7 @@ $(document).ready(function () {
 				let queueNumber = '';
 				queueNumber = parseInt(directionTrue.substring(1, directionTrue.length));
 				if (isNaN(queueNumber)) {
-					alert(`Line ${lineNumber + 1}: Expected queue number after ${direction}, but found '${queueNumber}'.`);
+					alert(`Line ${lineNumber + 1}: Expected queue number after ${direction}, but found '${directionTrue.substring(1, directionTrue.length)}'.`);
 					highlightEditor(lineNumber, 'marker3');
 					return false;
 				}
@@ -465,6 +469,7 @@ $(document).ready(function () {
 				adjGraphLineNumber[state][stimulus].push(processedMachineLineNumbers[idx]);
 			} else {
 				finalStates.push(state);
+				finalStatesLineNumbers[state] = processedMachineLineNumbers[idx];
 			}
 
 			idx++;
@@ -610,17 +615,30 @@ $(document).ready(function () {
 							if (Number.isInteger(lastLineNumber)) {
 								lineNumber.push(lastLineNumber);
 							}
+
+							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
+								alert(finalStatesLineNumbers[path[path.length - 1]]);
+								lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
+							}
+
 							finishedLineNumbers.push(lineNumber);
 
 							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
+								lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
 								finishedDecision.push('Accepted');
 							} else {
 								if (numIterations == MAX_ITERATIONS) {
 									finishedDecision.push('Cannot Decide');
 								} else {
 									finishedDecision.push('Rejected');
+
+									if (isFinalState(path[path.length - 1])) {
+										lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
+									}
 								}
 							}
+
+							finishedLineNumbers.push(lineNumber);
 						}
 					} catch (err) {}
 
@@ -646,17 +664,23 @@ $(document).ready(function () {
 							if (Number.isInteger(lastLineNumber)) {
 								lineNumber.push(lastLineNumber);
 							}
-							finishedLineNumbers.push(lineNumber);
 
-							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(currentQueue)) {
+							if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
+								lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
 								finishedDecision.push('Accepted');
 							} else {
 								if (numIterations == MAX_ITERATIONS) {
 									finishedDecision.push('Cannot Decide');
 								} else {
 									finishedDecision.push('Rejected');
+
+									if (isFinalState(path[path.length - 1])) {
+										lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
+									}
 								}
 							}
+
+							finishedLineNumbers.push(lineNumber);
 						}
 					}
 
@@ -680,18 +704,23 @@ $(document).ready(function () {
 					if (Number.isInteger(lastLineNumber)) {
 						lineNumber.push(lastLineNumber);
 					}
-					lineNumber.push(lastLineNumber);
-					finishedLineNumbers.push(lineNumber);
 
 					if (isFinalState(path[path.length - 1]) && areAllQueuesEmpty(queue[queue.length - 1])) {
+						lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
 						finishedDecision.push('Accepted');
 					} else {
 						if (numIterations == MAX_ITERATIONS) {
 							finishedDecision.push('Cannot Decide');
 						} else {
 							finishedDecision.push('Rejected');
+
+							if (isFinalState(path[path.length - 1])) {
+								lineNumber.push(finalStatesLineNumbers[path[path.length - 1]]);
+							}
 						}
 					}
+
+					finishedLineNumbers.push(lineNumber);
 				}
 			}
 
@@ -703,8 +732,6 @@ $(document).ready(function () {
 				unfinishedTapeColIdx = unfinishedTapeColIdxTemp;
 				unfinishedLineNumbers = unfinishedLineNumbersTemp;
 			}
-
-			console.table(unfinishedQueues);
 
 			numIterations++;
 		}
@@ -762,7 +789,6 @@ $(document).ready(function () {
 		for (let i = 0; i < finishedPaths.length; i++) {
 			const path = finishedPaths[i];
 			const decision = finishedDecision[i];
-			const lastState = path[path.length - 1];
 
 			switch (decision) {
 				case 'Accepted':
