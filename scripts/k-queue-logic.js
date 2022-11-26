@@ -2,7 +2,7 @@ $(document).ready(function () {
 	const editor = ace.edit('editor');
 
 	const MAX_ITERATIONS = 1000;
-	const NUM_CELLS = MAX_ITERATIONS;
+	const NUM_CELLS = 10;
 
 	let initialState;
 	let numQueues;
@@ -24,6 +24,7 @@ $(document).ready(function () {
 	let numRows;
 	let tape;
 	let queues;
+	let finalStates;
 
 	let config;
 	let stepNumber;
@@ -149,6 +150,7 @@ $(document).ready(function () {
 		numRows = 0;
 		tape = [];
 		queues = [];
+		finalStates = [];
 
 		config = 1;
 		stepNumber = 1;
@@ -176,8 +178,11 @@ $(document).ready(function () {
 		}
 
 		for (let i = 0; i < NUM_CELLS; i++) {
-			queues.push([]);
+			const queueRow = [];
+			queues.push(queueRow);
 		}
+
+		console.log(queues);
 
 		$('#step-number').val(stepNumber);
 		$('#prev').prop('disabled', true);
@@ -305,7 +310,7 @@ $(document).ready(function () {
 				return false;
 			}
 
-			let stimulus = directionStimulus[directionStimulus.length - 2];
+			stimulus = directionStimulus[directionStimulus.length - 2];
 
 			directionTrue = directionStimulus.substring(0, directionStimulus.length - 3);
 
@@ -398,7 +403,7 @@ $(document).ready(function () {
 		/* Check the input string. */
 		for (let i = 0; i < inputString.length; i++) {
 			if (!stimulusAlphabet.has(inputString[i])) {
-				alert(`No specified transition from any state for input symbol '${inputString[i]}'.`);
+				alert(`No specified transition from any state for symbol '${inputString[i]}'.`);
 				const input = document.getElementById('input-string');
 				input.focus();
 				input.setSelectionRange(i, i + 1);
@@ -439,7 +444,7 @@ $(document).ready(function () {
 			}
 		}
 
-		return stimulusAlphabet;
+		return stimulusAlphabet.add('#');
 	}
 
 	function convertToAdjGraph() {
@@ -449,7 +454,6 @@ $(document).ready(function () {
 			let stimulus = line[1];
 			let direction = line[2];
 			let nextState = line[3];
-			let decision = line[4];
 
 			if (isTransition(line)) {
 				if (adjGraphDirection[state].length > 0 && direction != adjGraphDirection[state]) {
@@ -461,14 +465,7 @@ $(document).ready(function () {
 				adjGraphNextState[state][stimulus].push(nextState);
 				adjGraphLineNumber[state][stimulus].push(processedMachineLineNumbers[idx]);
 			} else {
-				if (adjGraphDirection[state].length > 0 && decision != adjGraphDirection[state]) {
-					alert(`Line ${processedMachineLineNumbers[idx] + 1}: A state can be associated with only one decision.`);
-					highlightEditor(processedMachineLineNumbers[idx], 'marker3');
-					return false;
-				}
-
-				adjGraphDirection[state] = decision;
-				adjGraphLineNumber[state] = processedMachineLineNumbers[idx];
+				finalStates.push(state);
 			}
 
 			idx++;
@@ -483,6 +480,20 @@ $(document).ready(function () {
 		}
 	}
 
+	function copyArray(currentArray) {
+		var newArray = [];
+
+		for (var i = 0; i < currentArray.length; i++) {
+			newArray[i] = currentArray[i].slice();
+		}
+
+		return newArray;
+	}
+
+	function extractQueueNumber(action) {
+		return parseInt(action.substring(1, action.length));
+	}
+
 	function generatePaths() {
 		storeInputStringToTape();
 
@@ -495,10 +506,13 @@ $(document).ready(function () {
 		let unfinishedTapeRowIdx = [[0]];
 		let unfinishedTapeColIdx = [[0]];
 		let unfinishedLineNumbers = [[]];
+		let unfinishedQueues = [[copyArray(queues)]];
 
 		let numIterations = 1;
 		while (unfinishedPaths.length != 0 && numIterations <= MAX_ITERATIONS) {
 			/* Go through every unfinished path */
+			let unfinishedQueuesTemp = [];
+
 			let unfinishedPathsTemp = [];
 			let unfinishedTapeRowIdxTemp = [];
 			let unfinishedTapeColIdxTemp = [];
@@ -506,40 +520,88 @@ $(document).ready(function () {
 
 			for (let i = 0; i < unfinishedPaths.length; i++) {
 				let isValid = true;
+
+				let queue = unfinishedQueues[i];
 				let path = unfinishedPaths[i];
 				let tapeRowIdx = unfinishedTapeRowIdx[i];
 				let tapeColIdx = unfinishedTapeColIdx[i];
 				let lineNumber = unfinishedLineNumbers[i];
 
+				let currentQueue = queue[queue.length - 1];
 				let currentState = path[path.length - 1];
 				let currentTapeRowIdx = tapeRowIdx[tapeRowIdx.length - 1];
 				let currentTapeColIdx = tapeColIdx[tapeColIdx.length - 1];
 
 				switch (adjGraphDirection[currentState]) {
-					case 'R':
+					case 'SR':
 						currentTapeColIdx++;
 						break;
-					case 'L':
+					case 'SL':
 						currentTapeColIdx--;
 						if (currentTapeColIdx == -1) {
 							isValid = false;
 						}
 						break;
-					case 'accept':
-						break;
-					case 'reject':
-						break;
 				}
+
+				console.table(currentQueue);
+				console.log(currentState);
 
 				if (isValid && numIterations < MAX_ITERATIONS) {
 					let stimulus = tape[currentTapeRowIdx][currentTapeColIdx];
+					let queueNumber = extractQueueNumber(adjGraphDirection[currentState]) - 1;
+
+					console.log('^^^^');
+					console.log(queueNumber);
+
+					if (adjGraphDirection[currentState][0] === 'R') {
+						stimulus = currentQueue[queueNumber][0];
+					}
+
+					console.log(stimulus);
+
 					let nextStates = adjGraphNextState[currentState][stimulus];
 					let currentLineNumbers = adjGraphLineNumber[currentState][stimulus];
+
+					let nextQueues = [];
 
 					let nextPaths = [];
 					let nextTapeRowIdx = [];
 					let nextTapeColIdx = [];
 					let nextLineNumbers = [];
+
+					if (adjGraphDirection[currentState][0] === 'W') {
+						const stimuli = getStimulusAlphabet(1);
+
+						console.log('write');
+
+						nextStates = [];
+						currentLineNumbers = [];
+
+						for (const stimulus of stimuli) {
+							nextStates = nextStates.concat(adjGraphNextState[currentState][stimulus]);
+							currentLineNumbers = currentLineNumbers.concat(adjGraphLineNumber[currentState][stimulus]);
+
+							let newNextStates = adjGraphNextState[currentState][stimulus];
+							console.table(newNextStates);
+							for (const state of newNextStates) {
+								nextPaths.push(path.concat([state]));
+								nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
+								nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
+
+								/* Enqueue */
+								console.table('enqueue');
+								currentQueue[queueNumber].push(stimulus);
+								console.table(currentQueue);
+
+								nextQueues.push(queue.concat([currentQueue]));
+							}
+						}
+					}
+
+					console.log(currentState);
+					console.log(adjGraphNextState[currentState]);
+					console.log(nextStates);
 
 					if (nextStates.length == 0) {
 						finishedPaths.push(path);
@@ -552,10 +614,31 @@ $(document).ready(function () {
 						finishedLineNumbers.push(lineNumber);
 					}
 
-					for (const state of nextStates) {
-						nextPaths.push(path.concat([state]));
-						nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
-						nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
+					if (adjGraphDirection[currentState][0] !== 'W') {
+						console.log('not write');
+						console.log('current line numbers');
+						console.log(currentLineNumbers);
+
+						for (const state of nextStates) {
+							nextPaths.push(path.concat([state]));
+							nextTapeRowIdx.push(tapeRowIdx.concat([currentTapeRowIdx]));
+							nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
+
+							console.log('CCC');
+							console.log(currentState);
+							console.log(queueNumber);
+
+							/* Dequeue */
+							if (adjGraphDirection[currentState][0] === 'R') {
+								console.log('---');
+								console.log('Dequeue');
+								currentQueue[queueNumber].shift();
+							}
+
+							console.table(currentQueue);
+
+							nextQueues.push(queue.concat([currentQueue]));
+						}
 					}
 
 					try {
@@ -563,6 +646,17 @@ $(document).ready(function () {
 							nextLineNumbers.push(lineNumber.concat([line]));
 						}
 					} catch (err) {}
+
+					console.table(lineNumber);
+					console.table(nextLineNumbers);
+
+					console.log('$$$');
+					console.table(nextQueues);
+					console.table(nextPaths);
+
+					console.table(nextLineNumbers);
+
+					unfinishedQueuesTemp = unfinishedQueuesTemp.concat(nextQueues);
 
 					unfinishedPathsTemp = unfinishedPathsTemp.concat(nextPaths);
 					unfinishedTapeRowIdxTemp = unfinishedTapeRowIdxTemp.concat(nextTapeRowIdx);
@@ -582,6 +676,8 @@ $(document).ready(function () {
 			}
 
 			if (numIterations < MAX_ITERATIONS) {
+				unfinishedQueues = unfinishedQueuesTemp;
+
 				unfinishedPaths = unfinishedPathsTemp;
 				unfinishedTapeRowIdx = unfinishedTapeRowIdxTemp;
 				unfinishedTapeColIdx = unfinishedTapeColIdxTemp;
@@ -617,6 +713,8 @@ $(document).ready(function () {
 		}
 
 		let generatedPaths = generatePaths();
+
+		console.log(generatedPaths);
 
 		finishedPaths = generatedPaths[0];
 		finishedTapeRowIdx = generatedPaths[1];

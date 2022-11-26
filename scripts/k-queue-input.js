@@ -112,7 +112,7 @@ $(document).ready(function () {
 
 	function displayTestCase(value) {
 		const lines = {
-			'axbxcx-det': ['A 3', '', 'A ] SR(a, B)', 'B ] W1(1, A)', '', 'A ] SR(b, C)', 'C ] W2(1, D)', 'D ] R1(1, E)', 'E ] SR(b, C)'],
+			'axbxcx-det': ['A 3', '', 'A ] SR(a, B)', 'B ] W1(1, A)', '', 'A ] SR(b, C)', 'C ] W2(1, D)', 'D ] R1(1, E)', 'E ] SR(b, C)', '', 'A ] final'],
 			'error-direction': [],
 			'error-decision': [],
 			'error-multiple': [],

@@ -429,7 +429,7 @@ $(document).ready(function () {
 			}
 		}
 
-		return stimulusAlphabet;
+		return stimulusAlphabet.add('#');
 	}
 
 	function convertToAdjGraph() {
