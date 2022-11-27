@@ -113,8 +113,8 @@ $(document).ready(function () {
 		const lines = {
 			'axbxcx-det': ['A 3', '', 'A ] SR(a, B)', 'B ] W1(1, A)', '', 'A ] SR(b, C)', 'C ] W2(1, D)', 'D ] R1(1, E)', 'E ] SR(b, C)', '', 'E ] SR(c, F)', 'F ] W3(1, G)', 'G ] R2(1, H)', 'H ] SR(c, F)', '', 'H ] SR(#, J)', 'J ] R3(1, J)', '', 'A ] final', 'J ] final'],
 			'ax-axbxcx-non': ['A 4', '', 'A ] SR(a, B)', 'A ] SR(a, A)', 'B ] W1(1, A)', 'B ] W1(1, J)', '', 'A ] SR(b, C)', 'C ] W2(1, D)', 'D ] R1(1, E)', 'E ] SR(b, C)', '', 'E ] SR(c, F)', 'F ] W3(1, G)', 'G ] R2(1, H)', 'H ] SR(c, F)', '', 'H ] SR(#, J)', 'J ] R3(1, J)', '', 'A ] final', 'J ] final'],
-			wwr: [],
-			ww: []
+			wwr: ['A 1', '', 'A ] SR(H, B)', 'A ] SR(A, C)', 'B ] W1(H, A)', 'C ] W1(A, A)', 'A ] SR(#, D)', '', 'D ] SL(H, E)', 'D ] SL(A, F)', 'E ] R1(H, D)', 'F ] R1(A, D)', 'D ] SL(#, ok)', '', 'ok ] final'],
+			ww: ['. 1', '', '. ] SR(H, .)', '. ] SR(A, .)', '. ] SR(#, 1)', '', '1 ] SL(H, 2)', '2 ] W1(H, 1)', '1 ] SL(A, 3)', '3 ] W1(A, 1)', '', '2 ] W1(H, 4)', '3 ] W1(A, 4)', '', '4 ] SL(H, 5)', '5 ] R1(H, 4)', '4 ] SL(A, 6)', '6 ] R1(A, 4)', '4 ] SL(#, yehey)', '', 'yehey ] final']
 		};
 
 		return lines[value];

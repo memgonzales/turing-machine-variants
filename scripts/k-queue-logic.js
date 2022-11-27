@@ -653,7 +653,7 @@ $(document).ready(function () {
 
 								/* Enqueue */
 								let thisQueue = copyArray(currentQueue);
-								thisQueue[queueNumber].unshift(stimulus);
+								thisQueue[queueNumber].push(stimulus);
 
 								nextQueues.push(queue.concat([thisQueue]));
 							}
@@ -1113,7 +1113,7 @@ $(document).ready(function () {
 					$(`#queue-contents-${queueNumber}`).css('letter-spacing', '1em');
 					break;
 				case 'W':
-					$(`#queue-contents-${queueNumber}`).text(stimulus + currentContents);
+					$(`#queue-contents-${queueNumber}`).text(currentContents + stimulus);
 					$(`#queue-contents-${queueNumber}`).css('letter-spacing', '1em');
 					break;
 			}
