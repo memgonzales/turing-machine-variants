@@ -1,13 +1,14 @@
 $(document).ready(function () {
 	const editor = ace.edit('editor');
 
-	const MAX_ITERATIONS = 30;
-	const NUM_CELLS = 30;
+	const MAX_ITERATIONS = 1000;
+	const NUM_CELLS = MAX_ITERATIONS;
 
 	let initialState;
 	let numQueues;
 	let machine;
 	let inputString;
+	let rawMachine;
 	let processedMachine;
 	let processedMachineLineNumbers;
 	let processedInputString;
@@ -84,6 +85,7 @@ $(document).ready(function () {
 	$('#run').on('click', function () {
 		resetInputAttributes();
 		getInput();
+		getRawMachine();
 		processInput();
 		removeMarkers();
 
@@ -139,6 +141,7 @@ $(document).ready(function () {
 		numQueues = 0;
 		machine = '';
 		inputString = '';
+		rawMachine = [];
 		processedMachine = [];
 		processedMachineLineNumbers = [];
 		processedInputString = '';
@@ -207,6 +210,14 @@ $(document).ready(function () {
 		inputString = $('#input-string').val();
 	}
 
+	function getRawMachine() {
+		const machineLines = machine.split('\n');
+		for (const line of machineLines) {
+			const lineTrimmed = line.trim();
+			rawMachine.push(lineTrimmed);
+		}
+	}
+
 	function processMachine() {
 		let lineNumber = 0;
 
@@ -236,6 +247,7 @@ $(document).ready(function () {
 	function removeTape() {
 		$('#break-tape').remove();
 		$('#tape').remove();
+		$('#queue').remove();
 		$('#simulation-controls').hide();
 		$('#simulation-config').hide();
 	}
@@ -247,6 +259,38 @@ $(document).ready(function () {
 		positionTapeHead(0, 0);
 
 		$('#simulation-config').css('display', 'block');
+	}
+
+	function parseLineSimple(line) {
+		let tokensRaw = line.split(' ');
+		let tokens = [];
+
+		for (const token of tokensRaw) {
+			if (token.trim().length != 0) {
+				tokens.push(token);
+			}
+		}
+
+		let state = tokens[0].trim();
+
+		let stimulus = '';
+		let nextState = '';
+
+		let directionStimulus = tokens[2];
+		let directionRaw = directionStimulus[0];
+		let direction = directionRaw.toUpperCase().trim();
+		let directionTrue = '';
+
+		/* Transition */
+
+		stimulus = directionStimulus[directionStimulus.length - 2];
+		directionTrue = directionStimulus.substring(0, directionStimulus.length - 3);
+		direction = directionTrue;
+
+		let nextStateParen = tokens[3];
+		nextState = nextStateParen.slice(0, nextStateParen.length - 1).trim();
+
+		return [String(state), String(stimulus), String(direction), String(nextState)];
 	}
 
 	function parseLine(line, lineNumber) {
@@ -501,10 +545,6 @@ $(document).ready(function () {
 
 	function extractQueueNumber(action) {
 		return parseInt(action.substring(1, action.length));
-	}
-
-	function isTransitionState(state) {
-		return true;
 	}
 
 	function areAllQueuesEmpty(queues) {
@@ -891,6 +931,20 @@ $(document).ready(function () {
 		}
 
 		table = `<table id = "tape" class = "table table-bordered">${table}</table>`;
+
+		let queueDisplay = '';
+		for (let i = 1; i <= numQueues; i++) {
+			let row = '';
+			row += `<td id = "queue-${i}" class = "text-left" style = "width: 15%"> Queue ${i} </td>`;
+			row += `<td id = "queue-contents-${i}" class = "text-left"></td>`;
+
+			row = `<tr>${row}</tr>`;
+			queueDisplay += row;
+		}
+
+		queueDisplay = `<table id = "queue" class = "table table-bordered">${queueDisplay}</table>`;
+		table += queueDisplay;
+
 		$('#simulation-controls').css('display', 'block');
 
 		return table;
@@ -990,9 +1044,68 @@ $(document).ready(function () {
 		removeTapeHead();
 		positionTapeHead(finishedTapeRowIdx[config][stepNumber - 1], finishedTapeColIdx[config][stepNumber - 1]);
 		$('#total-steps').text(finishedPaths[config].length);
-
 		removeMarkers();
 		highlightEditor(finishedLineNumbers[config][stepNumber - 1], 'marker1');
 		updateDisplayDecision();
+		updateTapeContents();
+	}
+
+	function updateTapeContents() {
+		for (let i = 0; i < 1; i++) {
+			for (let j = 0; j < NUM_CELLS; j++) {
+				tape[0][j] = '#';
+			}
+		}
+
+		storeInputStringToTape();
+
+		const origStepNumber = stepNumber;
+		stepNumber = 1;
+
+		for (let i = 0; i < numRows; i++) {
+			for (let j = 0; j < numColumns; j++) {
+				$(`#${i}-${j}`).text('#');
+			}
+		}
+		placeInputString();
+
+		for (let i = 1; i <= numQueues; i++) {
+			$(`#queue-contents-${i}`).text('');
+		}
+
+		while (stepNumber < origStepNumber) {
+			stepNumber++;
+			updateTapeContentsStep();
+		}
+	}
+
+	function updateTapeContentsStep() {
+		const currentLineNumber = finishedLineNumbers[config][stepNumber - 2];
+		const action = parseLineSimple(rawMachine[currentLineNumber])[2];
+		const stimulus = parseLineSimple(rawMachine[currentLineNumber])[1];
+
+		let trueAction = '';
+
+		switch (action[0]) {
+			case 'R':
+			case 'W':
+				trueAction = action;
+		}
+
+		const queueNumber = extractQueueNumber(trueAction);
+
+		if (typeof queueNumber !== 'undefined') {
+			const currentContents = $(`#queue-contents-${queueNumber}`).text();
+			switch (action[0]) {
+				case 'R':
+					$(`#queue-contents-${queueNumber}`).text(currentContents.substring(1, currentContents.length));
+					$(`#queue-contents-${queueNumber}`).css('letter-spacing', '1em');
+					break;
+				case 'W':
+					$(`#queue-contents-${queueNumber}`).text(stimulus + currentContents);
+					$(`#queue-contents-${queueNumber}`).css('letter-spacing', '1em');
+					break;
+			}
+		}
 	}
 });
