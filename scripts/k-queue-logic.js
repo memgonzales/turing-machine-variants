@@ -299,6 +299,11 @@ $(document).ready(function () {
 		const MIN_NUM_TOKENS = 3;
 		const MAX_NUM_TOKENS = 4;
 
+		if (numQueues > MAX_ITERATIONS) {
+			alert(`Line ${processedMachineLineNumbers[0] + 1}: System can only hold up to a maximum of ${MAX_ITERATIONS} queues.`);
+			return false;
+		}
+
 		for (const token of tokensRaw) {
 			if (token.trim().length != 0) {
 				tokens.push(token);
@@ -614,7 +619,11 @@ $(document).ready(function () {
 
 					if (adjGraphDirection[currentState][0] === 'R') {
 						stimulus = currentQueue[queueNumber][0];
+						console.log('q');
 					}
+
+					console.log(currentQueue[queueNumber]);
+					console.log(stimulus);
 
 					let nextStates = adjGraphNextState[currentState][stimulus];
 					let currentLineNumbers = adjGraphLineNumber[currentState][stimulus];
@@ -644,7 +653,7 @@ $(document).ready(function () {
 
 								/* Enqueue */
 								let thisQueue = copyArray(currentQueue);
-								thisQueue[queueNumber].push(stimulus);
+								thisQueue[queueNumber].unshift(stimulus);
 
 								nextQueues.push(queue.concat([thisQueue]));
 							}
@@ -688,7 +697,9 @@ $(document).ready(function () {
 								nextTapeColIdx.push(tapeColIdx.concat([currentTapeColIdx]));
 
 								/* Dequeue */
-								if (adjGraphDirection[currentState][0] === 'R') {
+								console.log(currentState);
+								console.table(nextStates);
+								if (adjGraphDirection[currentState][0] === 'R' && nextStates.length != 0) {
 									currentQueue[queueNumber].shift();
 								}
 

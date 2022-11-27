@@ -112,12 +112,9 @@ $(document).ready(function () {
 	function displayTestCase(value) {
 		const lines = {
 			'axbxcx-det': ['A 3', '', 'A ] SR(a, B)', 'B ] W1(1, A)', '', 'A ] SR(b, C)', 'C ] W2(1, D)', 'D ] R1(1, E)', 'E ] SR(b, C)', '', 'E ] SR(c, F)', 'F ] W3(1, G)', 'G ] R2(1, H)', 'H ] SR(c, F)', '', 'H ] SR(#, J)', 'J ] R3(1, J)', '', 'A ] final', 'J ] final'],
-			'error-direction': [],
-			'error-decision': [],
-			'error-multiple': [],
-			'error-invalid': [],
-			'error-tokens': [],
-			'error-unique': []
+			'ax-axbxcx-non': ['A 4', '', 'A ] SR(a, B)', 'A ] SR(a, A)', 'B ] W1(1, A)', 'B ] W1(1, J)', '', 'A ] SR(b, C)', 'C ] W2(1, D)', 'D ] R1(1, E)', 'E ] SR(b, C)', '', 'E ] SR(c, F)', 'F ] W3(1, G)', 'G ] R2(1, H)', 'H ] SR(c, F)', '', 'H ] SR(#, J)', 'J ] R3(1, J)', '', 'A ] final', 'J ] final'],
+			wwr: [],
+			ww: []
 		};
 
 		return lines[value];
