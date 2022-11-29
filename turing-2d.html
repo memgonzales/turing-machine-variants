@@ -156,7 +156,7 @@
 					</ul>
 
 					<div id="remarks" class="tab-content">
-						<div id="remarks-1" class="tab-pane fade show active"> <br />
+						<div id="remarks-1" class="tab-pane fade"> <br />
 							A two-way deterministic counter Turing machine with a two-dimensional tape (<span class="small">2DTM&#8209;2D&#8209;Counter</span>) 
 							is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape 
 							(<span class="small">Ordinary&#8209;TM</span>). <br /> <br />
@@ -759,8 +759,8 @@
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
-													Let <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> be the multi-tape Turing machine
-													and <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> be the ordinary (single-tape) Turing machine.
+													Let <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> be a multi-tape Turing machine
+													and <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> be an ordinary (single-tape) Turing machine.
 												</li>
 
 												<li class="indented-list-item">
@@ -863,9 +863,174 @@
 							</div>
 						</div>
 						
-						<div id="remarks-2" class="tab-pane fade"> <br />
+						<div id="remarks-2" class="tab-pane fade show active"> <br />
 							A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NTM-2D-Counter</span>) is equivalent in power 
-							to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary-TM</span>).
+							to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary-TM</span>). <br /> <br />
+
+							<div class="accordion" id="remarks-2-head">
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-2-given" aria-expanded="false" aria-controls="remarks-1-given">
+											Proof Sketch for&nbsp;<i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub>&nbsp;⊆&nbsp;<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+										</button>
+									</h2>
+
+									<div id="remarks-2-given" class="accordion-collapse collapse show" aria-labelledby="remarks-2-given">
+										<div class="accordion-body">
+											<ul class="indented-list">
+												<li class="indented-list-item">
+													Let <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub> be a two-way nondeterministic free-tape Turing machine with a one-dimensional tape.
+												</li>
+
+												<li class="indented-list-item">
+													Since <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>,
+													it suffices to prove that <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>  ⊆ <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
+												</li>
+
+												<li class="indented-list-item">
+													Our key idea is to use a three-tape Turing machine <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> :
+													
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															The first tape serves as an immutable storage of the input string.
+														</li>
+														<li class="indented-list-item">
+															The second tape carries out the actual simulation.
+														</li>
+														<li class="indented-list-item">
+															The third tape marks the address of the configuration executed by <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub>
+															in the computational tree of <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>.
+														</li>
+														<li class="indented-list-item">
+															The nodes of the computational tree of <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>
+															should be visited in a breadth-first fashion. Visiting them in a depth-first fashion risks trapping the machine
+															in a nonterminating branch.
+														</li>
+													</ul>
+												</li>
+
+												<li class="indented-list-item">
+													Since <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> =  <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, it follows that 
+													<i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>  ⊆ <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-1-proof3" aria-expanded="false" aria-controls="remarks-1-proof3">
+											Addendum: Simulating a Multi-Tape Using a Single-Tape Turing Machine
+										</button>
+									</h2>
+
+									<div id="remarks-1-proof3" class="accordion-collapse collapse" aria-labelledby="remarks-1-proof3">
+										<div class="accordion-body">
+											<ul class="indented-list">
+												<li class="indented-list-item">
+													Let <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> be a multi-tape Turing machine
+													and <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> be an ordinary (single-tape) Turing machine.
+												</li>
+
+												<li class="indented-list-item">
+													Our key idea is to place the rows of the multi-tape machine next to each other and using a marker ⬤ that is
+													not in the tape alphabet of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> to demarcate them.
+												</li>
+													
+												<li class="indented-list-item">
+													Meanwhile, to keep track of the position of the tape heads, we introduce an accented version of each symbol
+													in the tape alphabet of <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub>. 
+													This accented version is used to indicate that a tape head is pointing to that cell.
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															In this regard, the tape alphabet of 
+														</li>
+													</ul>
+												</li>
+
+												<li class="indented-list-item">
+													To illustrate, suppose we have the following snapshot of <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub>'s 
+													tapes:
+
+													<br /> <br />
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">a</td>
+															<td class="text-center">a</td>
+															<td class="text-center">e</td>
+															<td class="text-center head-color">e</td>
+															<td class="text-center">#</td>
+														</tr>
+													</table>
+
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center head-color">a</td>
+															<td class="text-center">#</td>
+															<td class="text-center">e</td>
+															<td class="text-center">e</td>
+															<td class="text-center">#</td>
+														</tr>
+													</table>
+
+													<table class="table table-bordered">
+														<tr>
+															<td class="text-center">#</td>
+															<td class="text-center">a</td>
+															<td class="text-center">#</td>
+															<td class="text-center head-color">a</td>
+															<td class="text-center">#</td>
+															<td class="text-center">#</td>
+														</tr>
+													</table>
+												</li>
+
+												<li class="indented-list-item">
+													The equivalent snapshot of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>'s tape is
+													as follows:
+
+													<br /> <br />
+													<div class="table-responsive">
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center head-color">#</td>
+																<td class="text-center">a</td>
+																<td class="text-center">a</td>
+																<td class="text-center">e</td>
+																<td class="text-center">ê</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">â</td>
+																<td class="text-center">#</td>
+																<td class="text-center">e</td>
+																<td class="text-center">e</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">a</td>
+																<td class="text-center">#</td>
+																<td class="text-center">â</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">...</td>
+															</tr>
+														</table>
+													</div>
+												</li>
+
+												<li class="indented-list-item">
+													Simulating the left and right movements of <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub>
+													is analogous to the simulation presented in the conversion of <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub>
+													to <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
