@@ -873,6 +873,28 @@
 							<div class="accordion" id="remarks-2-head">
 								<div class="accordion-item">
 									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-2-given1" aria-expanded="false" aria-controls="remarks-1-given">
+											Given
+										</button>
+									</h2>
+
+									<div id="remarks-2-given1" class="accordion-collapse collapse" aria-labelledby="remarks-2-given1">
+										<div class="accordion-body">
+											<ul class="indented-list">
+												<li class="indented-list-item">
+													Let <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub> be a two-way nondeterministic free-tape Turing machine with a two-dimensional tape.
+												</li>
+
+												<li class="indented-list-item">
+													Let <i>M</i><sub><span class="small">2DTM&#8209;Multi-2D&#8209;Free&#8209;Tape</span></sub> be a two-way deterministic free-tape Turing machine with multiple two-dimensional tapes.
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="accordion-item">
+									<h2 class="accordion-header">
 										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-2-given" aria-expanded="false" aria-controls="remarks-1-given">
 											Proof Sketch for&nbsp;<i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub>&nbsp;⊆&nbsp;<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
 										</button>
@@ -881,17 +903,36 @@
 									<div id="remarks-2-given" class="accordion-collapse collapse" aria-labelledby="remarks-2-given">
 										<div class="accordion-body">
 											<ul class="indented-list">
+												
+
 												<li class="indented-list-item">
-													Let <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub> be a two-way nondeterministic free-tape Turing machine with a one-dimensional tape.
+													We follow this line of thought:
+													<ul class="indented-list">
+														<li class="indented-list-item">
+															Clearly, <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>.
+														</li>
+
+														<li class="indented-list-item">
+															We attempt to show that <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>
+															⊆ <i>M</i><sub><span class="small">2DTM&#8209;Multi-2D&#8209;Free&#8209;Tape</span></sub> by simulating the former 
+															using three (two-dimensional) tapes.
+														</li>
+
+														<li class="indented-list-item">
+															Each (two-dimensional) tape of <i>M</i><sub><span class="small">2DTM&#8209;Multi-2D&#8209;Free&#8209;Tape</span></sub>
+															can be converted to a (one-dimensional) tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
+														</li>
+
+														<li class="indented-list-item">
+															A multi-tape Turing machine is equivalent in power to an ordinary (single-tape) Turing machine; a sketch of the 
+															conversion is provided as an addendum.
+														</li>
+													</ul>
 												</li>
 
 												<li class="indented-list-item">
-													Since <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>,
-													it suffices to prove that <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>  ⊆ <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
-												</li>
-
-												<li class="indented-list-item">
-													Our key idea is to use a three-tape Turing machine <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> :
+													Therefore, it suffices to prove that <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>
+													can be converted to <i>M</i><sub><span class="small">2DTM&#8209;Multi-2D&#8209;Free&#8209;Tape</span></sub> using three tapes:
 													
 													<ul class="indented-list">
 														<li class="indented-list-item">
@@ -911,12 +952,6 @@
 														</li>
 													</ul>
 												</li>
-
-												<li class="indented-list-item">
-													Since <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> =  <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
-													(a sketch of the conversion is provided as an addendum), it follows that 
-													<i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>  ⊆ <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
-												</li>
 											</ul>
 										</div>
 									</div>
@@ -933,8 +968,8 @@
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
-													Since we have already established that <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
-													and, clearly, <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub>,
+													Since <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub> and
+													we have already established that <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>,
 													it follows that <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub>.
 												</li>
 											</ul>
