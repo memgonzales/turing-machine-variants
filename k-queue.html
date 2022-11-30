@@ -233,7 +233,7 @@
 									</button>
 								</h2>
 
-								<div id="remarks-2-given" class="accordion-collapse collapse show" aria-labelledby="remarks-2-given">
+								<div id="remarks-2-given" class="accordion-collapse collapse" aria-labelledby="remarks-2-given">
 									<div class="accordion-body">
 										<ul class="indented-list">
 											<li class="indented-list-item">
@@ -356,6 +356,203 @@
 																<td class="text-center">b</td>
 															</tr>
 														</table>
+													</li>
+												</ul>
+											</li>
+
+											<li class="indented-list-item">
+												Simulating the <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> instruction "read symbol d, write symbol b, and move left"
+												is more involved:
+												<ul class="indented-list">
+													<li class="indented-list-item">
+														Introduce the primitive operation <span class="small">Cyclic-Shift</span> whose goal
+														is to transfer a symbol at the back of the queue to the front:
+														<ul class="indented-list">
+															<li class="indented-list-item">
+																Suppose the queue snapshot is as follows:
+																<br /> <br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">e</td>
+																		<td class="text-center">f</td>
+																		<td class="text-center">⬤</td>
+																		<td class="text-center">a</td>
+																	</tr>
+																</table>
+															</li>
+															<li class="indented-list-item">
+																Enqueue a special symbol ☆ that is not part of the tape alphabet.
+																<br /> <br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">e</td>
+																		<td class="text-center">f</td>
+																		<td class="text-center">⬤</td>
+																		<td class="text-center">a</td>
+																		<td class="text-center">☆</td>
+																	</tr>
+																</table>
+															</li>
+															<li class="indented-list-item">
+																Replace each symbol <i>x</i> with a new symbol <i>xy</i> where <i>y</i> is the symbol 
+																immediately behind <i>x</i> in the queue. 
+																<ul class="indented-list">
+																	<li class="indented-list-item">
+																		This can be done by using a special state <i>q</i><sub><i>x</i></sub>
+																		to remember that we dequeued <i>x</i>. When the machine encounters <i>y</i> from this state, it will 
+																		enqueue <i>xy</i>.
+																	</li>
+
+																	<li class="indented-list-item">
+																		We keep doing this until we scan the marker ☆, at which point we enqueue ☆ then the symbol that
+																		used to be in front of it.
+																	</li>
+
+																	<li class="indented-list-item">
+																		In other words, we are using the states as some form of "memory," which works 
+																		since the tape alphabet is finite.
+																	</li>
+																</ul>
+																<br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">ef</td>
+																		<td class="text-center">f⬤</td>
+																		<td class="text-center">⬤a</td>
+																		<td class="text-center">☆</td>
+																		<td class="text-center">a</td>
+																	</tr>
+																</table>
+															</li>
+															<li class="indented-list-item">
+																Afterwards, dequeue the symbols and enqueue only their first characters
+																until the marker ☆ is scanned.
+																<br /> <br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">☆</td>
+																		<td class="text-center">a</td>
+																		<td class="text-center">e</td>
+																		<td class="text-center">f</td>
+																		<td class="text-center">⬤</td>
+																	</tr>
+																</table>
+															</li>
+															<li class="indented-list-item">
+																Dequeue ☆ to complete the <span class="small">Cyclic-Shift</span> operation.
+																<br /> <br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">a</td>
+																		<td class="text-center">e</td>
+																		<td class="text-center">f</td>
+																		<td class="text-center">⬤</td>
+																	</tr>
+																</table>
+															</li>
+														</ul>
+													</li>
+
+													<li class="indented-list-item">
+														The instruction "read symbol d, write symbol b, and move left" can then be simulated as follows:
+														<ul class="indented-list">
+															<li class="indented-list-item">
+																Dequeue d, enqueue b, and perform two <span class="small">Cyclic-Shift</span> operations.
+															</li>
+
+															<li class="indented-list-item">
+																To illustrate, consider these tape and queue snapshots before executing this instruction:
+																<br /> <br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">a</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center">c</td>
+																		<td class="text-center head-color">d</td>
+																		<td class="text-center">e</td>
+																		<td class="text-center">...</td>
+																	</tr>
+																</table>
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">d</td>
+																		<td class="text-center">e</td>
+																		<td class="text-center">...</td>
+																		<td class="text-center">⬤</td>
+																		<td class="text-center">a</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center">c</td>
+																	</tr>
+																</table>
+															</li>
+
+															<li class="indented-list-item">
+																After reading symbol d, writing symbol b, and moving left, the tape snapshot is as follows:
+																<br /> <br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">a</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center head-color">c</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center">e</td>
+																		<td class="text-center">...</td>
+																	</tr>
+																</table>
+															</li>
+
+															<li class="indented-list-item">
+																After dequeueing d, enqueueing b, and performing two <span class="small">Cyclic-Shift</span> operations,
+																the queue snapshot is as follows:
+																<br /> <br />
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">e</td>
+																		<td class="text-center">...</td>
+																		<td class="text-center">⬤</td>
+																		<td class="text-center">a</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center">c</td>
+																	</tr>
+																</table>
+
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">e</td>
+																		<td class="text-center">...</td>
+																		<td class="text-center">⬤</td>
+																		<td class="text-center">a</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center">c</td>
+																		<td class="text-center">b</td>
+																	</tr>
+																</table>
+
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">b</td>
+																		<td class="text-center">e</td>
+																		<td class="text-center">...</td>
+																		<td class="text-center">⬤</td>
+																		<td class="text-center">a</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center">c</td>
+																	</tr>
+																</table>
+
+																<table class="table table-bordered">
+																	<tr>
+																		<td class="text-center">c</td>
+																		<td class="text-center">b</td>
+																		<td class="text-center">e</td>
+																		<td class="text-center">...</td>
+																		<td class="text-center">⬤</td>
+																		<td class="text-center">a</td>
+																		<td class="text-center">b</td>
+																	</tr>
+																</table>
+															</li>
+														</ul>
 													</li>
 												</ul>
 											</li>
