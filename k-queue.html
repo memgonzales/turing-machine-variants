@@ -153,37 +153,216 @@
 					<ul class="nav nav-tabs" id="remarks-tab" role="tablist">
 						<li class="nav-item" role="presentation">
 							<button class="nav-link active tab" id="tab-1" data-bs-toggle="tab" data-bs-target="#remarks-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">
-								<span class="small">Multi&#8209;Queue&#8209;1DQA&#8209;Counter</span>
+								<span class="small">Multi&#8209;Queue&#8209;1D/NQA&#8209;Counter</span>
 							</button>
 						</li>
 						<li class="nav-item" role="presentation">
 							<button class="nav-link tab" id="tab-2" data-bs-toggle="tab" data-bs-target="#remarks-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">
-								<span class="small">2NTM&#8209;2D&#8209;Counter</span>
+								<span class="small">1&#8209;Queue&#8209;2DQA&#8209;Free-Tape</span>
 							</button>
 						</li>
 					</ul>
 
 					<div id="remarks" class="tab-content">
-						<div id="remarks-1" class="tab-pane fade show active">
+						<div id="remarks-1" class="tab-pane fade">
 							<br />
-							A two-way deterministic counter Turing machine with a two-dimensional tape (
-							<span class="small">2DTM&#8209;2D&#8209;Counter</span>
-							) is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape (
-							<span class="small">Ordinary&#8209;TM</span>
-							).
-							<br />
-							<br />
+							Both deterministic and nondeterministic variants of a one-way multi-queue counter automaton
+							can accept all regular languages.
 
-							<div class="accordion" id="remarks-1-head"></div>
+							<ul class="indented-list">
+								<li class="indented-list-item">
+									Although their stack alphabet is limited, they still have auxiliary memory, making them more powerful than finite-state accepters.
+								</li>
+							</ul>
+
+							Both deterministic and nondeterministic variants of a one-way multi-queue counter automaton
+							can recognize some context-free languages but fail to recognize some.
+
+							<ul class="indented-list">
+								<li class="indented-list-item">
+									The context-free languages that they can recognize include:
+									<ul class="indented-list">
+										<li class="indented-list-item">
+											{ω ∈ (a ∪ b)* | aˣbˣ, x ≥ 0}
+										</li>
+
+										<li class="indented-list-item">
+											{ω ∈ (a ∪ b)* | N(a) = N(b)}
+										</li>
+									</ul>
+								</li>
+
+								<li class="indented-list-item">
+									The context-free languages that they cannot recognize include:
+									<ul class="indented-list">
+										<li class="indented-list-item">
+											{ω ∈ (H ∪ A)* | ωωᴿ}
+										</li>
+									</ul>
+								</li>
+							</ul>
+
+							Both deterministic and nondeterministic variants of a one-way deterministic multi-queue counter queue automaton
+							can recognize some (i.e., but not all) context-sensitive languages.
+
+							<ul class="indented-list">
+								<li class="indented-list-item">
+									The context-sensitive languages that they can recognize include:
+									<ul class="indented-list">
+										<li class="indented-list-item">
+											{ω ∈ (a ∪ b ∪ c)* | aˣbˣcˣ, x ≥ 0}
+										</li>
+									</ul>
+								</li>
+							</ul>
+
 						</div>
 
-						<div id="remarks-2" class="tab-pane fade">
+						<div id="remarks-2" class="tab-pane fade show active">
 							<br />
-							A two-way nondeterministic counter Turing machine with a two-dimensional tape (
-							<span class="small">2NTM-2D-Counter</span>
-							) is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape (
-							<span class="small">Ordinary-TM</span>
-							).
+							A two-way deterministic free-tape single-queue automaton (<span class="small">1&#8209;Queue&#8209;2DQA&#8209;Free-Tape</span>)
+							is equivalent in power to a Turing machine (<span class="small">Ordinary&#8209;TM</span>).  <br /> <br />
+						</div>
+
+						<div class="accordion" id="remarks-2-head">
+							<div class="accordion-item">
+								<h2 class="accordion-header">
+									<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-2-given" aria-expanded="false" aria-controls="remarks-1-given">
+										Proof Sketch for&nbsp;<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+										&nbsp;⊆&nbsp;<i>M</i><sub><span class="small">1&#8209;Queue&#8209;2DQA&#8209;Free-Tape</span></sub>
+									</button>
+								</h2>
+
+								<div id="remarks-2-given" class="accordion-collapse collapse show" aria-labelledby="remarks-2-given">
+									<div class="accordion-body">
+										<ul class="indented-list">
+											<li class="indented-list-item">
+												We prove the tighter result that a Turing machine can be simulated with a one-way deterministic 
+												free-tape single-queue automaton.
+											</li>
+
+											<li class="indented-list-item">
+												Our key idea is to establish a bijection between the contents of the tape of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+												and the queue of <i>M</i><sub><span class="small">1&#8209;Queue&#8209;2DQA&#8209;Free-Tape</span></sub>
+												via the following strategy:
+												<ul class="indented-list">
+													<li class="indented-list-item">
+														Use a special symbol ⬤ that is not part of the tape alphabet to mark the start of the simulated tape.
+													</li>
+
+													<li class="indented-list-item">
+														The symbol to which the tape head of <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> points 
+														is the front of the queue. Symbols on the right of the tape head are in front of ⬤, while symbols on 
+														the left of the tape head are behind ⬤.
+													</li>
+
+													<li class="indented-list-item">
+														To illustrate, suppose we have the following snapshot of 
+														<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>'s 
+														tape:
+
+														<br /> <br />
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center">#</td>
+																<td class="text-center">a</td>
+																<td class="text-center">...</td>
+																<td class="text-center head-color">b</td>
+																<td class="text-center">c</td>
+																<td class="text-center">...</td>
+															</tr>
+														</table>
+													</li>
+
+													<li class="indented-list-item">
+														The equivalent snapshot of the queue is as follows:
+
+														<br /> <br />
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center">b</td>
+																<td class="text-center">c</td>
+																<td class="text-center">...</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">#</td>
+																<td class="text-center">a</td>
+																<td class="text-center">...</td>
+															</tr>
+														</table>
+													</li>
+												</ul>
+											</li>
+
+											<li class="indented-list-item">
+												Simulating the <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> instruction "read symbol d, write symbol b, and move right"
+												is straightforward:
+												<ul class="indented-list">
+													<li class="indented-list-item">
+														Dequeue symbol d, then enqueue symbol b.
+													</li>
+
+													<li class="indented-list-item">
+														To illustrate, consider these tape and queue snapshots before executing this instruction:
+														<br /> <br />
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center">a</td>
+																<td class="text-center">b</td>
+																<td class="text-center">c</td>
+																<td class="text-center head-color">d</td>
+																<td class="text-center">e</td>
+																<td class="text-center">...</td>
+															</tr>
+														</table>
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center">d</td>
+																<td class="text-center">e</td>
+																<td class="text-center">...</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">a</td>
+																<td class="text-center">b</td>
+																<td class="text-center">c</td>
+															</tr>
+														</table>
+													</li>
+
+													<li class="indented-list-item">
+														After reading symbol d, writing symbol b, and moving right, the tape snapshot is as follows:
+														<br /> <br />
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center">a</td>
+																<td class="text-center">b</td>
+																<td class="text-center">c</td>
+																<td class="text-center">b</td>
+																<td class="text-center head-color">e</td>
+																<td class="text-center">...</td>
+															</tr>
+														</table>
+													</li>
+
+													<li class="indented-list-item">
+														After dequeueing symbol b and enqueueing symbol b (following our proposed simulation), the queue snapshot is as follows:
+														<br /> <br />
+														<table class="table table-bordered">
+															<tr>
+																<td class="text-center">e</td>
+																<td class="text-center">...</td>
+																<td class="text-center">⬤</td>
+																<td class="text-center">a</td>
+																<td class="text-center">b</td>
+																<td class="text-center">c</td>
+																<td class="text-center">b</td>
+															</tr>
+														</table>
+													</li>
+												</ul>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
