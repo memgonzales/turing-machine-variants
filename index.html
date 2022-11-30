@@ -172,7 +172,39 @@
 						<div class="col-sm-12">
 							<h5>Remarks</h5>
 							<ul class="indented-list">
-								<li class="indented-list-item">Two-way accepters are equivalent in power to one-way accepters.</li>
+								<li class="indented-list-item">
+									Both deterministic and nondeterministic variants of a two-way finite-state accepter are equivalent in power to a one-way deterministic finite-state accepter.
+									<ul class="indented-list">
+										<li class="indented-list-item">
+											The original proof was given by <a class="link-secondary" href="https://ieeexplore.ieee.org/document/5392601/" target="_blank">Rabin and Scott (1959)</a>, 
+											who also proposed the idea of two-way accepters.
+										</li>
+
+										<li class="indented-list-item">
+											<a class="link-secondary" href="https://ieeexplore.ieee.org/document/5392614" target="_blank">Shepherdson (1959)</a> subsequently published a simpler proof and showed that an <i>n</i>-state deterministic two-way accepter 
+											can be converted to a deterministic one-way accepter with <i>O</i>((<i>n</i> + 1)<sup><i>n</i> + 1</sup>) states.
+										</li>
+
+										<li class="indented-list-item">
+											Recently, <a href="https://verbs.colorado.edu/~mahu0110/pubs/From%20Two-Way%20to%20One-Way%20Finite%20Automata%20-%20Three%20Regular%20Expression-Based%20Methods%20(Hulden,%202015).pdf" class="link-secondary" target="blank">Hulden (2015)</a> proposed a simpler conversion regular expression-based strategy for converting a 
+											two-way deterministic finite-state accepter to a deterministic one-way accepter.
+										</li>
+									</ul>
+								</li>
+
+								<li class="indented-list-item">
+									<a class="link-secondary" href="https://dl.acm.org/doi/pdf/10.1145/800133.804357" target="_blank">Sadoka and Sipser (1978)</a> posed 
+									questions on the cost of simulating nondeterministic finite-state accepters via two-way accepters &mdash;
+									which remain open problems (<a class="link-secondary" target="_blank" href="https://dl.acm.org/doi/10.5555/2637657.2637663">Pighizzini, 2012</a>):
+									<ul class="indented-list">
+										<li class="indented-list-item">
+											Cost of simulating a nondeterministic one-way finite-state accepter via a deterministic two-way accepter
+										</li>
+										<li class="indented-list-item">
+											Cost of simulating a nondeterministic two-way finite-state accepter via a deterministic two-way accepter
+										</li>
+									</ul>
+								</li>
 							</ul>
 						</div>
 					</div>
