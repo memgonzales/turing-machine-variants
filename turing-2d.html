@@ -156,7 +156,7 @@
 					</ul>
 
 					<div id="remarks" class="tab-content">
-						<div id="remarks-1" class="tab-pane fade"> <br />
+						<div id="remarks-1" class="tab-pane fade show active"> <br />
 							A two-way deterministic counter Turing machine with a two-dimensional tape (<span class="small">2DTM&#8209;2D&#8209;Counter</span>) 
 							is equivalent in power to a two-way deterministic free-tape Turing machine with a one-dimensional tape 
 							(<span class="small">Ordinary&#8209;TM</span>). <br /> <br />
@@ -792,6 +792,7 @@
 															<td class="text-center">e</td>
 															<td class="text-center head-color">e</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 
@@ -803,6 +804,7 @@
 															<td class="text-center">e</td>
 															<td class="text-center">e</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 
@@ -814,6 +816,7 @@
 															<td class="text-center head-color">a</td>
 															<td class="text-center">#</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 												</li>
@@ -863,7 +866,7 @@
 							</div>
 						</div>
 						
-						<div id="remarks-2" class="tab-pane fade show active"> <br />
+						<div id="remarks-2" class="tab-pane fade"> <br />
 							A two-way nondeterministic counter Turing machine with a two-dimensional tape (<span class="small">2NTM-2D-Counter</span>) is equivalent in power 
 							to a two-way deterministic free-tape Turing machine with a one-dimensional tape (<span class="small">Ordinary-TM</span>). <br /> <br />
 
@@ -875,7 +878,7 @@
 										</button>
 									</h2>
 
-									<div id="remarks-2-given" class="accordion-collapse collapse show" aria-labelledby="remarks-2-given">
+									<div id="remarks-2-given" class="accordion-collapse collapse" aria-labelledby="remarks-2-given">
 										<div class="accordion-body">
 											<ul class="indented-list">
 												<li class="indented-list-item">
@@ -910,8 +913,29 @@
 												</li>
 
 												<li class="indented-list-item">
-													Since <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> =  <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>, it follows that 
+													Since <i>M</i><sub><span class="small">Multi&#8209;Tape&#8209;TM</span></sub> =  <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+													(a sketch of the conversion is provided as an addendum), it follows that 
 													<i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Free&#8209;Tape</span></sub>  ⊆ <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>.
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remarks-2-proof1" aria-expanded="false" aria-controls="remarks-1-given">
+											Proof Sketch for&nbsp;<i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>&nbsp;⊆&nbsp;<i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub>
+										</button>
+									</h2>
+
+									<div id="remarks-2-proof1" class="accordion-collapse collapse" aria-labelledby="remarks-3-proof1">
+										<div class="accordion-body">
+											<ul class="indented-list">
+												<li class="indented-list-item">
+													Since we have already established that <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> = <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub>
+													and, clearly, <i>M</i><sub><span class="small">2DTM&#8209;2D&#8209;Counter</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub>,
+													it follows that <i>M</i><sub><span class="small">Ordinary&#8209;TM</span></sub> ⊆ <i>M</i><sub><span class="small">2NTM&#8209;2D&#8209;Counter</span></sub>.
 												</li>
 											</ul>
 										</div>
@@ -962,6 +986,7 @@
 															<td class="text-center">e</td>
 															<td class="text-center head-color">e</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 
@@ -973,6 +998,7 @@
 															<td class="text-center">e</td>
 															<td class="text-center">e</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 
@@ -984,6 +1010,7 @@
 															<td class="text-center head-color">a</td>
 															<td class="text-center">#</td>
 															<td class="text-center">#</td>
+															<td class="text-center">...</td>
 														</tr>
 													</table>
 												</li>
