@@ -2,7 +2,6 @@ const editor = ace.edit('editor');
 editor.getSession().setUseWrapMode(true);
 
 const Range = ace.require('ace/range').Range;
-// editor.session.addMarker(new Range(1, 0, 1, 1), 'myMarker', 'fullLine');
 
 function removeMarkers() {
 	const prevMarkers = editor.session.getMarkers();
