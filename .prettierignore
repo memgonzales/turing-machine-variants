@@ -1,0 +1,5 @@
+# Ignore HTML files to avoid adding whitespaces
+# after italicized letters (e.g., <i>k</i>-queue)
+turing-2d.html
+index.html
+k-queue.html
