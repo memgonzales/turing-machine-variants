@@ -12,7 +12,9 @@ This project is an interactive website for simulating the following abstract mac
 - Two-way deterministic and nondeterministic **Turing machines with two-dimensional tapes**
 - Two-way deterministic and nondeterministic **<i>k</i>-queue automata**
 
-This website also allows the user to explore all the possible paths (runs) for nondeterministic automata. 
+It also allows the user to explore all the possible paths (runs) for nondeterministic automata and provides a theoretical analysis of selected abstract machine variants.
+
+This website is the major course output in an automata, computability, and formal languages class for master's students under Dr. Arnulfo P. Azcarraga of the Department of Software Technology, De La Salle University.
 
 ## Project Structure
 This project consists of the following folders:
