@@ -27,9 +27,9 @@ It also includes the following files:
 
 | File                                                                                              | Description                                                 |
 | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [`index.html`](https://github.com/memgonzales/turing-machine-variants/blob/master/index.html)     | Webpage for finite automata                             |
+| [`index.html`](https://github.com/memgonzales/turing-machine-variants/blob/master/index.html)     | Webpage for finite automata (home page)                        |
 | [`k-queue.html`](https://github.com/memgonzales/turing-machine-variants/blob/master/k-queue.html)   | Webpage for Turing machines with two-dimensional tapes  |
-| [`turing-2d.html`](https://github.com/memgonzales/turing-machine-variants/blob/master/turing-2d.html) | Webpage for queue automata                         |
+| [`turing-2d.html`](https://github.com/memgonzales/turing-machine-variants/blob/master/turing-2d.html) | Webpage for <i>k</i>-queue automata                         |
 
 ## Running the Simulator
 
