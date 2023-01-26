@@ -55,7 +55,7 @@ $(document).ready(function () {
 	function instructions() {
 		const lines = [
 			'** INITIAL STATE **',
-			'The first line should be a single string denoting the initial state. It can be any string, provided that it does not contain any whitespace.',
+			'The first line should be a single string denoting the initial state. It can be any string, provided that it does not have any whitespace.',
 			'',
 			'** TRANSITIONS **',
 			'Each transition should be entered on a separate line following this format:',
